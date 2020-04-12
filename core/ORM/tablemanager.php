@@ -1,7 +1,8 @@
 <?php
+namespace php\ORM;
 require_once ($_SERVER['DOCUMENT_ROOT'].'/php/general/database_connection.php');
 
-class Table
+class TableManager
 {
     public static function add($arFields)
     {
@@ -23,16 +24,14 @@ class Table
         }
 
         $query .= '(' . implode('. ', $arKeys) . ') VALUES (\'' .
-            implode('\', \'', $arValues) . '\'); ' .
-            'SELECT SCOPE_IDENTITY()';
-
-        //return $query;
+            implode('\', \'', $arValues) . '\');';
 
         $connection = DB::getInstance();
         $sdh = $connection->prepare($query);
-        $id = $sdh->execute();
-        $sdh->fetchAll();
-        return $id;
+        $sdh->execute();
+        $sdh = $connection->prepare('SELECT LAST_INSERT_ID();');
+        $sdh->execute();
+        return $sdh->fetch()['LAST_INSERT_ID()'];
     }
 
     public static function getList($arFields)
@@ -98,8 +97,6 @@ class Table
             }
         }
 
-        //return $query;
-
         $connection = DB::getInstance();
         $sdh = $connection->prepare($query);
         $sdh->execute();
@@ -111,7 +108,7 @@ class Table
         return self::getList(array(
            'filter' => array('ID' => $id),
            'order' => array('ID' => 'ASC')
-        ));
+        ))[0];
     }
 
     public static function update($id, $arFields)
@@ -145,8 +142,12 @@ class Table
 
         $connection = DB::getInstance();
         $sdh = $connection->prepare($query);
-        $sdh->execute();
-        return true;
+
+        if ($sdh->execute()) {
+            return self::getById($id);
+        };
+
+        return false;
     }
 
     public static function delete($id)
@@ -156,17 +157,22 @@ class Table
             return false;
         }
 
-        $query = 'DELETE FROM ' . self::getTableName() . ' WHERE id = \'' . $id . '\'';
+        $query = 'DELETE FROM ' . self::getTableName() . ' WHERE id = ' . $id . ';';
+
+        $connection = DB::getInstance();
+        $sdh = $connection->prepare($query);
+        $sdh->execute();
+        return $sdh->execute();
     }
 
     protected static function getTableName()
     {
-        return 'institute';
+        return '';
     }
 
     protected static function getTableMap()
     {
-        return array('ID', 'VALUE');
+        return array();
     }
 }
 
