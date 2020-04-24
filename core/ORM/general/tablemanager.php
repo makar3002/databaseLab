@@ -1,12 +1,17 @@
 <?php
 namespace php\ORM;
-require_once ($_SERVER['DOCUMENT_ROOT'].'/php/general/database_connection.php');
+use DB;
+use http\Exception\InvalidArgumentException;
+use ORMFieldAttribute;
+use PDO;
 
+require_once ($_SERVER['DOCUMENT_ROOT'].'/php/general/database_connection.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/php/ORM/fieldattribute/ormfieldattribute.php');
 class TableManager
 {
     public static function add($arFields)
     {
-        $query = 'INSERT INTO ' . self::getTableName() . ' ';
+        $query = 'INSERT INTO ' . static::getTableName() . ' ';
 
         $arKeys = array();
         $arValues = array();
@@ -15,10 +20,10 @@ class TableManager
             if ($key == 'ID') {
                 unset($arFields[$key]);
                 continue;
-            } else if(!in_array($key, self::getTableMap()) || is_array($value)) {
+            } else if(!in_array($key, static::getTableMap()) || is_array($value)) {
                 return false;
             } else {
-                $arKeys[] = strtolower($key);
+                $arKeys[] = $key;
                 $arValues[] = $value;
             }
         }
@@ -37,12 +42,11 @@ class TableManager
     public static function getList($arFields)
     {
         $query = 'SELECT ';
+        $tableMap = static::getTableMap();
         if (isset($arFields['select']) && !empty($arFields['select'])) {
             foreach ($arFields['select'] as $key => $columnId) {
-                if (!in_array($columnId, self::getTableMap())) {
-                    unset($arFields['select'][$key]);
-                } else {
-                    $arFields['select'][$key] = strtolower($arFields['select'][$key]);
+                if (!array_key_exists($columnId, $tableMap) || !ORMFieldAttribute::canSelectField($tableMap[$columnId])) {
+                    continue;
                 }
             }
 
@@ -51,20 +55,34 @@ class TableManager
             $query .= '* ';
         }
 
-        $query .= 'FROM `' . self::getTableName() . '` ';
+        $query .= 'FROM `' . static::getTableName() . '` ';
+
+        $joinQuery = static::getJoinQuery();
+        if (!empty($joinQuery)) {
+            $query .= $joinQuery . ' ';
+        }
 
         if (isset($arFields['filter']) && !empty($arFields['filter'])) {
             $arFilter = array();
 
             foreach ($arFields['filter'] as $key => $value) {
-                if (!in_array($key, self::getTableMap()) && !in_array(substr($key, 1), self::getTableMap())) {
+                $fieldName = '';
+                if (array_key_exists($key, $tableMap)) {
+                    $fieldName = $key;
+                } else if (!array_key_exists(substr($key, 1), $tableMap)) {
+                    $fieldName = substr($key, 1);
+                } else {
                     continue;
                 }
 
+                if (!ORMFieldAttribute::canFilterField($tableMap[$fieldName])) {
+                    throw new \RuntimeException('Таблицу ' . static::getTableName() . ' нельзя фильтровать по полю ' . $fieldName . '.');
+                }
+
                 if ($key[0] == '@' && is_array($value)) {
-                    $arFilter[] = strtolower(substr($key, 1)) . ' IN (\'' . implode('\', \'', $value) . '\')';
+                    $arFilter[] = substr($key, 1) . ' IN (\'' . implode('\', \'', $value) . '\')';
                 } else {
-                    $arFilter[] = strtolower(substr($key, $key[0] == '=' ? 1 : 0)) . ' = \'' . $value . '\'';
+                    $arFilter[] = substr($key, $key[0] == '=' ? 1 : 0) . ' = \'' . $value . '\'';
                 }
             }
 
@@ -77,11 +95,11 @@ class TableManager
             $arOrder = array();
 
             foreach ($arFields['order'] as $key => $value) {
-                if (!in_array($key, self::getTableMap()) && !in_array($value, array('ASC', 'DESC'))) {
+                if (!in_array($key, $tableMap) && !in_array($value, array('ASC', 'DESC'))) {
                     continue;
                 }
 
-                $arOrder[] = strtolower($key) . ' ' . $value;
+                $arOrder[] = $key . ' ' . $value;
             }
 
             if (!empty($arOrder)) {
@@ -105,7 +123,7 @@ class TableManager
 
     public static function getById($id)
     {
-        return self::getList(array(
+        return static::getList(array(
            'filter' => array('ID' => $id),
            'order' => array('ID' => 'ASC')
         ))[0];
@@ -117,21 +135,26 @@ class TableManager
             return false;
         }
 
-        $element = self::getById($id);
+        $element = static::getById($id);
         if (empty($element)) {
             return false;
         }
 
-        $query = 'UPDATE ' . self::getTableName() . ' ';
+        $query = 'UPDATE ' . static::getTableName() . ' ';
 
         $arUpdate = array();
+        $tableMap = static::getTableMap();
 
         foreach ($arFields as $key => $value) {
-            if (!in_array($key, self::getTableMap())) {
+            if (!array_key_exists($key, $tableMap)) {
                 continue;
             }
 
-            $arUpdate[] = strtolower($key) . ' = \'' . $value . '\'';
+            if (!ORMFieldAttribute::canUpdateField($tableMap[$key])) {
+                throw new \RuntimeException('В таблице ' . static::getTableName() . ' нельзя обновлять поле ' . $key . '.');
+            }
+
+            $arUpdate[] = $key . ' = \'' . $value . '\'';
         }
 
         if (empty($arUpdate)) {
@@ -144,7 +167,7 @@ class TableManager
         $sdh = $connection->prepare($query);
 
         if ($sdh->execute()) {
-            return self::getById($id);
+            return static::getById($id);
         };
 
         return false;
@@ -152,12 +175,12 @@ class TableManager
 
     public static function delete($id)
     {
-        $element = self::getById($id);
+        $element = static::getById($id);
         if (empty($element)) {
             return false;
         }
 
-        $query = 'DELETE FROM ' . self::getTableName() . ' WHERE id = ' . $id . ';';
+        $query = 'DELETE FROM ' . static::getTableName() . ' WHERE id = ' . $id . ';';
 
         $connection = DB::getInstance();
         $sdh = $connection->prepare($query);
@@ -165,7 +188,12 @@ class TableManager
         return $sdh->execute();
     }
 
-    protected static function getTableName()
+    protected static function getJoinQuery()
+    {
+        return '';
+    }
+
+    public static function getTableName()
     {
         return '';
     }
