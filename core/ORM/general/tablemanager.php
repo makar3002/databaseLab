@@ -5,8 +5,8 @@ use http\Exception\InvalidArgumentException;
 use ORMFieldAttribute;
 use PDO;
 
-require_once ($_SERVER['DOCUMENT_ROOT'].'/php/general/database_connection.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/php/ORM/fieldattribute/ormfieldattribute.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/php/ORM/general/db.php');
+require_once ($_SERVER['DOCUMENT_ROOT'].'/php/ORM/general/ormfieldattribute.php');
 class TableManager
 {
     public static function add($arFields)
