@@ -1,8 +1,8 @@
 <?php
 
 namespace php\ORM;
-require_once($_SERVER['DOCUMENT_ROOT'] . '/php/ORM/general/tablemanager.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/php/ORM/subjecttoteachertable.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/core/ORM/general/tablemanager.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/core/ORM/subjecttoteachertable.php');
 
 
 class SubjectTable extends TableManager
