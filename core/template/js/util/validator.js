@@ -1,5 +1,15 @@
 class Validator {
-    signInDataValidating() {
+    static validateData(signType) {
+        if (signType === 'signIn') {
+            return this.signInDataValidating();
+        } else if (signType === 'signUp') {
+            return this.signUpDataValidating();
+        }
+
+        return true;
+    }
+
+    static signInDataValidating() {
         let authPassword = $('#auth-password');
         if (authPassword.val().length <= 5) {
             alert("Неправильный пароль - должно быть больше 5 символов!");
@@ -8,7 +18,7 @@ class Validator {
         return true;
     }
 
-    signUpDataValidating() {
+    static signUpDataValidating() {
         let regPassword = $('#reg-password');
         let anotherRegPassword = $('#another-reg-password');
         if (regPassword.val().length <= 5) {
@@ -23,7 +33,7 @@ class Validator {
         return true;
     }
 
-    checkFormat(data, type) {
+    static checkFormat(data, type) {
         switch (type) {
             case 'word':
                 for (let i = 0; i < data.length; i++) {

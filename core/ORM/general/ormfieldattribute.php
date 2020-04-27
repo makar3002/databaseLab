@@ -5,6 +5,7 @@ class ORMFieldAttribute
     const WHERE_ONLY = 'W_O';
     const SELECT_ONLY = 'S_O';
     const ARRAY_VALUE = 'A_V';
+    const SELECT_AND_WHERE_ONLY = 'S_W_O';
 
     public static function canSelectField ($arFieldAttributes)
     {
@@ -25,9 +26,10 @@ class ORMFieldAttribute
         }
         $isSelectOnly = array_search(self::SELECT_ONLY, $arFieldAttributes);
         $hasArrayValue = array_search(self::ARRAY_VALUE, $arFieldAttributes);
+        $isSelectAndUpdateOnly = array_search(self::SELECT_AND_WHERE_ONLY, $arFieldAttributes);
 
-        $canSelectField = !$isSelectOnly && !$hasArrayValue;
-        return $canSelectField;
+        $canFilterField = !$isSelectOnly && !$hasArrayValue && !$isSelectAndUpdateOnly;
+        return $canFilterField;
     }
 
     public static function canUpdateField ($arFieldAttributes)
@@ -37,9 +39,11 @@ class ORMFieldAttribute
         }
         $isReadOnly = array_search(self::READ_ONLY, $arFieldAttributes);
         $hasArrayValue = array_search(self::ARRAY_VALUE, $arFieldAttributes);
+        $isSelectOnly = array_search(self::SELECT_ONLY, $arFieldAttributes);
+        $isWhereOnly = array_search(self::WHERE_ONLY, $arFieldAttributes);
 
-        $canSelectField = !$isReadOnly && !$hasArrayValue;
-        return $canSelectField;
+        $canUpdateField = !$isReadOnly && !$hasArrayValue && !$isSelectOnly && !$isWhereOnly;
+        return $canUpdateField;
     }
 
     private static function checkFieldAttributes ($arFieldAttributes)

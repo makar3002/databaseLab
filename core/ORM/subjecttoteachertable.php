@@ -1,6 +1,6 @@
 <?php
 
-namespace php\ORM;
+namespace core\ORM;
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/ORM/general/tablemanager.php');
 
 class SubjectToTeacherTable extends TableManager

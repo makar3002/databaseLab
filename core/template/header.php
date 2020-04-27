@@ -10,6 +10,7 @@
     <script src="/core/template/js/bootstrap/bootstrap.min.js"></script>
     <script src="/core/template/js/util/validator.js"></script>
     <script src="/core/template/js/authorization/authorization.js"></script>
+    <script src="/core/template/js/util/ajax.js"></script>
 </head>
 <body>
 <div id="header">
@@ -60,7 +61,7 @@
                             </label>
                         </div>
 
-                        <button id="auth-btn" class="btn btn-lg btn-primary btn-block sign-in-btn" type="submit">Войти</button>
+                        <button id="sign-in" class="btn btn-lg btn-primary btn-block sign-in-btn" type="submit">Войти</button>
                     </form>
                 </div>
             </div>
@@ -98,7 +99,7 @@
                             <label for="inputPassword">Повторите пароль</label>
                         </div>
 
-                        <button id="reg-btn" class="btn btn-lg btn-primary btn-block sign-in-btn" type="submit">Регистрация</button>
+                        <button id="sign-up" class="btn btn-lg btn-primary btn-block sign-in-btn" type="submit">Регистрация</button>
                     </form>
                 </div>
             </div>

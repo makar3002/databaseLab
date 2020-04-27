@@ -1,6 +1,6 @@
 <?php
 
-namespace php\ORM;
+namespace core\ORM;
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/ORM/general/tablemanager.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/ORM/subjecttoteachertable.php');
 
@@ -12,6 +12,10 @@ class SubjectTable extends TableManager
     public static function getList($arFields)
     {
         $subjectList = parent::getList($arFields);
+        if (isset($arFields['select']) && !array_search('TEACHER_IDS', $arFields['select'])) {
+            return $subjectList;
+        }
+
         $subjectIdList = array_column($subjectList, 'ID');
         self::$subjectToTeacherList = SubjectToTeacherTable::getList(array(
             'select' => array('SUBJECT_ID', 'TEACHER_ID'),

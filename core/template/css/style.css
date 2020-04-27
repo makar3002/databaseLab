@@ -291,6 +291,11 @@ span img{
   border-color: #c7a500 !important;
 }
 
+.sign-in-btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 170, 0, 0.5) !important;
+  border-color: rgba(255, 196, 0, 0.75) !important;
+}
+
 .sign-in-btn:hover {
   color: #fff !important;
   background-color: #c7a500 !important;

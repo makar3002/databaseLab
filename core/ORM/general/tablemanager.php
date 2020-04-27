@@ -1,5 +1,5 @@
 <?php
-namespace php\ORM;
+namespace core\ORM;
 use DB;
 use http\Exception\InvalidArgumentException;
 use ORMFieldAttribute;
@@ -20,7 +20,7 @@ class TableManager
             if ($key == 'ID') {
                 unset($arFields[$key]);
                 continue;
-            } else if(!in_array($key, static::getTableMap()) || is_array($value)) {
+            } else if(!array_key_exists($key, static::getTableMap()) || is_array($value)) {
                 return false;
             } else {
                 $arKeys[] = $key;
@@ -28,7 +28,7 @@ class TableManager
             }
         }
 
-        $query .= '(' . implode('. ', $arKeys) . ') VALUES (\'' .
+        $query .= '(' . implode(', ', $arKeys) . ') VALUES (\'' .
             implode('\', \'', $arValues) . '\');';
 
         $connection = DB::getInstance();
@@ -69,7 +69,7 @@ class TableManager
                 $fieldName = '';
                 if (array_key_exists($key, $tableMap)) {
                     $fieldName = $key;
-                } else if (!array_key_exists(substr($key, 1), $tableMap)) {
+                } else if (array_key_exists(substr($key, 1), $tableMap)) {
                     $fieldName = substr($key, 1);
                 } else {
                     continue;

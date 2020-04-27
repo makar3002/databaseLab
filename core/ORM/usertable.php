@@ -2,11 +2,11 @@
 namespace core\ORM;
 require_once ($_SERVER['DOCUMENT_ROOT'].'/core/ORM/general/tablemanager.php');
 
-class GroupTable extends TableManager
+class UserTable extends TableManager
 {
     public static function getTableName()
     {
-        return 'direct_group';
+        return 'user';
     }
 
     protected static function getTableMap()
@@ -16,8 +16,12 @@ class GroupTable extends TableManager
                 \ORMFieldAttribute::READ_ONLY
             ),
             'NAME' => array(),
-            'COUNT' => array(),
-            'DIRECTION_ID' => array()
+            'LAST_NAME' => array(),
+            'SECOND_NAME' => array(),
+            'EMAIL' => array(),
+            'PASSWORD' => array(
+                \ORMFieldAttribute::SELECT_AND_WHERE_ONLY
+            )
         );
     }
 }

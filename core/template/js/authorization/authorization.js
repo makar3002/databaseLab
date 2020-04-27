@@ -1,21 +1,24 @@
 class Authorization {
-    signButtonsMap = {
-        'signOut': {
+    signButtonsMap = [
+        {
+            buttonName: 'signOut',
             buttonId: '#sign-out-btn',
             formId: null,
             closeFormButtonId: null
         },
-        'signIn': {
-            buttonId: '#sign-in-btn',
+        {
+            buttonName: 'signIn',
+            buttonId: '#sign-in',
             formId: '#authorizationForm',
             closeFormButtonId: '#closeAuthorizationModal'
         },
-        'signUp': {
-            buttonId: '#sign-up-btn',
+        {
+            buttonName: 'signUp',
+            buttonId: '#sign-up',
             formId: '#registrationForm',
             closeFormButtonId: '#closeRegistrationModal'
         }
-    }
+    ]
 
     signButtons = {};
 
@@ -32,9 +35,9 @@ class Authorization {
     setupSignInOutUpButtons() {
         let context = this;
 
-        this.signButtonsMap.forEach(function(buttonInfo, buttonName) {
-            context.signButtons[buttonName] = $(buttonInfo['buttonId']);
-            context.setupButton(buttonName, buttonInfo, context);
+        this.signButtonsMap.forEach(function(buttonInfo) {
+            context.signButtons[buttonInfo['buttonName']] = $(buttonInfo['buttonId']);
+            context.setupButton(buttonInfo, context);
         });
     }
 
@@ -43,10 +46,11 @@ class Authorization {
             $('#sign-inupout-buttons').html(response);
         }
 
-        return Ajax.post(null, this.getSignInUpOutButtonsActionName);
+        return Ajax.post(null, this.getSignInUpOutButtonsActionName).then(setupButtonsAfterGet);
     }
 
-    setupButton(buttonName, buttonInfo, context) {
+    setupButton(buttonInfo, context) {
+        let buttonName = buttonInfo['buttonName'];
         if (!context.signButtons[buttonName])
         {
             return;

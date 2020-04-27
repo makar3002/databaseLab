@@ -1,8 +1,9 @@
 class Ajax {
-    url = '/ajax/ajaxcontroller.php';
-    actionFieldName = 'action';
+    static url = '/core/ajax/ajaxcontroller.php';
+    static actionFieldName = 'action';
 
     static post(data, action, form = null) {
+        let self = this;
         return new Promise(function(resolve,reject)
         {
             let request = new XMLHttpRequest();
