@@ -6,6 +6,7 @@ class ORMFieldAttribute
     const SELECT_ONLY = 'S_O';
     const ARRAY_VALUE = 'A_V';
     const SELECT_AND_WHERE_ONLY = 'S_W_O';
+    const REQUIRED = 'R';
 
     public static function canSelectField ($arFieldAttributes)
     {
@@ -33,6 +34,20 @@ class ORMFieldAttribute
     }
 
     public static function canUpdateField ($arFieldAttributes)
+    {
+        if (!self::checkFieldAttributes($arFieldAttributes)) {
+            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
+        }
+        $isReadOnly = array_search(self::READ_ONLY, $arFieldAttributes);
+        $hasArrayValue = array_search(self::ARRAY_VALUE, $arFieldAttributes);
+        $isSelectOnly = array_search(self::SELECT_ONLY, $arFieldAttributes);
+        $isWhereOnly = array_search(self::WHERE_ONLY, $arFieldAttributes);
+
+        $canUpdateField = !$isReadOnly && !$hasArrayValue && !$isSelectOnly && !$isWhereOnly;
+        return $canUpdateField;
+    }
+
+    public static function canAddField ($arFieldAttributes)
     {
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');

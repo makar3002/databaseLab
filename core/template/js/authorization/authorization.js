@@ -25,19 +25,13 @@ class Authorization {
     getSignInUpOutButtonsActionName = 'getSignInUpOutButtons';
 
     constructor() {
-        this.getSignInUpOutButtons();
+
     }
 
     initialize() {
-        this.setupSignInOutUpButtons();
-    }
-
-    setupSignInOutUpButtons() {
         let context = this;
-
-        this.signButtonsMap.forEach(function(buttonInfo) {
-            context.signButtons[buttonInfo['buttonName']] = $(buttonInfo['buttonId']);
-            context.setupButton(buttonInfo, context);
+        this.getSignInUpOutButtons().then(function () {
+            context.setupSignInOutUpButtons()
         });
     }
 
@@ -47,6 +41,15 @@ class Authorization {
         }
 
         return Ajax.post(null, this.getSignInUpOutButtonsActionName).then(setupButtonsAfterGet);
+    }
+
+    setupSignInOutUpButtons() {
+        let context = this;
+
+        this.signButtonsMap.forEach(function(buttonInfo) {
+            context.signButtons[buttonInfo['buttonName']] = $(buttonInfo['buttonId']);
+            context.setupButton(buttonInfo, context);
+        });
     }
 
     setupButton(buttonInfo, context) {
@@ -65,15 +68,24 @@ class Authorization {
         context.signButtons[buttonName].click(function (event) {
             event.preventDefault();
 
+            if (!Validator.validateData(buttonName)) {
+                return;
+            }
+
             Ajax.post(null, buttonName, form)
-                .then(function() {
+                .then(function(response) {
+                    if (response) {
+                        alert(response);
+                        return;
+                    }
+
+                    context.getSignInUpOutButtons().then(function () {
+                        context.setupSignInOutUpButtons()
+                    });
+
                     if (buttonInfo['closeFormButtonId']) {
                         $(buttonInfo['closeFormButtonId']).click();
                     }
-
-                    context.getSignInUpOutButtons().then(
-                        context.setupSignInOutUpButtons()
-                    );
                 });
         });
     }

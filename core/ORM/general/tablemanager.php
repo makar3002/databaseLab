@@ -16,11 +16,13 @@ class TableManager
         $arKeys = array();
         $arValues = array();
 
+        $tableMap = static::getTableMap();
+
         foreach ($arFields as $key => $value) {
             if ($key == 'ID') {
                 unset($arFields[$key]);
                 continue;
-            } else if(!array_key_exists($key, static::getTableMap()) || is_array($value)) {
+            } else if(!array_key_exists($key, $tableMap) || is_array($value)) {
                 return false;
             } else {
                 $arKeys[] = $key;
