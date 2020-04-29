@@ -1,8 +1,9 @@
 class Ajax {
     static url = '/core/ajax/ajaxcontroller.php';
     static actionFieldName = 'action';
+    static componentClassFieldName = 'componentClass';
 
-    static post(data, action, form = null) {
+    static post(data, action, componentClass, form = null) {
         let self = this;
         return new Promise(function(resolve,reject)
         {
@@ -16,6 +17,7 @@ class Ajax {
             }
 
             formData.append(self.actionFieldName, action)
+            formData.append(self.componentClassFieldName, componentClass)
             request.open('POST', self.url, true);
 
             request.onreadystatechange = function () {

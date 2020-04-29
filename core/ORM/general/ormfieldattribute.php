@@ -47,6 +47,16 @@ class ORMFieldAttribute
         return $canUpdateField;
     }
 
+    public static function isRequiredField ($arFieldAttributes)
+    {
+        if (!self::checkFieldAttributes($arFieldAttributes)) {
+            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
+        }
+        $isRequired = array_search(self::REQUIRED, $arFieldAttributes);
+
+        return $isRequired;
+    }
+
     public static function canAddField ($arFieldAttributes)
     {
         if (!self::checkFieldAttributes($arFieldAttributes)) {
@@ -54,11 +64,9 @@ class ORMFieldAttribute
         }
         $isReadOnly = array_search(self::READ_ONLY, $arFieldAttributes);
         $hasArrayValue = array_search(self::ARRAY_VALUE, $arFieldAttributes);
-        $isSelectOnly = array_search(self::SELECT_ONLY, $arFieldAttributes);
-        $isWhereOnly = array_search(self::WHERE_ONLY, $arFieldAttributes);
 
-        $canUpdateField = !$isReadOnly && !$hasArrayValue && !$isSelectOnly && !$isWhereOnly;
-        return $canUpdateField;
+        $canAddField = !$isReadOnly && !$hasArrayValue;
+        return $canAddField;
     }
 
     private static function checkFieldAttributes ($arFieldAttributes)

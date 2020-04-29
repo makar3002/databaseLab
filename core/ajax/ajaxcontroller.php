@@ -9,6 +9,15 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     $result = ob_get_clean();
     echo json_encode($result);
 }
+if (!isset($_POST['action']) || !isset($_POST['componentClass'])) {
+    echo 'Не указано действие.';
+    $result = ob_get_clean();
+    echo json_encode($result);
+}
+
+$action = $_POST['action'] . 'Action';
+$componentClass = $_POST['componentClass'];
+$componentObject = new $componentClass($_POST);
 
 if ($_POST['action'] == 'getSignInUpOutButtons') {
     $component = new AuthorizationComponent($_POST);
@@ -17,12 +26,12 @@ if ($_POST['action'] == 'getSignInUpOutButtons') {
 
 if ($_POST['action'] == 'signIn') {
     $component = new AuthorizationComponent($_POST);
-    $component->authorizeUserByData();
+    $component->$action();
 }
 
 if ($_POST['action'] == 'signUp') {
     $component = new AuthorizationComponent($_POST);
-    $component->registerUserByData();
+    $component->registerUser();
 }
 
 if ($_POST['action'] == 'signOut') {

@@ -18,16 +18,21 @@ class TableManager
 
         $tableMap = static::getTableMap();
 
-        foreach ($arFields as $key => $value) {
-            if ($key == 'ID') {
-                unset($arFields[$key]);
-                continue;
-            } else if(!array_key_exists($key, $tableMap) || is_array($value)) {
-                return false;
-            } else {
-                $arKeys[] = $key;
-                $arValues[] = $value;
+        foreach ($tableMap as $key => $value) {
+            if (!isset($arFields[$key])) {
+                if(ORMFieldAttribute::isRequiredField($value)) {
+                    throw new \RuntimeException('Поле ' . $key . ' является обязательным в таблице ' . static::getTableName() . '.');
+                } else {
+                    continue;
+                }
             }
+
+            if (!ORMFieldAttribute::canAddField($value)) {
+                throw new \RuntimeException('Поле ' . $key . ' в таблице ' . static::getTableName() . ' нельзя добавлять.');
+            }
+
+            $arKeys[] = $key;
+            $arValues[] = $arFields[$key];
         }
 
         $query .= '(' . implode(', ', $arKeys) . ') VALUES (\'' .

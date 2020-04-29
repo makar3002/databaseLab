@@ -1,4 +1,5 @@
 class Authorization {
+    componentClass = null;
     signButtonsMap = [
         {
             buttonName: 'signOut',
@@ -18,14 +19,13 @@ class Authorization {
             formId: '#registrationForm',
             closeFormButtonId: '#closeRegistrationModal'
         }
-    ]
-
+    ];
     signButtons = {};
 
     getSignInUpOutButtonsActionName = 'getSignInUpOutButtons';
 
-    constructor() {
-
+    constructor(componentClass) {
+        this.componentClass = componentClass;
     }
 
     initialize() {

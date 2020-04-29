@@ -1,6 +1,7 @@
 <?php
 namespace Core\Component\Authorization;
 use core\ORM\UserTable;
+use mysql_xdevapi\Exception;
 use Validator;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/validator.php');
@@ -11,52 +12,24 @@ class AuthorizationComponent extends \BaseComponent
 {
     public function processComponent()
     {
-        $this->arResult['IS_USER_AUTHORIZED'] = $this->isUserAuthorized();
+        $this->arResult['IS_USER_AUTHORIZED'] = \User::isUserAuthorized();
         $this->renderComponent();
     }
 
-    private function isUserAuthorized()
+    public function signInAction()
     {
-        session_start();
-        return isset($_SESSION['USER_ID']);
-    }
+        if (!isset($this->arParams['email']) || !isset($this->arParams['password'])) {
+            echo 'Не заполнены обязательные поля';
+        }
 
-    public function authorizeUserByData()
-    {
-
-        $userData = array();
         try {
-            $userData = $this->checkAndGetUserData();
-        } catch (\Exception $exception) {
+            \User::authorizeUserByData($this->arParams['email'], $this->arParams['password']);
+        } catch (Exception $exception) {
             echo $exception->getMessage();
-            return;
         }
-
-        $userList = UserTable::getList(array(
-            'filter' => array('=EMAIL' => $userData['email'])
-        ));
-
-        $userCount = count($userList);
-        if ($userCount == 0) {
-            echo "Ошибка, неверный email или пароль";
-            return;
-        } else if ($userCount > 1) {
-            echo "Ошибка, что-то пошло не так, повторите попытку позже";
-            return;
-        }
-
-        $user = $userList[0];
-        if (password_verify($userData['password'], $user['PASSWORD']))
-        {
-            session_start();
-            $_SESSION['USER_ID'] = $user['ID'];
-        } else {
-            echo "Ошибка, неверный email или пароль";
-        }
-        return;
     }
 
-    public function registerUserByData()
+    public function signUpAction()
     {
         $userData = array();
         try {
@@ -78,10 +51,9 @@ class AuthorizationComponent extends \BaseComponent
         UserTable::add(array('EMAIL' => $userData['email'], 'PASSWORD' => $password));
     }
 
-    public function logoutUser()
+    public function signOutAction()
     {
-        session_start();
-        session_destroy();
+        \User::logoutUser();
     }
 
     private function checkAndGetUserData()
