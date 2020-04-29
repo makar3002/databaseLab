@@ -1,5 +1,5 @@
 <?php
-
+namespace core\util;
 class Validator {
     static public function checkEmailFormat($data)
     {

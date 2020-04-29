@@ -11,14 +11,12 @@ abstract class BaseComponent
         $this->templatePath = $this->getTemplatePath();
     }
 
-    public function renderComponent()
+    protected function renderComponent()
     {
         $arParams = $this->arParams;
         $arResult = $this->arResult;
 
-        ob_start();
         require_once($this->templatePath);
-        echo ob_get_clean();
     }
 
     protected function getTemplatePath()
@@ -27,5 +25,10 @@ abstract class BaseComponent
         return dirname($cl->getFileName()) . '/template.php';
     }
 
-    abstract function processComponent();
+    public function processComponent()
+    {
+        ob_start();
+        $this->renderComponent();
+        return ob_get_clean();
+    }
 }

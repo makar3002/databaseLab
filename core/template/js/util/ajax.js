@@ -1,6 +1,7 @@
 class Ajax {
     static url = '/core/ajax/ajaxcontroller.php';
     static actionFieldName = 'action';
+    static ajaxRequestFieldName = 'AJAX_REQUEST';
     static componentClassFieldName = 'componentClass';
 
     static post(data, action, componentClass, form = null) {
@@ -16,8 +17,9 @@ class Ajax {
                 formData = new FormData();
             }
 
-            formData.append(self.actionFieldName, action)
-            formData.append(self.componentClassFieldName, componentClass)
+            formData.append(self.actionFieldName, action);
+            formData.append(self.ajaxRequestFieldName, true);
+            formData.append(self.componentClassFieldName, componentClass);
             request.open('POST', self.url, true);
 
             request.onreadystatechange = function () {

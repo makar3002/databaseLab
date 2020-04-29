@@ -1,8 +1,10 @@
 <?php
 
-namespace core\ORM;
-require_once($_SERVER['DOCUMENT_ROOT'] . '/core/ORM/general/tablemanager.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/core/ORM/subjecttoteachertable.php');
+namespace core\orm;
+use core\orm\general\FieldAttributeType;
+use core\orm\general\TableManager;
+require_once($_SERVER['DOCUMENT_ROOT'] . '/core/orm/general/tablemanager.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/core/orm/subjecttoteachertable.php');
 
 
 class SubjectTable extends TableManager
@@ -56,12 +58,12 @@ class SubjectTable extends TableManager
     {
         return array(
             'ID' => array(
-                \ORMFieldAttribute::READ_ONLY
+                FieldAttributeType::READ_ONLY
             ),
             'NAME' => array(),
             'TEACHER_IDS' => array(
-                \ORMFieldAttribute::SELECT_ONLY,
-                \ORMFieldAttribute::ARRAY_VALUE
+                FieldAttributeType::SELECT_ONLY,
+                FieldAttributeType::ARRAY_VALUE
             )
         );
     }

@@ -1,5 +1,6 @@
 <?php
-class ORMFieldAttribute
+namespace core\orm\general;
+class FieldAttributeType
 {
     const READ_ONLY = 'R_O';
     const WHERE_ONLY = 'W_O';

@@ -1,6 +1,6 @@
 <?php
-
-use core\ORM\UserTable;
+namespace core\util;
+use core\orm\UserTable;
 
 class User {
     public static function validateUserFields($arFields)

@@ -40,7 +40,7 @@ class Authorization {
             $('#sign-inupout-buttons').html(response);
         }
 
-        return Ajax.post(null, this.getSignInUpOutButtonsActionName).then(setupButtonsAfterGet);
+        return Ajax.post(null, this.getSignInUpOutButtonsActionName, this.componentClass).then(setupButtonsAfterGet);
     }
 
     setupSignInOutUpButtons() {
@@ -72,77 +72,20 @@ class Authorization {
                 return;
             }
 
-            Ajax.post(null, buttonName, form)
+            Ajax.post(null, buttonName, context.componentClass, form)
                 .then(function(response) {
                     if (response) {
                         alert(response);
                         return;
                     }
-
-                    context.getSignInUpOutButtons().then(function () {
-                        context.setupSignInOutUpButtons()
-                    });
-
                     if (buttonInfo['closeFormButtonId']) {
                         $(buttonInfo['closeFormButtonId']).click();
                     }
-                });
+
+                    setTimeout(function () {
+                        context.initialize();
+                    }, buttonName === 'signOut' ? 0 : 150);
+                }) ;
         });
     }
 }
-
-$(document).ready(function () {
-    let authorization = new Authorization();
-    authorization.initialize();
-    // $('#auth-btn').click(function (event)
-    // {
-    //     event.preventDefault();
-    //
-    //     let formElement = $('#authorizationForm')[0];
-    //     formData.append('action', 'sign_in');
-    //
-    //     if (signInDataValidating())
-    //     {
-    //         $.ajax({
-    //             data: formData,
-    //             processData: false,
-    //             contentType: false,
-    //             url: 'php/auth/authorization.php',
-    //             type: 'POST',
-    //             success: function () {
-    //                 $('#closeAuthorizationModal').click();
-    //                 setupSignInUpOutButtons();
-    //             }
-    //         });
-    //     }
-    // });
-    // $('#reg-btn').click(function (event)
-    // {
-    //     event.preventDefault();
-    //
-    //     var formData = new FormData($('#registrationForm')[0]);
-    //     formData.append('action', 'sign_up');
-    //
-    //     if (signUpDataValidating())
-    //     {
-    //         $.ajax({
-    //             data: formData,
-    //             processData: false,
-    //             contentType: false,
-    //             url: 'php/auth/authorization.php',
-    //             type: 'POST',
-    //             success: function (response)
-    //             {
-    //                 if (response !== ''){
-    //                     alert(response);
-    //                 }
-    //                 else
-    //                 {
-    //                     $('#closeRegistrationModal').click();
-    //                     setupSignInUpOutButtons();
-    //                 }
-    //             }
-    //         });
-    //     }
-    // });
-});

@@ -1,3 +1,7 @@
+<?php
+use Core\Component\Authorization\AuthorizationComponent;
+require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -23,87 +27,11 @@
             <a class="p-2 text-light" href="journal.php">Журнал</a>
         </nav>
         <div class="my-md-0 ml-md-auto d-flex align-items-center">
-            <div id="sign-inupout-buttons">
-
-            </div>
+            <?
+            $component = new AuthorizationComponent(array());
+            echo $component->processComponent();
+            ?>
         </div>
     </header>
-
-    <!-- Authorization Modal -->
-    <div class="modal fade" id="modalAuthorization" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title p-0" id="modalLongTitle">Авторизация</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeAuthorizationModal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="form-signin" method="post" id="authorizationForm">
-                        <div class="text-center mb-4">
-                            <p>Авторизуйтесь на сайте, чтобы пользоваться всеми преимуществами сервиса</p>
-                        </div>
-
-                        <div class="form-label-group">
-                            <input type="email" name="email" id="auth-email" class="form-control sign-in-form-control" placeholder="email" required autofocus>
-                            <label for="inputEmail">Почта</label>
-                        </div>
-
-                        <div class="form-label-group">
-                            <input type="password" name="password" id="auth-password" class="form-control sign-in-form-control " placeholder="password" required>
-                            <label for="inputPassword">Пароль</label>
-                        </div>
-
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" value="remember-me"> Запомнить меня
-                            </label>
-                        </div>
-
-                        <button id="sign-in" class="btn btn-lg btn-primary btn-block sign-in-btn" type="submit">Войти</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Registration Modal -->
-    <div class="modal fade" id="modalRegistration" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title p-0" id="modalLongTitle">Регистрация</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeRegistrationModal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="form-signin" method="post" id="registrationForm">
-                        <div class="text-center mb-4">
-                            <p>Зарегистрируйтесь на сайте, чтобы пользоваться всеми преимуществами сервиса</p>
-                        </div>
-
-                        <div class="form-label-group">
-                            <input type="email" name="email" id="reg-email" class="form-control sign-in-form-control" placeholder="email" required autofocus>
-                            <label for="inputEmail">Почта</label>
-                        </div>
-
-                        <div class="form-label-group">
-                            <input type="password" name="password" id="reg-password" class="form-control sign-in-form-control" placeholder="password" required>
-                            <label for="inputPassword">Пароль</label>
-                        </div>
-
-                        <div class="form-label-group">
-                            <input type="password" name="anotherPassword" id="another-reg-password" class="form-control sign-in-form-control" placeholder="password" required>
-                            <label for="inputPassword">Повторите пароль</label>
-                        </div>
-
-                        <button id="sign-up" class="btn btn-lg btn-primary btn-block sign-in-btn" type="submit">Регистрация</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <main class="pt-5">

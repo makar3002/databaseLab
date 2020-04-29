@@ -1,12 +1,8 @@
 <?php
-namespace core\ORM;
-use DB;
-use http\Exception\InvalidArgumentException;
-use ORMFieldAttribute;
+namespace core\orm\general;
+
 use PDO;
 
-require_once ($_SERVER['DOCUMENT_ROOT'].'/core/ORM/general/db.php');
-require_once ($_SERVER['DOCUMENT_ROOT'].'/core/ORM/general/ormfieldattribute.php');
 class TableManager
 {
     public static function add($arFields)
@@ -20,14 +16,14 @@ class TableManager
 
         foreach ($tableMap as $key => $value) {
             if (!isset($arFields[$key])) {
-                if(ORMFieldAttribute::isRequiredField($value)) {
+                if(FieldAttributeType::isRequiredField($value)) {
                     throw new \RuntimeException('Поле ' . $key . ' является обязательным в таблице ' . static::getTableName() . '.');
                 } else {
                     continue;
                 }
             }
 
-            if (!ORMFieldAttribute::canAddField($value)) {
+            if (!FieldAttributeType::canAddField($value)) {
                 throw new \RuntimeException('Поле ' . $key . ' в таблице ' . static::getTableName() . ' нельзя добавлять.');
             }
 
@@ -52,7 +48,7 @@ class TableManager
         $tableMap = static::getTableMap();
         if (isset($arFields['select']) && !empty($arFields['select'])) {
             foreach ($arFields['select'] as $key => $columnId) {
-                if (!array_key_exists($columnId, $tableMap) || !ORMFieldAttribute::canSelectField($tableMap[$columnId])) {
+                if (!array_key_exists($columnId, $tableMap) || !FieldAttributeType::canSelectField($tableMap[$columnId])) {
                     continue;
                 }
             }
@@ -82,7 +78,7 @@ class TableManager
                     continue;
                 }
 
-                if (!ORMFieldAttribute::canFilterField($tableMap[$fieldName])) {
+                if (!FieldAttributeType::canFilterField($tableMap[$fieldName])) {
                     throw new \RuntimeException('Таблицу ' . static::getTableName() . ' нельзя фильтровать по полю ' . $fieldName . '.');
                 }
 
@@ -157,7 +153,7 @@ class TableManager
                 continue;
             }
 
-            if (!ORMFieldAttribute::canUpdateField($tableMap[$key])) {
+            if (!FieldAttributeType::canUpdateField($tableMap[$key])) {
                 throw new \RuntimeException('В таблице ' . static::getTableName() . ' нельзя обновлять поле ' . $key . '.');
             }
 

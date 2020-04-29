@@ -1,8 +1,9 @@
 <?php
 namespace Core\Component\Authorization;
 use core\orm\UserTable;
-use mysql_xdevapi\Exception;
-use Validator;
+use core\util\User;
+use core\util\Validator;
+use Exception;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/validator.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/core/component/general/basecomponent.php');
@@ -12,8 +13,7 @@ class AuthorizationComponent extends \BaseComponent
 {
     public function getSignInUpOutButtonsAction()
     {
-        $this->arResult['IS_USER_AUTHORIZED'] = \User::isUserAuthorized();
-        $this->processComponent();
+        echo $this->processComponent();
     }
 
     public function signInAction()
@@ -23,7 +23,7 @@ class AuthorizationComponent extends \BaseComponent
         }
 
         try {
-            \User::authorizeUserByData($this->arParams['email'], $this->arParams['password']);
+            User::authorizeUserByData($this->arParams['email'], $this->arParams['password']);
         } catch (Exception $exception) {
             echo $exception->getMessage();
         }
@@ -34,7 +34,7 @@ class AuthorizationComponent extends \BaseComponent
         $userData = array();
         try {
             $userData = $this->checkAndGetUserData();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             echo $exception->getMessage();
         }
 
@@ -53,7 +53,7 @@ class AuthorizationComponent extends \BaseComponent
 
     public function signOutAction()
     {
-        \User::logoutUser();
+        User::logoutUser();
     }
 
     private function checkAndGetUserData()
@@ -72,5 +72,11 @@ class AuthorizationComponent extends \BaseComponent
             'email' => $email,
             'password' => $password
         );
+    }
+
+    public function processComponent()
+    {
+        $this->arResult['IS_USER_AUTHORIZED'] = User::isUserAuthorized();
+        return parent::processComponent();
     }
 }

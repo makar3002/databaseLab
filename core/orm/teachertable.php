@@ -1,6 +1,8 @@
 <?php
-namespace core\ORM;
-require_once ($_SERVER['DOCUMENT_ROOT'].'/core/ORM/general/tablemanager.php');
+namespace core\orm;
+use core\orm\general\FieldAttributeType;
+use core\orm\general\TableManager;
+require_once($_SERVER['DOCUMENT_ROOT'] . '/core/orm/general/tablemanager.php');
 
 class TeacherTable extends TableManager
 {
@@ -13,7 +15,7 @@ class TeacherTable extends TableManager
     {
         return array(
             'ID' => array(
-                \ORMFieldAttribute::READ_ONLY
+                FieldAttributeType::READ_ONLY
             ),
             'NAME' => array(),
             'INSTITUTE_ID' => array()

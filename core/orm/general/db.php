@@ -1,4 +1,8 @@
 <?php
+namespace core\orm\general;
+use PDO;
+use PDOException;
+
 class DB {
     protected static $instance;
     

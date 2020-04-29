@@ -42,7 +42,6 @@ header a:link {
 /* Header */
 header.page-header {
   position: relative;
-  z-index: 5;
   min-height: 20px;
   padding: 20px;
   background-color: #2c3e50;
