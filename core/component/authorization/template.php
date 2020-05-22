@@ -1,8 +1,12 @@
-<? use Core\Component\Authorization\AuthorizationComponent;
-use core\util\Request;?>
+<?
+use Core\Component\Authorization\AuthorizationComponent;
+?>
 
-<?if (Request::isAjaxRequest()) :?>
+<?if ($arResult['IS_AJAX_REQUEST']) :?>
     <?if ($arResult['IS_USER_AUTHORIZED']) :?>
+        <a href="/profile" class="btn btn-sm btn-outline-secondary">
+            Профиль
+        </a>
         <button id="sign-out-btn" class="btn btn-sm btn-outline-secondary" type="button">
             Выйти
         </button>

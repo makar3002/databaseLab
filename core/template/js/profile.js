@@ -1,28 +1,16 @@
-class Authorization {
+class Profile {
     componentClass = null;
     signButtonsMap = [
         {
-            buttonName: 'signOut',
-            buttonId: '#sign-out-btn',
-            formId: null,
+            buttonName: 'saveProfile',
+            buttonId: '#profile-save-btn',
+            formId: '#profileForm',
             closeFormButtonId: null
         },
-        {
-            buttonName: 'signIn',
-            buttonId: '#sign-in',
-            formId: '#authorizationForm',
-            closeFormButtonId: '#closeAuthorizationModal'
-        },
-        {
-            buttonName: 'signUp',
-            buttonId: '#sign-up',
-            formId: '#registrationForm',
-            closeFormButtonId: '#closeRegistrationModal'
-        }
     ];
-    signButtons = {};
+    buttons = {};
 
-    getSignInUpOutButtonsActionName = 'getSignInUpOutButtons';
+    getProfileFormActionName = 'getProfileForm';
 
     constructor(componentClass) {
         this.componentClass = componentClass;
@@ -30,31 +18,35 @@ class Authorization {
 
     initialize() {
         let context = this;
-        this.getSignInUpOutButtons().then(function () {
-            context.setupSignInOutUpButtons()
+        this.getProfileForm().then(function () {
+            context.setupProfileButtons()
+        });
+
+        document.addEventListener('Authorization::Success', function () {
+            context.initialize();
         });
     }
 
-    getSignInUpOutButtons() {
-        let setupButtonsAfterGet = function(response) {
-            $('#sign-inupout-buttons').html(response);
+    getProfileForm() {
+        let setupFormAfterGet = function(response) {
+            $('#main').html(response);
         }
 
-        return Ajax.post(null, this.getSignInUpOutButtonsActionName, this.componentClass).then(setupButtonsAfterGet);
+        return Ajax.post(null, this.getProfileFormActionName, this.componentClass).then(setupFormAfterGet);
     }
 
-    setupSignInOutUpButtons() {
+    setupProfileButtons() {
         let context = this;
 
         this.signButtonsMap.forEach(function(buttonInfo) {
-            context.signButtons[buttonInfo['buttonName']] = $(buttonInfo['buttonId']);
+            context.buttons[buttonInfo['buttonName']] = $(buttonInfo['buttonId']);
             context.setupButton(buttonInfo, context);
         });
     }
 
     setupButton(buttonInfo, context) {
         let buttonName = buttonInfo['buttonName'];
-        if (!context.signButtons[buttonName])
+        if (!context.buttons[buttonName])
         {
             return;
         }
@@ -65,9 +57,8 @@ class Authorization {
             form = $(buttonInfo['formId'])[0];
         }
 
-        context.signButtons[buttonName].click(function (event) {
+        context.buttons[buttonName].click(function (event) {
             event.preventDefault();
-            let elem = event.elem;
 
             if (!Validator.validateFormData(form)) {
                 return;
@@ -82,9 +73,6 @@ class Authorization {
                     if (buttonInfo['closeFormButtonId']) {
                         $(buttonInfo['closeFormButtonId']).click();
                     }
-
-                    let event = new CustomEvent('Authorization::Success');
-                    document.dispatchEvent(event);
 
                     setTimeout(function () {
                         context.initialize();

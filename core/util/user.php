@@ -3,20 +3,24 @@ namespace core\util;
 use core\orm\UserTable;
 
 class User {
-    public static function validateUserFields($arFields)
+    private $session;
+    private static $instance;
+    private function __construct()
     {
-        if (!isset($arFields['email']) || !isset($arFields['password'])) {
-            throw new \RuntimeException('Не заполнены обязательные поля');
-        }
-
-        $email = $arFields['email'];
-        $password = $arFields['password'];
-        if (!Validator::checkEmailFormat($email) || !Validator::checkPasswordFormat($password)) {
-            throw new \RuntimeException('Не верный формат данных.');
-        }
+        session_start();
+        $this->session = &$_SESSION;
     }
 
-    public static function authorizeUserByData($email, $password)
+    public static function getInstance()
+    {
+        if(!isset(self::$instance)) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    public function authorizeUserByData($email, $password)
     {
         $userList = UserTable::getList(array(
             'filter' => array('=EMAIL' => $email)
@@ -24,54 +28,71 @@ class User {
 
         $userCount = count($userList);
         if ($userCount == 0) {
-            throw new RuntimeException('Ошибка, неверный email или пароль');
+            throw new \RuntimeException('Ошибка, неверный email или пароль');
         } else if ($userCount > 1) {
-            throw new RuntimeException('Ошибка, что-то пошло не так, повторите попытку позже');
+            throw new \RuntimeException('Ошибка, что-то пошло не так, повторите попытку позже');
         }
 
         $user = $userList[0];
         if (password_verify($password, $user['PASSWORD']))
         {
-            self::setupSessionWithUserId($user['ID']);
+            $this->setupSessionWithUserId($user['ID']);
         } else {
-            throw new RuntimeException('Ошибка, неверный email или пароль');
+            throw new \RuntimeException('Ошибка, неверный email или пароль');
         }
     }
 
-    public static function authorizeUserById($userId)
+    public function authorizeUserById($userId)
     {
         $userList = UserTable::getById($userId);
         $userCount = count($userList);
         if ($userCount == 0) {
-            throw new RuntimeException('Пользователя с таким id не существует.');
+            throw new \RuntimeException('Пользователя с таким id не существует.');
         }
-
-        self::setupSessionWithUserId($userId);
+        $this->setupSessionWithUserId($userId);
     }
 
-    public static function logoutUser()
+    public function logoutUser()
     {
-        self::destroySession();
+        $this->destroySession();
     }
 
-    public static function isUserAuthorized()
+    public function isUserAuthorized()
     {
-        session_start();
-        if (!isset($_SESSION['USER_ID'])) {
+        $this->getSessionIfNeeded();
+        if (!isset($this->session['USER_ID'])) {
             return false;
         }
 
-        $userCount = count(UserTable::getById($_SESSION['USER_ID']));
+        $userCount = count(UserTable::getById($this->session['USER_ID']));
         return boolval($userCount);
     }
 
-    private static function setupSessionWithUserId($id) {
-        session_start();
-        $_SESSION['USER_ID'] = $id;
+    public function getId()
+    {
+        $this->getSessionIfNeeded();
+        if (!isset($this->session['USER_ID'])) {
+            return 0;
+        }
+
+        return $this->session['USER_ID'];
     }
 
-    private static function destroySession() {
-        session_start();
+    private function setupSessionWithUserId($id) {
+        $this->getSessionIfNeeded();
+        $this->session['USER_ID'] = $id;
+    }
+
+    private function destroySession() {
+        $this->getSessionIfNeeded();
         session_destroy();
+        unset($this->session);
+    }
+
+    private function getSessionIfNeeded()
+    {
+        if (!isset($this->session)) {
+            $this->session = session_start();
+        }
     }
 }

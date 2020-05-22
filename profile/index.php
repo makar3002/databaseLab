@@ -1,9 +1,9 @@
-<?
-use Core\Component\InstituteList\InstituteListComponent;
+<? use core\component\profile\ProfileComponent;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/template/header.php');?>
+    <!--Content here-->
 <?
-$component = new InstituteListComponent(array());
+$component = new ProfileComponent(array());
 $component->processComponent();
 ?>
 <?require_once($_SERVER['DOCUMENT_ROOT'] . '/core/template/footer.php');?>

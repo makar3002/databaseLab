@@ -15,9 +15,10 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
     <script src="/core/template/js/util/validator.js"></script>
     <script src="/core/template/js/authorization/authorization.js"></script>
     <script src="/core/template/js/util/ajax.js"></script>
+    <script src="/core/template/js/profile.js"></script>
 </head>
 <body>
-<div id="header">
+<!--<div id="header">-->
     <header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 border-bottom page-header">
         <a class="main-label my-0 mr-md-auto font-weight-normal text-light" href = "index.php">ГаражQ</a>
         <nav class="my-2 my-md-0 mx-md-auto">
@@ -29,9 +30,9 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
         <div class="my-md-0 ml-md-auto d-flex align-items-center">
             <?
             $component = new AuthorizationComponent(array());
-            echo $component->processComponent();
+            $component->processComponent();
             ?>
         </div>
     </header>
-</div>
-<main class="pt-5">
+<!--</div>-->
+    <main id="main" class="pt-5">

@@ -69,7 +69,6 @@ class TableManager
             $arFilter = array();
 
             foreach ($arFields['filter'] as $key => $value) {
-                $fieldName = '';
                 if (array_key_exists($key, $tableMap)) {
                     $fieldName = $key;
                 } else if (array_key_exists(substr($key, 1), $tableMap)) {

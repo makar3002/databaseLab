@@ -1,4 +1,5 @@
 <?php
+namespace core\component\general;
 abstract class BaseComponent
 {
     protected $arParams;
@@ -8,6 +9,7 @@ abstract class BaseComponent
     public function __construct($arParams)
     {
         $this->arParams = $arParams;
+        $this->arResult = array();
         $this->templatePath = $this->getTemplatePath();
     }
 
@@ -16,19 +18,22 @@ abstract class BaseComponent
         $arParams = $this->arParams;
         $arResult = $this->arResult;
 
-        require_once($this->templatePath);
+        ob_start();
+        if (file_exists($this->templatePath)) {
+            require_once($this->templatePath);
+        }
+        $result = ob_get_clean();
+        echo $result;
     }
 
     protected function getTemplatePath()
     {
-        $cl = new ReflectionClass(get_class($this));
+        $cl = new \ReflectionClass(get_class($this));
         return dirname($cl->getFileName()) . '/template.php';
     }
 
     public function processComponent()
     {
-        ob_start();
         $this->renderComponent();
-        return ob_get_clean();
     }
 }

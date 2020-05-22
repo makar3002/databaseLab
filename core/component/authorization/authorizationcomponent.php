@@ -1,19 +1,28 @@
 <?php
-namespace Core\Component\Authorization;
+namespace core\component\authorization;
+use core\component\general\BaseComponent;
 use core\orm\UserTable;
+use core\util\Request;
 use core\util\User;
 use core\util\Validator;
 use Exception;
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/validator.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/core/component/general/basecomponent.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/core/orm/usertable.php');
 
-class AuthorizationComponent extends \BaseComponent
+class AuthorizationComponent extends BaseComponent
 {
+    public function processComponent()
+    {
+        $userInstance = User::getInstance();
+        $isUserAuthorized = $userInstance->isUserAuthorized();
+        $this->arResult['IS_USER_AUTHORIZED'] = $isUserAuthorized;
+        $this->arResult['IS_AJAX_REQUEST'] = Request::isAjaxRequest();
+
+        $this->renderComponent();
+    }
+
     public function getSignInUpOutButtonsAction()
     {
-        echo $this->processComponent();
+        $this->processComponent();
     }
 
     public function signInAction()
@@ -23,7 +32,7 @@ class AuthorizationComponent extends \BaseComponent
         }
 
         try {
-            User::authorizeUserByData($this->arParams['email'], $this->arParams['password']);
+            User::getInstance()->authorizeUserByData($this->arParams['email'], $this->arParams['password']);
         } catch (Exception $exception) {
             echo $exception->getMessage();
         }
@@ -53,7 +62,7 @@ class AuthorizationComponent extends \BaseComponent
 
     public function signOutAction()
     {
-        User::logoutUser();
+        User::getInstance()->logoutUser();
     }
 
     private function checkAndGetUserData()
@@ -72,11 +81,5 @@ class AuthorizationComponent extends \BaseComponent
             'email' => $email,
             'password' => $password
         );
-    }
-
-    public function processComponent()
-    {
-        $this->arResult['IS_USER_AUTHORIZED'] = User::isUserAuthorized();
-        return parent::processComponent();
     }
 }
