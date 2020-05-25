@@ -1,6 +1,7 @@
 <?php
 namespace Core\Component\TableList;
 use core\component\general\BaseComponent;
+use core\orm\general\TableManager;
 
 class TableListComponent extends BaseComponent
 {
@@ -12,7 +13,7 @@ class TableListComponent extends BaseComponent
     const DEFAULT_BUTTON_COLUMN_WIDTH = '10';
     const DEFAULT_FIELD_VALUE = 'Не задано';
     const DEFAULT_EMPTY_DATA_TITLE = 'Нет данных';
-    private $entityTableClass;
+    private $entityClass;
 
     public function processComponent()
     {
@@ -24,9 +25,49 @@ class TableListComponent extends BaseComponent
         $this->renderComponent();
     }
 
-    public function updateEntityRowAction($rowData)
+    public function updateElementAction()
     {
+        $this->prepareParams();
+        if (!is_subclass_of($this->entityClass, TableManager::class)) {
+            return null;
+        }
 
+        /** @var TableManager entityTableClass */
+        $this->entityClass::update($this->arParams['ID'], json_decode($this->arParams['FIELDS'], true));
+    }
+
+    public function getElementInfoAction()
+    {
+        $this->prepareParams();
+        if (!is_subclass_of($this->entityClass, TableManager::class)) {
+            return null;
+        }
+
+        /** @var TableManager entityTableClass */
+        $element = $this->entityClass::getById($this->arParams['ID']);
+        return $element;
+    }
+
+    public function addElementAction()
+    {
+        $this->prepareParams();
+        if (!is_subclass_of($this->entityClass, TableManager::class)) {
+            return null;
+        }
+
+        /** @var TableManager entityTableClass */
+        $this->entityClass::add(json_decode($this->arParams['FIELDS'], true));
+    }
+
+    public function deleteElementAction()
+    {
+        $this->prepareParams();
+        if (!is_subclass_of($this->entityClass, TableManager::class)) {
+            return null;
+        }
+
+        /** @var TableManager entityTableClass */
+        $this->entityClass::delete($this->arParams['ID']);
     }
 
     private function prepareHeader()
@@ -95,8 +136,16 @@ class TableListComponent extends BaseComponent
         $this->arResult['EMPTY_DATA_TITLE'] = self::DEFAULT_EMPTY_DATA_TITLE;
     }
 
+    private function prepareClasses()
+    {
+        $this->entityClass = $this->arParams['ENTITY_CLASS'];
+        $this->arResult['ENTITY_CLASS'] = $this->entityClass;
+        $this->arResult['ENTITY_TABLE_CLASS'] = $this->arParams['ENTITY_TABLE_CLASS'];
+    }
+
     private function prepareParams()
     {
-        $this->entityTableClass = $this->arParams['ENTITY_TABLE_CLASS'];
+        $this->prepareClasses();
+        $this->arResult['TABLE_ONLY'] = isset($this->arParams['TABLE_ONLY']) ? $this->arParams['TABLE_ONLY'] : false;
     }
 }

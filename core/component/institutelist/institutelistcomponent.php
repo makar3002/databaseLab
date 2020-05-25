@@ -17,8 +17,17 @@ class InstituteListComponent extends BaseComponent
         ),
     );
 
+    public function getTableOnlyAction()
+    {
+        $this->arResult['TABLE_ONLY'] = true;
+        $this->processComponent();
+    }
+
     public function processComponent()
     {
+        if (!isset($this->arResult['TABLE_ONLY'])) {
+            $this->arResult['TABLE_ONLY'] = false;
+        }
         $this->prepareHeader();
         $this->prepareData();
         $this->renderComponent();

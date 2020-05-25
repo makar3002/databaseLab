@@ -10,16 +10,18 @@ class Ajax {
         {
             let request = new XMLHttpRequest();
 
-            let formData = null;
+            let formData = new FormData();
             if (form) {
                 formData = new FormData(form);
-            } else {
-                formData = new FormData();
             }
 
             formData.append(self.actionFieldName, action);
             formData.append(self.ajaxRequestFieldName, true);
             formData.append(self.componentClassFieldName, componentClass);
+            for (let key in data) {
+                formData.append(key, data[key]);
+            }
+
             request.open('POST', self.url, true);
 
             request.onreadystatechange = function () {
@@ -33,7 +35,6 @@ class Ajax {
             request.onerror = function() {
                 reject(Error("network error"));
             };
-
             request.send(formData);
         });
     }

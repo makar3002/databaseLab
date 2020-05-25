@@ -17,7 +17,8 @@ if (!isset($_POST['action']) || !isset($_POST['componentClass'])) {
 $action = $_POST['action'] . 'Action';
 $componentClass = $_POST['componentClass'];
 $componentObject = new $componentClass($_POST);
-$componentObject->$action();
-
-$result = ob_get_clean();
+$result = $componentObject->$action();
+if (!isset($result)) {
+    $result = ob_get_clean();
+}
 echo json_encode($result);
