@@ -35,7 +35,14 @@ use core\orm\InstituteTable; ?>
             <?foreach ($arResult['TABLE_DATA'] as $id => $element) :?>
                 <tr>
                 <?foreach ($arResult['TABLE_HEADER'] as $fieldName => $headerElement) :?>
-                    <td width="<?=$headerElement['WIDTH']?>%" class="<?=$headerElement['CLASS']?>"><?=$element[$fieldName]?></td>
+                    <td width="<?=$headerElement['WIDTH']?>%" class="<?=$headerElement['CLASS']?>">
+                        <?if (isset($headerElement['VALUES'])) {
+                            echo $headerElement['VALUES'][$element[$fieldName]];
+                        } else {
+                            echo $element[$fieldName];
+                        }
+                        ?>
+                    </td>
                 <?endforeach;?>
                     <td width="<?=$arResult['BUTTON_COLUMN_WIDTH']?>%"><button type="button" class="btn btn-primary update-btn change p-0" data-element-id="<?=$id?>">Изменить</button></td>
                     <td width="<?=$arResult['BUTTON_COLUMN_WIDTH']?>%"><button type="button" class="btn btn-primary delete-btn delete p-0" data-element-id="<?=$id?>">Удалить</button></td>
@@ -61,7 +68,15 @@ use core\orm\InstituteTable; ?>
                     <?foreach ($arResult['TABLE_HEADER'] as $fieldName => $headerElement) :?>
                     <div class="form-group <?=($fieldName == 'ID') ? 'd-none' : ''?>">
                         <label for="<?=$fieldName?>" class="col-form-label"><?=$headerElement['NAME']?></label>
-                        <input type="text" name="<?=$fieldName?>" id="update-<?=$fieldName?>" class="form-control" placeholder="<?=$headerElement['NAME']?>" required>
+                        <? if (isset($headerElementp['VALUES'])) : ?>
+                            <select name="<?=$fieldName?>" id="update-<?=$fieldName?>">
+                                <?foreach ($headerElementp['VALUES'] as $value => $description) :?>
+                                <option value="<?=$value?>"><?=$description?></option>
+                                <?endforeach;?>
+                            </select>
+                        <? else : ?>
+                            <input type="text" name="<?=$fieldName?>" id="update-<?=$fieldName?>" class="form-control" placeholder="<?=$headerElement['NAME']?>" required>
+                        <?endif;?>
                     </div>
                     <?endforeach;?>
                     <div class="modal-footer">
@@ -87,7 +102,15 @@ use core\orm\InstituteTable; ?>
                         <?if ($fieldName == 'ID') continue;?>
                         <div class="form-group">
                             <label for="<?=$fieldName?>" class="col-form-label"><?=$headerElement['NAME']?></label>
-                            <input type="text" name="<?=$fieldName?>" class="form-control" placeholder="<?=$headerElement['NAME']?>" required>
+                            <? if (isset($headerElementp['VALUES'])) : ?>
+                            <select name="<?=$fieldName?>" id="update-<?=$fieldName?>">
+                                <?foreach ($headerElementp['VALUES'] as $value => $description) :?>
+                                    <option value="<?=$value?>"><?=$description?></option>
+                                <?endforeach;?>
+                            </select>
+                            <? else : ?>
+                            <input type="text" name="<?=$fieldName?>" id="update-<?=$fieldName?>" class="form-control" placeholder="<?=$headerElement['NAME']?>" required>
+                            <?endif;?>
                         </div>
                     <?endforeach;?>
                     <div class="modal-footer">
