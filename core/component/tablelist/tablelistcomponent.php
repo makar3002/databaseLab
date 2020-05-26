@@ -10,6 +10,9 @@ class TableListComponent extends BaseComponent
         'WIDTH' => null,
         'CLASS' => ''
     );
+    const DEFAULT_SORT = array(
+        'ID' => 'ASC'
+    );
     const DEFAULT_BUTTON_COLUMN_WIDTH = '10';
     const DEFAULT_FIELD_VALUE = 'Не задано';
     const DEFAULT_EMPTY_DATA_TITLE = 'Нет данных';
@@ -101,11 +104,11 @@ class TableListComponent extends BaseComponent
             throw new \RuntimeException('Перед подготовкой данных для таблицы нужно сначала подготовить её шапку.');
         }
 
-        if (!isset($this->arParams['TABLE_DATA']) && !is_array($this->arParams['TABLE_DATA'])) {
-            throw new \InvalidArgumentException('Неправильные данные для таблицы.');
-        }
+//        if (!isset($this->arParams['TABLE_DATA']) && !is_array($this->arParams['TABLE_DATA'])) {
+//            //throw new \InvalidArgumentException('Неправильные данные для таблицы.');
+//        }
 
-        $tableData = $this->arParams['TABLE_DATA'];
+        $tableData = $this->getRows();
         $tableHeader = $this->arResult['TABLE_HEADER'];
         foreach ($tableData as &$element) {
             foreach ($tableHeader as $fieldName => $fieldParams) {
@@ -119,6 +122,21 @@ class TableListComponent extends BaseComponent
 
         $this->arResult['TABLE_DATA'] = $tableData;
         $this->arResult['IS_DATA_EMPTY'] = $this->isTableDataEmpty();
+    }
+
+    private function getRows()
+    {
+        $this->arResult['TABLE_SORT'] = self::DEFAULT_SORT;
+        if (isset($this->arParams['TABLE_SORT'])) {
+            $this->arResult['TABLE_SORT'] = $this->arParams['TABLE_SORT'];
+        }
+
+        $instituteList = $this->entityClass::getList(array(
+            'order' => $this->arResult['TABLE_SORT']
+        ));
+        $instituteIdsList = array_column($instituteList, 'ID');
+
+        return array_combine($instituteIdsList, $instituteList);
     }
 
     private function isTableDataEmpty()

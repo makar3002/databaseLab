@@ -19,8 +19,15 @@ use core\orm\InstituteTable; ?>
                 <h5><?=$arParams['TABLE_NAME']?></h5>
             </caption>
             <tr>
-            <?foreach ($arResult['TABLE_HEADER'] as $headerElement) :?>
-                <td width="<?=$headerElement['WIDTH']?>%" class="<?=$headerElement['CLASS']?>"><?=$headerElement['NAME']?></td>
+            <?foreach ($arResult['TABLE_HEADER'] as $fieldName => $headerElement) :?>
+                <td width="<?=$headerElement['WIDTH']?>%" class="<?=$headerElement['CLASS']?>">
+                    <div class="td-header" data-field-name="<?=$fieldName?>"<?= (isset($arResult['TABLE_SORT'][$fieldName])) ? 'data-sort="' . $arResult['TABLE_SORT'][$fieldName] . '"' : ''?>>
+                        <span><?=$headerElement['NAME']?></span>
+                        <? if (isset($arResult['TABLE_SORT'][$fieldName])) : ?>
+                            <span class="arrow-<?=$arResult['TABLE_SORT'][$fieldName]?>"></span>
+                        <?endif;?>
+                    </div>
+                </td>
             <?endforeach;?>
             <td width="<?=$arResult['BUTTON_COLUMN_WIDTH']?>%">Изменить</td>
             <td width="<?=$arResult['BUTTON_COLUMN_WIDTH']?>%">Удалить</td>

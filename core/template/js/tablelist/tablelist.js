@@ -25,16 +25,43 @@ class TableList {
     };
     entityTableClass = null;
     componentClass = 'Core\\Component\\TableList\\TableListComponent';
+    sort = {};
 
-    constructor(entityClass, entityTableClass) {
+    constructor(entityClass, entityTableClass, sortFieldName, sortType) {
         this.entityClass = entityClass;
         this.entityTableClass = entityTableClass;
+        this.sort[sortFieldName] = sortType;
     }
 
     initialize() {
         $(document).on('click', '.update-btn', this.onClickUpdateButton.bind(this));
         $(document).on('click', '.add-btn', this.onClickAddButton.bind(this));
         $(document).on('click', '.delete-btn', this.onClickDeleteButton.bind(this));
+        $(document).on('click', '.td-header', this.onClickHeaderElement.bind(this));
+    }
+
+    onClickHeaderElement(event)
+    {
+        let element = event.target;
+        if (element.tagName !== 'DIV') {
+            element = element.parentElement;
+        }
+        let elementDataset = element.dataset;
+        let sort = elementDataset.sort;
+        let fieldName = elementDataset.fieldName
+        if (!fieldName) {
+            return;
+        }
+        if (!sort || sort === 'DESC') {
+            sort = 'ASC'
+        } else {
+            sort = 'DESC'
+        }
+
+        this.sort = {};
+        this.sort[fieldName] = sort;
+
+        this.refreshTable()
     }
 
     onClickUpdateButton(event)
@@ -144,7 +171,11 @@ class TableList {
 
     refreshTable()
     {
-        Ajax.post(null, 'getTableOnly', this.entityTableClass).then(function(response) {
+        let elementData = {
+            SORT: JSON.stringify(this.sort),
+        };
+
+        Ajax.post(elementData, 'getTableOnly', this.entityTableClass).then(function(response) {
             $('#table-list').html(response);
         });
     }

@@ -20,6 +20,9 @@ class InstituteListComponent extends BaseComponent
     public function getTableOnlyAction()
     {
         $this->arResult['TABLE_ONLY'] = true;
+        if (isset($this->arParams['SORT'])) {
+            $this->arResult['TABLE_SORT'] = json_decode($this->arParams['SORT'], true);
+        }
         $this->processComponent();
     }
 
@@ -41,14 +44,5 @@ class InstituteListComponent extends BaseComponent
     private function prepareData()
     {
         $this->arResult['TABLE_NAME'] = self::DEFAULT_TABLE_NAME;
-        $this->arResult['TABLE_DATA'] = $this->getRows();
-    }
-
-    private function getRows()
-    {
-        $instituteList = InstituteTable::getList(array());
-        $instituteIdsList = array_column($instituteList, 'ID');
-
-        return array_combine($instituteIdsList, $instituteList);
     }
 }

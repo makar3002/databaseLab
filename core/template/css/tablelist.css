@@ -1,0 +1,22 @@
+.td-header span {
+    cursor: pointer;
+}
+.arrow-ASC {
+    background: url("../images/arrow.png") 3px no-repeat;
+    display: inline-block;
+    visibility: visible;
+    width: 10px;
+    height: 15px;
+    position: relative;
+    transform: rotate(90deg);
+}
+
+.arrow-DESC {
+    background: url("../images/arrow.png") 3px no-repeat;
+    display: inline-block;
+    visibility: visible;
+    width: 10px;
+    height: 15px;
+    position: relative;
+    transform: rotate(270deg);
+}

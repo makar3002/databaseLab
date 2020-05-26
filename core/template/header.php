@@ -8,6 +8,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
     <title>Автомобильный гараж</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/core/template/css/style.css">
+    <link rel="stylesheet" href="/core/template/css/tablelist.css">
     <link rel="stylesheet" href="/core/template/css/bootstrap/bootstrap.css">
     <script src="/core/template/js/jquery/jquery-3.4.1.min.js"></script>
     <script src="/core/template/js/util/popper.min.js"></script>
