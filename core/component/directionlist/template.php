@@ -1,6 +1,6 @@
 <?
 use Core\Component\TableList\TableListComponent;
-use core\orm\AuditoriumTable;
+use core\orm\DirectionTable;
 
 ?>
 
@@ -13,7 +13,7 @@ use core\orm\AuditoriumTable;
         'TABLE_SORT' => isset($arResult['TABLE_SORT']) ? $arResult['TABLE_SORT'] : null,
         'TABLE_ONLY' => $arResult['TABLE_ONLY'],
         'ENTITY_TABLE_CLASS' => static::class,
-        'ENTITY_CLASS' => AuditoriumTable::class
+        'ENTITY_CLASS' => DirectionTable::class
     )
 );
 $component->processComponent();

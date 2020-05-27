@@ -190,7 +190,6 @@ class TableManager
 
         $connection = DB::getInstance();
         $sdh = $connection->prepare($query);
-        $sdh->execute();
         return $sdh->execute();
     }
 

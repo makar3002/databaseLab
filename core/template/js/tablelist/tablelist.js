@@ -6,21 +6,24 @@ class TableList {
             popupId: 'add-popup',
             closePopupButtonId: 'add-popup-close-btn',
             submitFormButtonId: 'submit-add-btn',
-            formAction: 'addElement'
+            formAction: 'addElement',
+            isSetClickHandler: false
         },
         'updateForm': {
             formId: 'update-form',
             popupId: 'update-popup',
             closePopupButtonId: 'update-popup-close-btn',
             submitFormButtonId: 'submit-update-btn',
-            formAction: 'updateElement'
+            formAction: 'updateElement',
+            isSetClickHandler: false
         },
         'deleteForm': {
             formId: 'delete-form',
             popupId: 'delete-popup',
             closePopupButtonId: 'delete-popup-close-btn',
             submitFormButtonId: 'submit-delete-btn',
-            formAction: 'deleteElement'
+            formAction: 'deleteElement',
+            isSetClickHandler: false
         }
     };
     multipleSelectIds = [];
@@ -112,10 +115,14 @@ class TableList {
             input.val(response[key]);
         }
 
-        $('#' + updateFormInfo.submitFormButtonId).click(function (event) {
-            event.preventDefault();
-            this.submitForm(updateFormInfo);
-        }.bind(this));
+        if (!this.formInfoList['updateForm'].isSetClickHandler) {
+            $('#' + updateFormInfo.submitFormButtonId).click(function (event) {
+                event.preventDefault();
+                this.submitForm(updateFormInfo);
+            }.bind(this));
+            this.formInfoList['updateForm'].isSetClickHandler = true;
+        }
+
         $('#' + updateFormInfo.popupId).modal('show');
     }
 
@@ -137,10 +144,13 @@ class TableList {
             }
         }.bind(this));
 
-        $('#' + addFormInfo.submitFormButtonId).click(function (event) {
-            event.preventDefault();
-            this.submitForm(addFormInfo);
-        }.bind(this));
+        if (!this.formInfoList['addForm'].isSetClickHandler) {
+            $('#' + addFormInfo.submitFormButtonId).click(function (event) {
+                event.preventDefault();
+                this.submitForm(addFormInfo);
+            }.bind(this));
+            this.formInfoList['addForm'].isSetClickHandler = true;
+        }
         $('#' + addFormInfo.popupId).modal('show');
     }
 
@@ -151,10 +161,13 @@ class TableList {
         let input = $('#delete-ID');
         input.val(elementId);
 
-        $('#' + deleteFormInfo.submitFormButtonId).click(function (event) {
-            event.preventDefault();
-            this.submitForm(deleteFormInfo);
-        }.bind(this));
+        if (!this.formInfoList['deleteForm'].isSetClickHandler) {
+            $('#' + deleteFormInfo.submitFormButtonId).click(function (event) {
+                event.preventDefault();
+                this.submitForm(deleteFormInfo);
+            }.bind(this));
+            this.formInfoList['deleteForm'].isSetClickHandler = true;
+        }
         $('#' + deleteFormInfo.popupId).modal('show');
     }
 
