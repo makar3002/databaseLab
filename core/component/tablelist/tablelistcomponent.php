@@ -28,17 +28,6 @@ class TableListComponent extends BaseComponent
         $this->renderComponent();
     }
 
-    public function updateElementAction()
-    {
-        $this->prepareParams();
-        if (!is_subclass_of($this->entityClass, TableManager::class)) {
-            return null;
-        }
-
-        /** @var TableManager entityTableClass */
-        $this->entityClass::update($this->arParams['ID'], json_decode($this->arParams['FIELDS'], true));
-    }
-
     public function getElementInfoAction()
     {
         $this->prepareParams();
@@ -51,6 +40,28 @@ class TableListComponent extends BaseComponent
         return $element;
     }
 
+    public function updateElementAction()
+    {
+        $this->prepareParams();
+        if (!is_subclass_of($this->entityClass, TableManager::class)) {
+            return null;
+        }
+        $fields = json_decode($this->arParams['FIELDS'], true);
+
+        foreach ($fields as $fieldName => $value) {
+            if (!is_array($value)) {
+                continue;
+            }
+
+
+            $this->entityClass::updateBindEntity($this->arParams['ID'], $fieldName, $value);
+            unset($fields[$fieldName]);
+        }
+
+        /** @var TableManager entityTableClass */
+        $this->entityClass::update($this->arParams['ID'], $fields);
+    }
+
     public function addElementAction()
     {
         $this->prepareParams();
@@ -58,8 +69,22 @@ class TableListComponent extends BaseComponent
             return null;
         }
 
+        $fields = json_decode($this->arParams['FIELDS'], true);
+        $multipleFields = array();
+        foreach ($fields as $fieldName => $value) {
+            if (!is_array($value)) {
+                continue;
+            }
+            $multipleFields[$fieldName] = $value;
+            unset($fields[$fieldName]);
+        }
+
         /** @var TableManager entityTableClass */
-        $this->entityClass::add(json_decode($this->arParams['FIELDS'], true));
+        $elementId = $this->entityClass::add($fields);
+
+        foreach ($multipleFields as $fieldName => $value) {
+            $this->entityClass::updateBindEntity($elementId, $fieldName, $value);
+        }
     }
 
     public function deleteElementAction()
@@ -70,7 +95,9 @@ class TableListComponent extends BaseComponent
         }
 
         /** @var TableManager entityTableClass */
-        $this->entityClass::delete($this->arParams['ID']);
+        if (!$this->entityClass::delete($this->arParams['ID'])) {
+            echo 'Невозможно удалить элемент';
+        }
     }
 
     private function prepareHeader()
@@ -131,12 +158,11 @@ class TableListComponent extends BaseComponent
             $this->arResult['TABLE_SORT'] = $this->arParams['TABLE_SORT'];
         }
 
-        $instituteList = $this->entityClass::getList(array(
+        $elementList = $this->entityClass::getList(array(
             'order' => $this->arResult['TABLE_SORT']
         ));
-        $instituteIdsList = array_column($instituteList, 'ID');
-
-        return array_combine($instituteIdsList, $instituteList);
+        $elementIdsList = array_column($elementList, 'ID');
+        return array_combine($elementIdsList, $elementList);
     }
 
     private function isTableDataEmpty()

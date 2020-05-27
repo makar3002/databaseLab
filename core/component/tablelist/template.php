@@ -37,7 +37,17 @@ use core\orm\InstituteTable; ?>
                 <?foreach ($arResult['TABLE_HEADER'] as $fieldName => $headerElement) :?>
                     <td width="<?=$headerElement['WIDTH']?>%" class="<?=$headerElement['CLASS']?>">
                         <?if (isset($headerElement['VALUES'])) {
-                            echo $headerElement['VALUES'][$element[$fieldName]];
+                            if (isset($headerElement['IS_MULTIPLE']) && $headerElement['IS_MULTIPLE'] && is_array($element[$fieldName])) {
+                                $value = '';
+                                foreach ($headerElement['VALUES'] as $key => $fieldValue) {
+                                    if (in_array($key, $element[$fieldName])) {
+                                        $value .= ((!empty($value)) ? ', ' : '') . $fieldValue;
+                                    }
+                                }
+                            } else {
+                                $value = $headerElement['VALUES'][$element[$fieldName]];
+                            }
+                            echo $value;
                         } else {
                             echo $element[$fieldName];
                         }
@@ -68,10 +78,10 @@ use core\orm\InstituteTable; ?>
                     <?foreach ($arResult['TABLE_HEADER'] as $fieldName => $headerElement) :?>
                     <div class="form-group <?=($fieldName == 'ID') ? 'd-none' : ''?>">
                         <label for="<?=$fieldName?>" class="col-form-label"><?=$headerElement['NAME']?></label>
-                        <? if (isset($headerElementp['VALUES'])) : ?>
-                            <select name="<?=$fieldName?>" id="update-<?=$fieldName?>">
-                                <?foreach ($headerElementp['VALUES'] as $value => $description) :?>
-                                <option value="<?=$value?>"><?=$description?></option>
+                        <? if (isset($headerElement['VALUES'])) : ?>
+                            <select class="form-control" name="<?=$fieldName?>" id="update-<?=$fieldName?>" <?if ($headerElement['IS_MULTIPLE']) echo 'multiple'?>>
+                                <?foreach ($headerElement['VALUES'] as $value => $description) :?>
+                                <option data-type="multiple" value="<?=$value?>"><?=$description?></option>
                                 <?endforeach;?>
                             </select>
                         <? else : ?>
@@ -102,9 +112,9 @@ use core\orm\InstituteTable; ?>
                         <?if ($fieldName == 'ID') continue;?>
                         <div class="form-group">
                             <label for="<?=$fieldName?>" class="col-form-label"><?=$headerElement['NAME']?></label>
-                            <? if (isset($headerElementp['VALUES'])) : ?>
-                            <select name="<?=$fieldName?>" id="update-<?=$fieldName?>">
-                                <?foreach ($headerElementp['VALUES'] as $value => $description) :?>
+                            <? if (isset($headerElement['VALUES'])) : ?>
+                            <select class="form-control" name="<?=$fieldName?>" id="update-<?=$fieldName?>" <?if ($headerElement['IS_MULTIPLE']) echo 'multiple'?>>
+                                <?foreach ($headerElement['VALUES'] as $value => $description) :?>
                                     <option value="<?=$value?>"><?=$description?></option>
                                 <?endforeach;?>
                             </select>

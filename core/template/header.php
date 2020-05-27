@@ -22,12 +22,14 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
 <body>
 <!--<div id="header">-->
     <header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 border-bottom page-header">
-        <a class="main-label my-0 mr-md-auto font-weight-normal text-light" href = "index.php">ГаражQ</a>
+        <a class="main-label my-0 mr-md-auto font-weight-normal text-light" href = "/">Расписание</a>
         <nav class="my-2 my-md-0 mx-md-auto">
-            <a class="p-2 text-light" href="marks.php">Марки</a>
-            <a class="p-2 text-light" href="owners.php">Владельцы</a>
-            <a class="p-2 text-light" href="list_of_security.php">Список сторожей</a>
-            <a class="p-2 text-light" href="journal.php">Журнал</a>
+            <a class="p-2 text-light" href="/institutes">Институты</a>
+            <a class="p-2 text-light" href="/directions">Направления</a>
+            <a class="p-2 text-light" href="/groups">Группы</a>
+            <a class="p-2 text-light" href="/teachers">Преподаватели</a>
+            <a class="p-2 text-light" href="/auditoriums">Аудитории</a>
+            <a class="p-2 text-light" href="/subjects">Предметы</a>
         </nav>
         <div class="my-md-0 ml-md-auto d-flex align-items-center">
             <?
@@ -37,4 +39,4 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
         </div>
     </header>
 <!--</div>-->
-    <main id="main" class="pt-5">
+    <main id="main" class="pt-5 text-center">

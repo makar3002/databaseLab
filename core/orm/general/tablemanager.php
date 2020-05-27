@@ -182,7 +182,7 @@ class TableManager
             return false;
         }
 
-        $query = 'DELETE FROM ' . static::getTableName() . ' WHERE id = ' . $id . ';';
+        $query = 'DELETE FROM ' . static::getTableName() . ' WHERE ID = ' . $id . ';';
 
         $connection = DB::getInstance();
         $sdh = $connection->prepare($query);

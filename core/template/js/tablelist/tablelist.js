@@ -23,6 +23,7 @@ class TableList {
             formAction: 'deleteElement'
         }
     };
+    multipleSelectIds = [];
     entityTableClass = null;
     componentClass = 'Core\\Component\\TableList\\TableListComponent';
     sort = {};
@@ -95,10 +96,17 @@ class TableList {
             return;
         }
 
+        this.multipleSelectIds = [];
         for (let key in response) {
             let input = $('#update-' + key);
             if (null == input) {
                 continue;
+            }
+
+            if (input.get(0).multiple) {
+                this.multipleSelectIds[input.get(0).name] = true;
+            } else {
+                this.multipleSelectIds[input.get(0).name] = false;
             }
 
             input.val(response[key]);
@@ -114,6 +122,20 @@ class TableList {
     openAddPopup()
     {
         let addFormInfo = this.formInfoList['addForm'];
+        let form = $('#' + addFormInfo.formId);
+        if (null == form) {
+            return;
+        }
+
+        this.multipleSelectIds = [];
+        let selectList = form.find('select').get();
+        selectList.forEach(function (item) {
+            if (item.multiple) {
+                this.multipleSelectIds[item.name] = true;
+            } else {
+                this.multipleSelectIds[item.name] = false;
+            }
+        }.bind(this));
 
         $('#' + addFormInfo.submitFormButtonId).click(function (event) {
             event.preventDefault();
@@ -146,10 +168,19 @@ class TableList {
 
         let data = form.serializeArray().reduce(
             function(obj, item) {
-                obj[item.name] = item.value;
+                if (this.multipleSelectIds[item.name]) {
+                    if (obj[item.name] === undefined)  {
+                        obj[item.name] = [];
+                    }
+                    obj[item.name].push(item.value);
+                } else {
+                    obj[item.name] = item.value;
+                }
                 return obj;
-            }, {}
+            }.bind(this), {}
         );
+
+        // TODO: remote update multiple field
 
         if (data['ID']) {
             elementData['ID'] = data['ID'];

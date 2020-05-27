@@ -32,6 +32,42 @@ class SubjectTable extends TableManager
         return $subjectList;
     }
 
+    public static function updateBindEntity($id, $fieldId, $fieldValues)
+    {
+        if ($fieldId == 'TEACHER_IDS') {
+            $currentTeachers = array_column(SubjectToTeacherTable::getList(array(
+                'select' => array('ID'),
+                'filter' => array('SUBJECT_ID' => $id)
+            )), 'ID');
+
+            foreach ($currentTeachers as $subjectToTeacherId) {
+                SubjectToTeacherTable::delete($subjectToTeacherId);
+            }
+
+            $arNewBind = array(
+                'SUBJECT_ID' => $id
+            );
+
+            foreach ($fieldValues as $teacherId) {
+                $arNewBind['TEACHER_ID'] = $teacherId;
+                SubjectToTeacherTable::add($arNewBind);
+            }
+        }
+    }
+
+    public static function deleteBindEntity($id, $fieldId)
+    {
+        if ($fieldId == 'TEACHER_IDS') {
+            $currentTeachers = SubjectToTeacherTable::getList(array(
+                'select' => array('ID'),
+                'filter' => array('SUBJECT_ID' => $id)
+            ));
+            foreach ($currentTeachers as $subjectToTeacherId) {
+                SubjectToTeacherTable::delete($subjectToTeacherId);
+            }
+        }
+    }
+
     private static function mergeSubjectAndItsTeacherIds($subject)
     {
         $subject['TEACHER_IDS'] = array();
@@ -61,6 +97,7 @@ class SubjectTable extends TableManager
                 FieldAttributeType::READ_ONLY
             ),
             'NAME' => array(),
+            'INSTITUTE_ID' => array(),
             'TEACHER_IDS' => array(
                 FieldAttributeType::SELECT_ONLY,
                 FieldAttributeType::ARRAY_VALUE

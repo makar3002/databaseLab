@@ -285,20 +285,20 @@ span img{
   -moz-border-radius: 10px;
 }
 
-.sign-in-btn {
-  background-color: #F1C40F !important;
-  border-color: #c7a500 !important;
+.btn:not(.btn-outline-secondary) {
+  background-color: #F1C40F;
+  border-color: #c7a500;
 }
 
-.sign-in-btn:focus {
-  box-shadow: 0 0 0 0.2rem rgba(255, 170, 0, 0.5) !important;
-  border-color: rgba(255, 196, 0, 0.75) !important;
+.btn:not(.btn-outline-secondary):focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 170, 0, 0.5);
+  border-color: rgba(255, 196, 0, 0.75);
 }
 
-.sign-in-btn:hover {
-  color: #fff !important;
-  background-color: #c7a500 !important;
-  border-color: #c7a500 !important;
+.btn:not(.btn-outline-secondary):hover {
+  color: #fff;
+  background-color: #c7a500;
+  border-color: #c7a500;
 }
 
 .form-signin {
@@ -365,6 +365,10 @@ span img{
   padding-bottom: .25rem;
   font-size: 12px;
   color: #777;
+}
+
+form {
+  text-align: left !important;
 }
 
 .sign-in-form-control:focus {
