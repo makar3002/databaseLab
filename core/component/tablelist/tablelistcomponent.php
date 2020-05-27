@@ -53,7 +53,6 @@ class TableListComponent extends BaseComponent
                 continue;
             }
 
-
             $this->entityClass::updateBindEntity($this->arParams['ID'], $fieldName, $value);
             unset($fields[$fieldName]);
         }
