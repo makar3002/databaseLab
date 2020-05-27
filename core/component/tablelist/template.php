@@ -1,8 +1,7 @@
-<? /** @var array $arResult*/
-
-use Core\Component\TableList\TableListComponent;
-use core\orm\InstituteTable; ?>
-<? /** @var array $arParams*/?>
+<?
+/** @var array $arResult*/
+/** @var array $arParams*/
+?>
 
 <?if (!$arResult['TABLE_ONLY']) :?>
 <button type="button" class="btn btn-primary add-btn p-3">

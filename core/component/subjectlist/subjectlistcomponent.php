@@ -6,14 +6,14 @@ use core\orm\TeacherTable;
 
 class SubjectListComponent extends BaseComponent
 {
-    const DEFAULT_TABLE_NAME = 'Преподаватели';
+    const DEFAULT_TABLE_NAME = 'Предметы';
     const HEADER_COLUMN_MAP = array(
         'ID' => array(
             'NAME' => 'ID',
             'WIDTH' => 10
         ),
         'NAME' => array(
-            'NAME' => 'ФИО',
+            'NAME' => 'Название',
             'WIDTH' => 30
         ),
         'INSTITUTE_ID' => array(
@@ -58,12 +58,12 @@ class SubjectListComponent extends BaseComponent
             $this->arResult['TABLE_HEADER']['INSTITUTE_ID']['VALUES'][$value['ID']] = $value['NAME'];
         }
 
-        $instituteList = TeacherTable::getList(array(
+        $teacherList = TeacherTable::getList(array(
             'order' => array('NAME' => 'ASC')
         ));
 
         $this->arResult['TABLE_HEADER']['TEACHER_IDS']['VALUES'] = array();
-        foreach ($instituteList as $value) {
+        foreach ($teacherList as $value) {
             $this->arResult['TABLE_HEADER']['TEACHER_IDS']['VALUES'][$value['ID']] = $value['NAME'];
         }
     }

@@ -20,3 +20,8 @@
     position: relative;
     transform: rotate(270deg);
 }
+
+.delete-btn, .update-btn {
+    margin-bottom: auto;
+    margin-top: auto;
+}

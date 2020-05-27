@@ -47,12 +47,12 @@ class GroupListComponent extends BaseComponent
     private function prepareHeader()
     {
         $this->arResult['TABLE_HEADER'] = self::HEADER_COLUMN_MAP;
-        $instituteList = DirectionTable::getList(array(
+        $directionList = DirectionTable::getList(array(
             'order' => array('NAME' => 'ASC')
         ));
 
         $this->arResult['TABLE_HEADER']['DIRECTION_ID']['VALUES'] = array();
-        foreach ($instituteList as $value) {
+        foreach ($directionList as $value) {
             $this->arResult['TABLE_HEADER']['DIRECTION_ID']['VALUES'][$value['ID']] = $value['NAME'];
         }
     }

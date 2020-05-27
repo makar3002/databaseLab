@@ -24,7 +24,8 @@ class ScheduleElementTable extends TableManager
             'NUMBER' => array(),
             'GROUP_ID' => array(),
             'TEACHER_ID' => array(),
-            'AUDITORIUM_ID' => array()
+            'AUDITORIUM_ID' => array(),
+            'SUBJECT_ID' => array()
         );
     }
 }
