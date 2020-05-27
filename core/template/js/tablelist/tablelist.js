@@ -180,6 +180,12 @@ class TableList {
             }.bind(this), {}
         );
 
+        for(let key in this.multipleSelectIds) {
+            if (data[key] === undefined && this.multipleSelectIds[key]) {
+                data[key] = [];
+            }
+        }
+
         // TODO: remote update multiple field
 
         if (data['ID']) {

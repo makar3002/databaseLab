@@ -125,10 +125,14 @@ class TableManager
 
     public static function getById($id)
     {
-        return static::getList(array(
-           'filter' => array('ID' => $id),
-           'order' => array('ID' => 'ASC')
-        ))[0];
+        $element = static::getList(array(
+            'filter' => array('ID' => $id),
+            'order' => array('ID' => 'ASC')
+        ));
+        if (!empty($element)) {
+            return $element[0];
+        }
+        return null;
     }
 
     public static function update($id, $arFields)
