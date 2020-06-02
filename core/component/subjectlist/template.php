@@ -1,7 +1,6 @@
 <?
 use Core\Component\TableList\TableListComponent;
-use core\orm\SubjectTable;
-
+use Core\Orm\SubjectTable;
 ?>
 
 <? /** @var array $arResult*/?>
@@ -11,6 +10,7 @@ use core\orm\SubjectTable;
         'TABLE_NAME' => $arResult['TABLE_NAME'],
         'TABLE_HEADER' => $arResult['TABLE_HEADER'],
         'TABLE_SORT' => isset($arResult['TABLE_SORT']) ? $arResult['TABLE_SORT'] : null,
+        'TABLE_SEARCH' => isset($arResult['TABLE_SEARCH']) ? $arResult['TABLE_SEARCH'] : null,
         'TABLE_ONLY' => $arResult['TABLE_ONLY'],
         'ENTITY_TABLE_CLASS' => static::class,
         'ENTITY_CLASS' => SubjectTable::class

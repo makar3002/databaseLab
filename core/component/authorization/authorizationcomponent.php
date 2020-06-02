@@ -1,10 +1,10 @@
 <?php
-namespace core\component\authorization;
-use core\component\general\BaseComponent;
-use core\orm\UserTable;
-use core\util\Request;
-use core\util\User;
-use core\util\Validator;
+namespace Core\Component\authorization;
+use Core\Component\General\BaseComponent;
+use Core\Orm\UserTable;
+use Core\Util\Request;
+use Core\Util\User;
+use Core\Util\Validator;
 use Exception;
 
 

@@ -1,5 +1,5 @@
 <?php
-namespace core\orm\general;
+namespace Core\Orm\General;
 class FieldAttributeType
 {
     const READ_ONLY = 'R_O';

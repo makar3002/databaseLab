@@ -1,13 +1,13 @@
 <?php
 namespace Core\Component\ScheduleElementList;
 
-use core\component\general\BaseComponent;
-use core\orm\AuditoriumTable;
-use core\orm\GroupTable;
-use core\orm\SubjectTable;
-use core\orm\TeacherTable;
+use Core\Component\TableList\TableListComparable;
+use Core\Orm\AuditoriumTable;
+use Core\Orm\GroupTable;
+use Core\Orm\SubjectTable;
+use Core\Orm\TeacherTable;
 
-class ScheduleElementListComponent extends BaseComponent
+class ScheduleElementListComponent extends TableListComparable
 {
     const DEFAULT_TABLE_NAME = 'Пары';
     const HEADER_COLUMN_MAP = array(
@@ -84,15 +84,6 @@ class ScheduleElementListComponent extends BaseComponent
         ),
     );
 
-    public function getTableOnlyAction()
-    {
-        $this->arResult['TABLE_ONLY'] = true;
-        if (isset($this->arParams['SORT'])) {
-            $this->arResult['TABLE_SORT'] = json_decode($this->arParams['SORT'], true);
-        }
-        $this->processComponent();
-    }
-
     public function processComponent()
     {
         if (!isset($this->arResult['TABLE_ONLY'])) {
@@ -103,7 +94,7 @@ class ScheduleElementListComponent extends BaseComponent
         $this->renderComponent();
     }
 
-    private function prepareHeader()
+    protected function prepareHeader()
     {
         $this->arResult['TABLE_HEADER'] = self::HEADER_COLUMN_MAP;
         $subjectList = SubjectTable::getList(array(
@@ -143,7 +134,7 @@ class ScheduleElementListComponent extends BaseComponent
         }
     }
 
-    private function prepareData()
+    protected function prepareData()
     {
         $this->arResult['TABLE_NAME'] = self::DEFAULT_TABLE_NAME;
     }

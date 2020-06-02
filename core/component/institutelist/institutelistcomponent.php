@@ -1,9 +1,9 @@
 <?php
 namespace Core\Component\InstituteList;
-use core\component\general\BaseComponent;
-use core\orm\InstituteTable;
 
-class InstituteListComponent extends BaseComponent
+use Core\Component\TableList\TableListComparable;
+
+class InstituteListComponent extends TableListComparable
 {
     const DEFAULT_TABLE_NAME = 'Институты';
     const HEADER_COLUMN_MAP = array(
@@ -17,15 +17,6 @@ class InstituteListComponent extends BaseComponent
         ),
     );
 
-    public function getTableOnlyAction()
-    {
-        $this->arResult['TABLE_ONLY'] = true;
-        if (isset($this->arParams['SORT'])) {
-            $this->arResult['TABLE_SORT'] = json_decode($this->arParams['SORT'], true);
-        }
-        $this->processComponent();
-    }
-
     public function processComponent()
     {
         if (!isset($this->arResult['TABLE_ONLY'])) {
@@ -36,12 +27,12 @@ class InstituteListComponent extends BaseComponent
         $this->renderComponent();
     }
 
-    private function prepareHeader()
+    protected function prepareHeader()
     {
         $this->arResult['TABLE_HEADER'] = self::HEADER_COLUMN_MAP;
     }
 
-    private function prepareData()
+    protected function prepareData()
     {
         $this->arResult['TABLE_NAME'] = self::DEFAULT_TABLE_NAME;
     }

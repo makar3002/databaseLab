@@ -22,6 +22,18 @@
 }
 
 .delete-btn, .update-btn {
+    padding: 0;
     margin-bottom: auto;
     margin-top: auto;
+}
+
+.add-btn {
+    min-width: 300px;
+}
+
+.action-div {
+}
+
+.search-input {
+    max-width: 300px;
 }

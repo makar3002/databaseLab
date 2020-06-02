@@ -30,6 +30,7 @@ class TableList {
     entityTableClass = null;
     componentClass = 'Core\\Component\\TableList\\TableListComponent';
     sort = {};
+    search = '';
 
     constructor(entityClass, entityTableClass, sortFieldName, sortType) {
         this.entityClass = entityClass;
@@ -42,6 +43,16 @@ class TableList {
         $(document).on('click', '.add-btn', this.onClickAddButton.bind(this));
         $(document).on('click', '.delete-btn', this.onClickDeleteButton.bind(this));
         $(document).on('click', '.td-header', this.onClickHeaderElement.bind(this));
+        $('#submit-search-btn').on('click', this.onClickSearchButton.bind(this));
+        $('#search-input').keyup(function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                $('#submit-search-btn').click();
+            }
+        });
     }
 
     onClickHeaderElement(event)
@@ -89,6 +100,15 @@ class TableList {
     onClickDeleteButton(event)
     {
         this.openDeletePopup(event.target.dataset.elementId);
+    }
+
+    onClickSearchButton(event)
+    {
+        event.preventDefault();
+        let input = $('#search-input');
+        this.search = input.val();
+
+        this.refreshTable();
     }
 
     openUpdatePopup(response)
@@ -199,8 +219,6 @@ class TableList {
             }
         }
 
-        // TODO: remote update multiple field
-
         if (data['ID']) {
             elementData['ID'] = data['ID'];
             delete data['ID'];
@@ -222,6 +240,7 @@ class TableList {
     refreshTable()
     {
         let elementData = {
+            SEARCH: this.search,
             SORT: JSON.stringify(this.sort),
         };
 

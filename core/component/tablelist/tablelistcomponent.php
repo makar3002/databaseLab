@@ -1,7 +1,8 @@
 <?php
 namespace Core\Component\TableList;
-use core\component\general\BaseComponent;
-use core\orm\general\TableManager;
+
+use Core\Component\General\BaseComponent;
+use Core\Orm\General\TableManager;
 
 class TableListComponent extends BaseComponent
 {
@@ -16,6 +17,7 @@ class TableListComponent extends BaseComponent
     const DEFAULT_BUTTON_COLUMN_WIDTH = '10';
     const DEFAULT_FIELD_VALUE = 'Не задано';
     const DEFAULT_EMPTY_DATA_TITLE = 'Нет данных';
+    /** @var TableManager $entityClass */
     private $entityClass;
 
     public function processComponent()
@@ -158,8 +160,10 @@ class TableListComponent extends BaseComponent
         }
 
         $elementList = $this->entityClass::getList(array(
-            'order' => $this->arResult['TABLE_SORT']
+            'order' => $this->arResult['TABLE_SORT'],
+            'search' => isset($this->arParams['TABLE_SEARCH']) ? $this->arParams['TABLE_SEARCH'] : null
         ));
+
         $elementIdsList = array_column($elementList, 'ID');
         return array_combine($elementIdsList, $elementList);
     }

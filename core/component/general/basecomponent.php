@@ -1,5 +1,6 @@
 <?php
-namespace core\component\general;
+namespace Core\Component\General;
+
 abstract class BaseComponent
 {
     protected $arParams;

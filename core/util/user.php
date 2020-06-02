@@ -1,6 +1,6 @@
 <?php
-namespace core\util;
-use core\orm\UserTable;
+namespace Core\Util;
+use Core\Orm\UserTable;
 
 class User {
     private $session;

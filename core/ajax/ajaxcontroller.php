@@ -1,5 +1,5 @@
 <?php
-namespace core\ajax;
+namespace Core\ajax;
 require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
 
 ob_start();

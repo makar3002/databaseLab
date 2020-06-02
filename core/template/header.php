@@ -5,11 +5,11 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>Автомобильный гараж</title>
+    <title>Расписание</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/core/template/css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="/core/template/css/style.css">
     <link rel="stylesheet" href="/core/template/css/tablelist.css">
-    <link rel="stylesheet" href="/core/template/css/bootstrap/bootstrap.css">
     <script src="/core/template/js/jquery/jquery-3.4.1.min.js"></script>
     <script src="/core/template/js/util/popper.min.js"></script>
     <script src="/core/template/js/bootstrap/bootstrap.min.js"></script>
@@ -40,4 +40,4 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
         </div>
     </header>
 <!--</div>-->
-    <main id="main" class="pt-5 text-center">
+    <main id="main" class="pt-3 text-center">

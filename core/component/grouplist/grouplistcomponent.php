@@ -1,9 +1,10 @@
 <?php
 namespace Core\Component\GroupList;
-use core\component\general\BaseComponent;
-use core\orm\DirectionTable;
 
-class GroupListComponent extends BaseComponent
+use Core\Component\TableList\TableListComparable;
+use Core\Orm\DirectionTable;
+
+class GroupListComponent extends TableListComparable
 {
     const DEFAULT_TABLE_NAME = 'Студентческие группы';
     const HEADER_COLUMN_MAP = array(
@@ -25,15 +26,6 @@ class GroupListComponent extends BaseComponent
         ),
     );
 
-    public function getTableOnlyAction()
-    {
-        $this->arResult['TABLE_ONLY'] = true;
-        if (isset($this->arParams['SORT'])) {
-            $this->arResult['TABLE_SORT'] = json_decode($this->arParams['SORT'], true);
-        }
-        $this->processComponent();
-    }
-
     public function processComponent()
     {
         if (!isset($this->arResult['TABLE_ONLY'])) {
@@ -44,7 +36,7 @@ class GroupListComponent extends BaseComponent
         $this->renderComponent();
     }
 
-    private function prepareHeader()
+    protected function prepareHeader()
     {
         $this->arResult['TABLE_HEADER'] = self::HEADER_COLUMN_MAP;
         $directionList = DirectionTable::getList(array(
@@ -57,7 +49,7 @@ class GroupListComponent extends BaseComponent
         }
     }
 
-    private function prepareData()
+    protected function prepareData()
     {
         $this->arResult['TABLE_NAME'] = self::DEFAULT_TABLE_NAME;
     }

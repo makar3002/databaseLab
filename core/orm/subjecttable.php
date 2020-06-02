@@ -1,8 +1,8 @@
 <?php
 
-namespace core\orm;
-use core\orm\general\FieldAttributeType;
-use core\orm\general\TableManager;
+namespace Core\Orm;
+use Core\Orm\General\FieldAttributeType;
+use Core\Orm\General\TableManager;
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/orm/general/tablemanager.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/orm/subjecttoteachertable.php');
 

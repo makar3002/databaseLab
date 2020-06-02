@@ -1,6 +1,6 @@
 <?
-use core\component\nonauthorized\NonAuthorizedComponent;
-use core\component\profile\ProfileComponent;
+use Core\Component\nonauthorized\NonAuthorizedComponent;
+use Core\Component\profile\ProfileComponent;
 ?>
 
 <?if ($arResult['IS_AJAX_REQUEST']) :?>

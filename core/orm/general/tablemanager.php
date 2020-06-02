@@ -1,5 +1,5 @@
 <?php
-namespace core\orm\general;
+namespace Core\Orm\General;
 
 use PDO;
 
@@ -90,6 +90,18 @@ class TableManager
 
             if (!empty($arFilter)) {
                 $query .= 'WHERE ' . implode(' AND ', $arFilter) . ' ';
+            }
+        }
+
+        if (isset($arFields['search']) && !empty($arFields['search'])) {
+            $arSearch = array();
+
+            foreach ($tableMap as $key => $value) {
+                $arSearch[] = $key . ' LIKE \'%' . $arFields['search'] . '%\'';
+            }
+
+            if (!empty($arSearch)) {
+                $query .= 'WHERE ' . implode(' OR ', $arSearch) . ' ';
             }
         }
 

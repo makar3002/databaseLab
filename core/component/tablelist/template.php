@@ -4,12 +4,16 @@
 ?>
 
 <?if (!$arResult['TABLE_ONLY']) :?>
-<button type="button" class="btn btn-primary add-btn p-3">
-    Добавить элемент
-</button>
+<div class="d-inline-flex action-div">
+    <button type="button" class="btn btn-primary add-btn p-2 mr-4">Добавить элемент</button>
+    <div class="container d-inline-flex h-25">
+        <input type="text" id="search-input" class="form-control search-input m-1" placeholder="Поиск">
+        <button class="btn btn-primary m-1" type="submit" id="submit-search-btn">Поиск</button>
+    </div>
+</div>
 <div id="table-list">
 <?endif;?>
-    <article class="m-5 entry">
+    <article class="mx-5 my-3 entry">
     <?if ($arResult['IS_DATA_EMPTY']) :?>
         <h5><?=$arResult['EMPTY_DATA_TITLE']?></h5>
     <?else :?>
@@ -53,8 +57,8 @@
                         ?>
                     </td>
                 <?endforeach;?>
-                    <td width="<?=$arResult['BUTTON_COLUMN_WIDTH']?>%"><button type="button" class="btn btn-primary update-btn change p-0" data-element-id="<?=$id?>">Изменить</button></td>
-                    <td width="<?=$arResult['BUTTON_COLUMN_WIDTH']?>%"><button type="button" class="btn btn-primary delete-btn delete p-0" data-element-id="<?=$id?>">Удалить</button></td>
+                    <td width="<?=$arResult['BUTTON_COLUMN_WIDTH']?>%"><button type="button" class="btn btn-primary update-btn change px-1" data-element-id="<?=$id?>">Изменить</button></td>
+                    <td width="<?=$arResult['BUTTON_COLUMN_WIDTH']?>%"><button type="button" class="btn btn-primary delete-btn delete px-1" data-element-id="<?=$id?>">Удалить</button></td>
                 </tr>
             <?endforeach;?>
         </table>

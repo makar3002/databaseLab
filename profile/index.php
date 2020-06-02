@@ -1,4 +1,4 @@
-<? use core\component\profile\ProfileComponent;
+<? use Core\Component\profile\ProfileComponent;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/template/header.php');?>
     <!--Content here-->

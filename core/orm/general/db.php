@@ -1,5 +1,5 @@
 <?php
-namespace core\orm\general;
+namespace Core\Orm\General;
 use PDO;
 use PDOException;
 
