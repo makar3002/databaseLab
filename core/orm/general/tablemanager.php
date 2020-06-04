@@ -45,12 +45,25 @@ class TableManager
     public static function getList($arFields)
     {
         $query = 'SELECT ';
+        $joinQuery = static::getJoinQuery();
+
+        $namePrefix = '';
+        if (!empty($joinQuery)) {
+            $namePrefix = static::getTableName() . '.';
+        }
         $tableMap = static::getTableMap();
+        if (!isset($arFields['select'])) {
+            $arFields['select'] = array_keys($tableMap);
+        }
+
         if (isset($arFields['select']) && !empty($arFields['select'])) {
-            foreach ($arFields['select'] as $key => $columnId) {
+            foreach ($arFields['select'] as $key => &$columnId) {
                 if (!array_key_exists($columnId, $tableMap) || !FieldAttributeType::canSelectField($tableMap[$columnId])) {
+                    unset($arFields['select'][$key]);
                     continue;
                 }
+
+                $columnId = $namePrefix . $columnId;
             }
 
             $query .= implode(', ', $arFields['select']) . ' ';
@@ -82,9 +95,9 @@ class TableManager
                 }
 
                 if ($key[0] == '@' && is_array($value)) {
-                    $arFilter[] = substr($key, 1) . ' IN (\'' . implode('\', \'', $value) . '\')';
+                    $arFilter[] = $namePrefix . substr($key, 1) . ' IN (\'' . implode('\', \'', $value) . '\')';
                 } else {
-                    $arFilter[] = substr($key, $key[0] == '=' ? 1 : 0) . ' = \'' . $value . '\'';
+                    $arFilter[] = $namePrefix . substr($key, $key[0] == '=' ? 1 : 0) . ' = \'' . $value . '\'';
                 }
             }
 
@@ -97,7 +110,7 @@ class TableManager
             $arSearch = array();
 
             foreach ($tableMap as $key => $value) {
-                $arSearch[] = $key . ' LIKE \'%' . $arFields['search'] . '%\'';
+                $arSearch[] = $namePrefix . $key . ' LIKE \'%' . $arFields['search'] . '%\'';
             }
 
             if (!empty($arSearch)) {
@@ -113,7 +126,11 @@ class TableManager
                     continue;
                 }
 
-                $arOrder[] = $key . ' ' . $value;
+                if (FieldAttributeType::isJoinTableField($tableMap[$key])) {
+                    $arOrder[] = $key . ' ' . $value;
+                } else {
+                    $arOrder[] = $namePrefix . $key . ' ' . $value;
+                }
             }
 
             if (!empty($arOrder)) {

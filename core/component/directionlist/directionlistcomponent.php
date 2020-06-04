@@ -18,7 +18,8 @@ class DirectionListComponent extends TableListComparable
         ),
         'INSTITUTE_ID' => array(
             'NAME' => 'Институт',
-            'WIDTH' => 40
+            'WIDTH' => 40,
+            'SORT_CODE' => 'institute.NAME'
         ),
     );
 

@@ -18,7 +18,16 @@ class TeacherTable extends TableManager
                 FieldAttributeType::READ_ONLY
             ),
             'NAME' => array(),
-            'INSTITUTE_ID' => array()
+            'INSTITUTE_ID' => array(),
+            'institute.NAME' => array(
+                FieldAttributeType::FROM_JOIN_TABLE,
+                FieldAttributeType::WHERE_ONLY,
+            )
         );
+    }
+
+    protected static function getJoinQuery()
+    {
+        return 'INNER JOIN institute ON institute.ID = teacher.INSTITUTE_ID';
     }
 }

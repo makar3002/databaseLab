@@ -101,13 +101,16 @@ class SubjectTable extends TableManager
             'TEACHER_IDS' => array(
                 FieldAttributeType::SELECT_ONLY,
                 FieldAttributeType::ARRAY_VALUE
+            ),
+            'institute.NAME' => array(
+                FieldAttributeType::FROM_JOIN_TABLE,
+                FieldAttributeType::WHERE_ONLY,
             )
         );
     }
 
-//    protected static function getJoinQuery()
-//    {
-//        $subjectToTeacherTableName = SubjectToTeacherTable::getTableName();
-//        return 'INNER JOIN `' . $subjectToTeacherTableName . '` ON ' . self::getTableName() . '.id = `' . $subjectToTeacherTableName . '`.subject_id';
-//    }
+    protected static function getJoinQuery()
+    {
+        return 'INNER JOIN institute ON institute.ID = subject.INSTITUTE_ID';
+    }
 }

@@ -19,6 +19,15 @@ class DirectionTable extends TableManager
             ),
             'NAME' => array(),
             'INSTITUTE_ID' => array(),
+            'institute.NAME' => array(
+                FieldAttributeType::FROM_JOIN_TABLE,
+                FieldAttributeType::WHERE_ONLY
+            )
         );
+    }
+
+    protected static function getJoinQuery()
+    {
+        return 'INNER JOIN institute ON institute.ID = direction.INSTITUTE_ID';
     }
 }

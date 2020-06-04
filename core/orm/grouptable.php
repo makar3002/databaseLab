@@ -19,7 +19,16 @@ class GroupTable extends TableManager
             ),
             'NAME' => array(),
             'COUNT' => array(),
-            'DIRECTION_ID' => array()
+            'DIRECTION_ID' => array(),
+            'direction.NAME' => array(
+                FieldAttributeType::FROM_JOIN_TABLE,
+                FieldAttributeType::WHERE_ONLY,
+            )
         );
+    }
+
+    protected static function getJoinQuery()
+    {
+        return 'INNER JOIN direction ON direction.ID = direct_group.DIRECTION_ID';
     }
 }

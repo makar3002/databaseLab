@@ -24,11 +24,24 @@
             <tr>
             <?foreach ($arResult['TABLE_HEADER'] as $fieldName => $headerElement) :?>
                 <td width="<?=$headerElement['WIDTH']?>%" class="<?=$headerElement['CLASS']?>">
-                    <div class="td-header" data-field-name="<?=$fieldName?>"<?= (isset($arResult['TABLE_SORT'][$fieldName])) ? 'data-sort="' . $arResult['TABLE_SORT'][$fieldName] . '"' : ''?>>
+                    <div
+                            class="td-header"
+                            data-field-name="<?= isset($headerElement['SORT_CODE']) ? $headerElement['SORT_CODE'] : $fieldName?>"
+                            <?= (isset($arResult['TABLE_SORT'][$fieldName])) ?
+                            'data-sort="' . $arResult['TABLE_SORT'][$fieldName] . '"' :
+                                (
+                                        (isset($headerElement['SORT_CODE']) && isset($arResult['TABLE_SORT'][$headerElement['SORT_CODE']]))
+                                            ? 'data-sort="' . $arResult['TABLE_SORT'][$headerElement['SORT_CODE']] . '"'
+                                            : ''
+                                )
+                            ?>
+                    >
                         <span><?=$headerElement['NAME']?></span>
                         <? if (isset($arResult['TABLE_SORT'][$fieldName])) : ?>
                             <span class="arrow-<?=$arResult['TABLE_SORT'][$fieldName]?>"></span>
-                        <?endif;?>
+                        <? elseif (isset($headerElement['SORT_CODE']) && isset($arResult['TABLE_SORT'][$headerElement['SORT_CODE']])) :?>
+                            <span class="arrow-<?=$arResult['TABLE_SORT'][$headerElement['SORT_CODE']]?>"></span>
+                        <? endif;?>
                     </div>
                 </td>
             <?endforeach;?>

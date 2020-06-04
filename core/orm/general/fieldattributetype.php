@@ -7,15 +7,25 @@ class FieldAttributeType
     const SELECT_ONLY = 'S_O';
     const ARRAY_VALUE = 'A_V';
     const SELECT_AND_WHERE_ONLY = 'S_W_O';
+    const FROM_JOIN_TABLE = 'F_J_T';
     const REQUIRED = 'R';
+
+    public static function isJoinTableField ($arFieldAttributes)
+    {
+        if (!self::checkFieldAttributes($arFieldAttributes)) {
+            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
+        }
+        $isJoinTableField = is_int(array_search(self::FROM_JOIN_TABLE, $arFieldAttributes));
+        return $isJoinTableField;
+    }
 
     public static function canSelectField ($arFieldAttributes)
     {
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
         }
-        $isWhereOnly = array_search(self::WHERE_ONLY, $arFieldAttributes);
-        $hasArrayValue = array_search(self::ARRAY_VALUE, $arFieldAttributes);
+        $isWhereOnly = is_int(array_search(self::WHERE_ONLY, $arFieldAttributes));
+        $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
 
         $canSelectField = !$isWhereOnly && !$hasArrayValue;
         return $canSelectField;
@@ -26,9 +36,9 @@ class FieldAttributeType
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
         }
-        $isSelectOnly = array_search(self::SELECT_ONLY, $arFieldAttributes);
-        $hasArrayValue = array_search(self::ARRAY_VALUE, $arFieldAttributes);
-        $isSelectAndUpdateOnly = array_search(self::SELECT_AND_WHERE_ONLY, $arFieldAttributes);
+        $isSelectOnly = is_int(array_search(self::SELECT_ONLY, $arFieldAttributes));
+        $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
+        $isSelectAndUpdateOnly = is_int(array_search(self::SELECT_AND_WHERE_ONLY, $arFieldAttributes));
 
         $canFilterField = !$isSelectOnly && !$hasArrayValue && !$isSelectAndUpdateOnly;
         return $canFilterField;
@@ -39,10 +49,10 @@ class FieldAttributeType
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
         }
-        $isReadOnly = array_search(self::READ_ONLY, $arFieldAttributes);
-        $hasArrayValue = array_search(self::ARRAY_VALUE, $arFieldAttributes);
-        $isSelectOnly = array_search(self::SELECT_ONLY, $arFieldAttributes);
-        $isWhereOnly = array_search(self::WHERE_ONLY, $arFieldAttributes);
+        $isReadOnly = is_int(array_search(self::READ_ONLY, $arFieldAttributes));
+        $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
+        $isSelectOnly = is_int(array_search(self::SELECT_ONLY, $arFieldAttributes));
+        $isWhereOnly = is_int(array_search(self::WHERE_ONLY, $arFieldAttributes));
 
         $canUpdateField = !$isReadOnly && !$hasArrayValue && !$isSelectOnly && !$isWhereOnly;
         return $canUpdateField;
@@ -53,7 +63,7 @@ class FieldAttributeType
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
         }
-        $isRequired = array_search(self::REQUIRED, $arFieldAttributes);
+        $isRequired = is_int(array_search(self::REQUIRED, $arFieldAttributes));
 
         return $isRequired;
     }
@@ -63,8 +73,8 @@ class FieldAttributeType
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
         }
-        $isReadOnly = array_search(self::READ_ONLY, $arFieldAttributes);
-        $hasArrayValue = array_search(self::ARRAY_VALUE, $arFieldAttributes);
+        $isReadOnly = is_int(array_search(self::READ_ONLY, $arFieldAttributes));
+        $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
 
         $canAddField = !$isReadOnly && !$hasArrayValue;
         return $canAddField;
