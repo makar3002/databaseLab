@@ -72,7 +72,6 @@ class Validator {
                 return true;
             case 'password':
                 if (data.length <= 5) {
-                    alert("Неправильный пароль - должно быть больше 5 символов!");
                     return false;
                 }
                 return true;

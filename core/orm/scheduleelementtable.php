@@ -1,11 +1,23 @@
 <?php
 namespace Core\Orm;
+use Core\Orm\General\DB;
 use Core\Orm\General\FieldAttributeType;
 use Core\Orm\General\TableManager;
+use PDO;
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/orm/general/tablemanager.php');
 
 class ScheduleElementTable extends TableManager
 {
+    public static function getScheduleByDirectionId($directionId)
+    {
+        $query = 'CALL GET_SCHEDULE_BY_DIRECTION_ID(' . $directionId. ');';
+        $connection = DB::getInstance();
+        $sdh = $connection->prepare($query);
+        $sdh->execute();
+        return $sdh->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public static function getTableName()
     {
         return 'schedule_element';
