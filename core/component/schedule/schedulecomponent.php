@@ -2,6 +2,8 @@
 namespace Core\Component\Schedule;
 
 use Core\Component\General\BaseComponent;
+use Core\Orm\DirectionTable;
+use Core\Orm\GroupTable;
 use Core\Orm\ScheduleElementTable;
 
 class ScheduleComponent extends BaseComponent
@@ -33,23 +35,38 @@ class ScheduleComponent extends BaseComponent
 
     public function processComponent()
     {
-        if (isset($this->arParams['DIRECTION_ID'])) {
-            $this->arResult['DIRECTION_ID'] = $this->arParams['DIRECTION_ID'];
-        }
+        $this->prepareParams();
         $this->prepareData();
         $this->renderComponent();
     }
 
-    public function refreshTable()
+    public function refreshTableAction()
+    {
+        $this->arResult['TABLE_ONLY'] = true;
+        $this->processComponent();
+    }
+
+    private function prepareParams()
     {
         if (isset($this->arParams['DIRECTION_ID'])) {
             $this->arResult['DIRECTION_ID'] = $this->arParams['DIRECTION_ID'];
         }
-        $this->processComponent();
+        if (!isset($this->arResult['TABLE_ONLY'])) {
+            $this->arResult['TABLE_ONLY'] = false;
+        }
     }
 
     private function prepareData()
     {
+        $groupList = GroupTable::getList(array(
+            'select' => array('DIRECTION_ID'),
+        ));
+        $directionList = DirectionTable::getList(array(
+            'select' => array('ID', 'NAME'),
+            'filter' => array('@ID' => array_unique(array_column($groupList, 'DIRECTION_ID')))
+        ));
+        $this->arResult['DIRECTION_ID_LIST'] = array_combine(array_column($directionList, 'ID'), array_column($directionList, 'NAME'));
+
         if (isset($this->arResult['DIRECTION_ID']) && intval($this->arResult['DIRECTION_ID']) > 0) {
             $directionId = intval($this->arResult['DIRECTION_ID']);
             $rawData = ScheduleElementTable::getScheduleByDirectionId($directionId);
@@ -72,7 +89,20 @@ class ScheduleComponent extends BaseComponent
                                 continue;
                             }
 
-                            $topGroupBlock = $this->prepareScheduleElement($scheduleElement);
+                            $index = 0;
+                            $elementType = intval($scheduleElement['TYPE']);
+                            $elementSubgroup = intval($scheduleElement['SUBGROUP']);
+                            if ($elementSubgroup > 1) {
+                                $index = 2;
+                            } else {
+                                $index = 1;
+                            }
+
+                            if ($elementType == 2) {
+                                $index += 2;
+                            }
+
+                            $topGroupBlock[$index] = $this->prepareScheduleElement($scheduleElement);
                             unset($rawData[$key]);
                         }
                         $leftNumberBlock[$groupName] = $topGroupBlock;

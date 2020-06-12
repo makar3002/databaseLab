@@ -7,6 +7,7 @@ table td .vertical {
     -o-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
+
 table td p {
     margin:0 -100%;
     margin-top: 200px;
@@ -15,7 +16,17 @@ table td p {
 }
 
 table {
-    text-align:center;
-    table-layout:fixed;
-    width:150px;
+    text-align: center;
+    table-layout: fixed;
+    width: 99% !important;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    padding: 3px;
+    border-top: #212529;
+}
+
+.table td div {
+    min-height: 30px;
 }
