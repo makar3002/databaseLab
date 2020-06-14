@@ -5,8 +5,6 @@ use Core\Orm\General\FieldAttributeType;
 use Core\Orm\General\TableManager;
 use PDO;
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/core/orm/general/tablemanager.php');
-
 class ScheduleElementTable extends TableManager
 {
     public static function getScheduleByDirectionId($directionId)

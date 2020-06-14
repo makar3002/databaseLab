@@ -3,11 +3,11 @@ namespace Core\Orm;
 use Core\Orm\General\FieldAttributeType;
 use Core\Orm\General\TableManager;
 
-class AuditoriumTable extends TableManager
+class RightActionTable extends TableManager
 {
     public static function getTableName()
     {
-        return 'auditorium';
+        return 'right_action';
     }
 
     protected static function getTableMap()
@@ -16,8 +16,8 @@ class AuditoriumTable extends TableManager
             'ID' => array(
                 FieldAttributeType::READ_ONLY
             ),
+            'CODE' => array(),
             'NAME' => array(),
-            'CAPACITY' => array(),
         );
     }
 }
