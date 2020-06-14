@@ -20,7 +20,7 @@
     <?if (empty($arResult['DIRECTION_ID'])) :?>
         <h5>Выберите направление.</h5>
     <?else :?>
-    <table border="1px" class="table mx-auto mb-2">
+    <table border="1px" class="schedule-table table mx-auto mb-2">
         <caption>
             <h5>Расписание</h5>
         </caption>

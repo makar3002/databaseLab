@@ -17,7 +17,7 @@
     <?if ($arResult['IS_DATA_EMPTY']) :?>
         <h5><?=$arResult['EMPTY_DATA_TITLE']?></h5>
     <?else :?>
-        <table class="table">
+        <table class="table mx-auto mb">
             <caption>
                 <h5><?=$arParams['TABLE_NAME']?></h5>
             </caption>

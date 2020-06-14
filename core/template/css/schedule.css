@@ -21,9 +21,9 @@ table {
     width: 99% !important;
 }
 
-.table td, .table th {
+.schedule-table td, .schedule-table th {
     vertical-align: middle;
-    padding: 3px;
+    /*padding: 3px;*/
     border-top: #212529;
 }
 

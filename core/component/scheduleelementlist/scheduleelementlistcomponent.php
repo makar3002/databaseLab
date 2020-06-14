@@ -79,7 +79,7 @@ class ScheduleElementListComponent extends TableListComparable
         'GROUP_ID' => array(
             'NAME' => 'Группа',
             'WIDTH' => 10,
-            'SORT_CODE' => 'group.NAME'
+            'SORT_CODE' => 'direct_group.NAME'
         ),
         'AUDITORIUM_ID' => array(
             'NAME' => 'Аудитория',

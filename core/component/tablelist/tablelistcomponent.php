@@ -50,17 +50,21 @@ class TableListComponent extends BaseComponent
         }
         $fields = json_decode($this->arParams['FIELDS'], true);
 
-        foreach ($fields as $fieldName => $value) {
-            if (!is_array($value)) {
-                continue;
+        try {
+            foreach ($fields as $fieldName => $value) {
+                if (!is_array($value)) {
+                    continue;
+                }
+
+                $this->entityClass::updateBindEntity($this->arParams['ID'], $fieldName, $value);
+                unset($fields[$fieldName]);
             }
 
-            $this->entityClass::updateBindEntity($this->arParams['ID'], $fieldName, $value);
-            unset($fields[$fieldName]);
+            /** @var TableManager this->entityClass*/
+            $this->entityClass::update($this->arParams['ID'], $fields);
+        } catch (\RuntimeException $e) {
+            echo $e->getMessage();
         }
-
-        /** @var TableManager entityTableClass */
-        $this->entityClass::update($this->arParams['ID'], $fields);
     }
 
     public function addElementAction()
@@ -80,8 +84,12 @@ class TableListComponent extends BaseComponent
             unset($fields[$fieldName]);
         }
 
-        /** @var TableManager entityTableClass */
-        $elementId = $this->entityClass::add($fields);
+        try {
+            /** @var TableManager this->entityClass*/
+            $elementId = $this->entityClass::add($fields);
+        } catch (\RuntimeException $e) {
+            echo $e->getMessage();
+        }
 
         foreach ($multipleFields as $fieldName => $value) {
             $this->entityClass::updateBindEntity($elementId, $fieldName, $value);

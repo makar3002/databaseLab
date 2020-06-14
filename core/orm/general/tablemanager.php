@@ -37,6 +37,10 @@ class TableManager
         $connection = DB::getInstance();
         $sdh = $connection->prepare($query);
         $sdh->execute();
+        $errorInfo = $sdh->errorInfo();
+        if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
+            throw new \RuntimeException($errorInfo[2]);
+        }
         $sdh = $connection->prepare('SELECT LAST_INSERT_ID();');
         $sdh->execute();
         return $sdh->fetch()['LAST_INSERT_ID()'];
@@ -204,12 +208,12 @@ class TableManager
 
         $connection = DB::getInstance();
         $sdh = $connection->prepare($query);
-
-        if ($sdh->execute()) {
-            return static::getById($id);
-        };
-
-        return false;
+        $sdh->execute();
+        $errorInfo = $sdh->errorInfo();
+        if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
+            throw new \RuntimeException($errorInfo[2]);
+        }
+        return static::getById($id);
     }
 
     public static function delete($id)
