@@ -61,7 +61,6 @@
                                     }
                                 }
                             } else {
-                                var_dump($element);
                                 $value = $headerElement['VALUES'][$element[$fieldName]];
                             }
                             echo $value;
