@@ -2,7 +2,6 @@
 namespace Core\Util;
 
 use Core\Orm\RightActionTable;
-use Core\Orm\RightActionToGroupTable;
 use Core\Orm\RightGroupTable;
 
 class Right {

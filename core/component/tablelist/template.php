@@ -25,7 +25,7 @@
             <?foreach ($arResult['TABLE_HEADER'] as $fieldName => $headerElement) :?>
                 <td width="<?=$headerElement['WIDTH']?>%" class="<?=$headerElement['CLASS']?>">
                     <div
-                            class="td-header"
+                            <?= !(isset($headerElement['IS_MULTIPLE']) && $headerElement['IS_MULTIPLE']) ? 'class="td-header"' : '';?>
                             data-field-name="<?= isset($headerElement['SORT_CODE']) ? $headerElement['SORT_CODE'] : $fieldName?>"
                             <?= (isset($arResult['TABLE_SORT'][$fieldName])) ?
                             'data-sort="' . $arResult['TABLE_SORT'][$fieldName] . '"' :
