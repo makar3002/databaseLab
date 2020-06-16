@@ -53,12 +53,16 @@
                 <?foreach ($arResult['TABLE_HEADER'] as $fieldName => $headerElement) :?>
                     <td width="<?=$headerElement['WIDTH']?>%" class="<?=$headerElement['CLASS']?>">
                         <?if (isset($headerElement['VALUES'])) {
-                            if (isset($headerElement['IS_MULTIPLE']) && $headerElement['IS_MULTIPLE'] && is_array($element[$fieldName])) {
+                            if (isset($headerElement['IS_MULTIPLE']) && $headerElement['IS_MULTIPLE']) {
                                 $value = '';
-                                foreach ($headerElement['VALUES'] as $key => $fieldValue) {
-                                    if (in_array($key, $element[$fieldName])) {
-                                        $value .= ((!empty($value)) ? ', ' : '') . $fieldValue;
+                                if (is_array($element[$fieldName]) && !empty($element[$fieldName])) {
+                                    foreach ($headerElement['VALUES'] as $key => $fieldValue) {
+                                        if (in_array($key, $element[$fieldName])) {
+                                            $value .= ((!empty($value)) ? ', ' : '') . $fieldValue;
+                                        }
                                     }
+                                } else {
+                                    $value = $element[$fieldName];
                                 }
                             } else {
                                 $value = $headerElement['VALUES'][$element[$fieldName]];
@@ -117,7 +121,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title p-0" id="add-popup-title">Изменить запись</h5>
+                <h5 class="modal-title p-0" id="add-popup-title">Добавить запись</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="add-popup-close-btn">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -180,3 +184,10 @@
     });
 </script>
 <?endif;?>
+<script>
+    $(document).ready(function () {
+        document.addEventListener('Authorization::Success', function () {
+            location.href = location.href;
+        });
+    });
+</script>

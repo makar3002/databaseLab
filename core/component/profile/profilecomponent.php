@@ -17,6 +17,14 @@ class  ProfileComponent extends BaseComponent
             $user = UserTable::getById($userInstance->getId());
             $this->arResult = array_merge($this->arResult, $user);
         }
+        $userRights = $userInstance->getRights();
+        if (isset($userRights)) {
+            $this->arResult['CAN_MANIPULATE_USERS'] = $userRights->checkActionByCode('U');
+            $this->arResult['CAN_USER_EXECUTE_SQL_QUERY'] = $userRights->checkActionByCode('M');
+        } else {
+            $this->arResult['CAN_MANIPULATE_USERS'] = false;
+            $this->arResult['CAN_USER_EXECUTE_SQL_QUERY'] = false;
+        }
         $this->arResult['IS_USER_AUTHORIZED'] = $isUserAuthorized;
         $this->arResult['IS_AJAX_REQUEST'] = Request::isAjaxRequest();
 

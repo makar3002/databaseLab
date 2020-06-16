@@ -5,10 +5,19 @@ use Core\Orm\UserTable;
 class User {
     private $session;
     private static $instance;
+    private $right;
+    private $user;
     private function __construct()
     {
         session_start();
         $this->session = &$_SESSION;
+        if (isset($this->session['USER_ID'])) {
+            $this->user = UserTable::getList(array(
+                'select' => array('ID', 'GROUP_IDS'),
+                'filter' => array('ID' => $this->session['USER_ID'])
+            ))[0];
+            $this->right = new Right($this->user['GROUP_IDS']);
+        }
     }
 
     public static function getInstance()
@@ -50,6 +59,11 @@ class User {
             throw new \RuntimeException('Пользователя с таким id не существует.');
         }
         $this->setupSessionWithUserId($userId);
+    }
+
+    public function getRights()
+    {
+        return $this->right;
     }
 
     public function logoutUser()

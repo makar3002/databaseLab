@@ -4,12 +4,11 @@ use Core\Component\profile\ProfileComponent;
 use Core\Component\UserList\UserListComponent;
 ?>
 
-<?if ($arResult['IS_AJAX_REQUEST']) :?>
-    <?if ($arResult['IS_USER_AUTHORIZED']) :?>
+<?if (!isset($arParams['QUERY']) :?>
     <div>
         <form class="form-signin" method="post" id="profileForm">
             <div class="text-center mb-4">
-                <p>Профиль пользователя</p>
+                <p>SQL-запросы</p>
             </div>
 
             <div class="form-label-group">
@@ -40,20 +39,6 @@ use Core\Component\UserList\UserListComponent;
             <button class="btn btn-primary sign-in-btn" id="profile-save-btn" type="button">Сохранить</button>
         </form>
     </div>
-    <?else :?>
-        <?
-            $component = new NonAuthorizedComponent(array());
-            $component->processComponent()
-        ?>
-    <?endif;?>
-    <?if ($arResult['CAN_MANIPULATE_USERS']) :?>
-        <hr>
-        <?
-            $component = new UserListComponent(array());
-            $component->processComponent();
-        ?>
-    <?endif;?>
-<?else :?>
     <script>
         $(document).ready(function () {
             let profile = new Profile("<?=str_replace('\\', '\\\\', ProfileComponent::class);?>");

@@ -10,7 +10,12 @@ class UserTable extends TableManager
     public static function getList($arFields)
     {
         $userList = parent::getList($arFields);
-        if (isset($arFields['select']) && !array_search('GROUP_IDS', $arFields['select'])) {
+        if (
+            isset($arFields['select']) && !empty($arFields['select']) && (
+                !is_int(array_search('GROUP_IDS', $arFields['select']))
+                || !is_int(array_search('ID', $arFields['select']))
+            )
+        ) {
             return $userList;
         }
 
@@ -30,7 +35,7 @@ class UserTable extends TableManager
 
     public static function updateBindEntity($id, $fieldId, $fieldValues)
     {
-        if ($fieldId == 'USER_IDS') {
+        if ($fieldId == 'GROUP_IDS') {
             $currentGroup = array_column(RightUserToGroupTable::getList(array(
                 'select' => array('ID'),
                 'filter' => array('USER_ID' => $id)

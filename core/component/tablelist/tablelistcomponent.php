@@ -148,7 +148,7 @@ class TableListComponent extends BaseComponent
         $tableHeader = $this->arResult['TABLE_HEADER'];
         foreach ($tableData as &$element) {
             foreach ($tableHeader as $fieldName => $fieldParams) {
-                if (isset($element[$fieldName])) {
+                if (isset($element[$fieldName]) && !empty($element[$fieldName])) {
                     continue;
                 }
 

@@ -11,7 +11,12 @@ class SubjectTable extends TableManager
     public static function getList($arFields)
     {
         $subjectList = parent::getList($arFields);
-        if (isset($arFields['select']) && !array_search('TEACHER_IDS', $arFields['select'])) {
+        if (
+            isset($arFields['select']) && !empty($arFields['select']) && (
+                !is_int(array_search('TEACHER_IDS', $arFields['select']))
+                || !is_int(array_search('ID', $arFields['select']))
+            )
+        ) {
             return $subjectList;
         }
 
