@@ -20,7 +20,7 @@ class  ProfileComponent extends BaseComponent
         $userRights = $userInstance->getRights();
         if (isset($userRights)) {
             $this->arResult['CAN_MANIPULATE_USERS'] = $userRights->checkActionByCode('U');
-            $this->arResult['CAN_USER_EXECUTE_SQL_QUERY'] = $userRights->checkActionByCode('M');
+            $this->arResult['CAN_USER_EXECUTE_SQL_QUERY'] = $userRights->checkActionByCode('D');
         } else {
             $this->arResult['CAN_MANIPULATE_USERS'] = false;
             $this->arResult['CAN_USER_EXECUTE_SQL_QUERY'] = false;
