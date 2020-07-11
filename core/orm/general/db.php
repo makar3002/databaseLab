@@ -25,8 +25,6 @@ class DB {
     {
         if (empty(self::$instance))
         {
-            self::$instance = new DB();
-
             $connectionConfig = array(
                 'HOST' => 'localhost',
                 'DATABASE_NAME' => 'schedule',
