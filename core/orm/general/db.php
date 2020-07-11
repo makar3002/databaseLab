@@ -83,7 +83,8 @@ class DB {
         return $this->pdoStatementInstance->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getError() {
+    public function getError()
+    {
         return $this->pdoStatementInstance->errorInfo();
     }
 }
