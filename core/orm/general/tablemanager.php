@@ -34,16 +34,16 @@ class TableManager
         $query .= '(' . implode(', ', $arKeys) . ') VALUES (\'' .
             implode('\', \'', $arValues) . '\');';
 
-        $connection = DB::getInstance();
-        $sdh = $connection->prepare($query);
-        $sdh->execute();
-        $errorInfo = $sdh->errorInfo();
+        $db = DB::getInstance();
+        $db->prepare($query);
+        $db->execute();
+        $errorInfo = $db->getError();
         if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
             throw new \RuntimeException($errorInfo[2]);
         }
-        $sdh = $connection->prepare('SELECT LAST_INSERT_ID();');
-        $sdh->execute();
-        return $sdh->fetch()['LAST_INSERT_ID()'];
+        $db->prepare('SELECT LAST_INSERT_ID();');
+        $db->execute();
+        return $db->fetch()['LAST_INSERT_ID()'];
     }
 
     public static function getList($arFields)
@@ -154,10 +154,10 @@ class TableManager
             }
         }
 
-        $connection = DB::getInstance();
-        $sdh = $connection->prepare($query);
-        $sdh->execute();
-        return $sdh->fetchAll(PDO::FETCH_ASSOC);
+        $db = DB::getInstance();
+        $db->prepare($query);
+        $db->execute();
+        return $db->fetchAll();
     }
 
     public static function getById($id)
@@ -206,10 +206,10 @@ class TableManager
 
         $query .= 'SET ' . implode(', ', $arUpdate) . ' WHERE id = \'' . $id . '\'';
 
-        $connection = DB::getInstance();
-        $sdh = $connection->prepare($query);
-        $sdh->execute();
-        $errorInfo = $sdh->errorInfo();
+        $db = DB::getInstance();
+        $db->prepare($query);
+        $db->execute();
+        $errorInfo = $db->getError();
         if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
             throw new \RuntimeException($errorInfo[2]);
         }
@@ -225,9 +225,9 @@ class TableManager
 
         $query = 'DELETE FROM ' . static::getTableName() . ' WHERE ID = ' . $id . ';';
 
-        $connection = DB::getInstance();
-        $sdh = $connection->prepare($query);
-        return $sdh->execute();
+        $db = DB::getInstance();
+        $db->prepare($query);
+        return $db->execute();
     }
 
     protected static function getJoinQuery()
