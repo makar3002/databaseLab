@@ -116,7 +116,7 @@ class TableManager
             foreach ($tableMap as $key => $value) {
                 if (FieldAttributeType::isJoinTableField($tableMap[$key])) {
                     $arSearch[] = $key . ' LIKE \'%' . $arFields['search'] . '%\'';
-                } else {
+                } else if (FieldAttributeType::canFilterField($tableMap[$key])) {
                     $arSearch[] = $namePrefix . $key . ' LIKE \'%' . $arFields['search'] . '%\'';
                 }
             }

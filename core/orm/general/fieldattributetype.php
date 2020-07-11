@@ -15,7 +15,10 @@ class FieldAttributeType
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
         }
-        $isJoinTableField = is_int(array_search(self::FROM_JOIN_TABLE, $arFieldAttributes));
+        $isFromJoinTableField = is_int(array_search(self::FROM_JOIN_TABLE, $arFieldAttributes));
+        $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
+
+        $isJoinTableField = $isFromJoinTableField && !$hasArrayValue;
         return $isJoinTableField;
     }
 
