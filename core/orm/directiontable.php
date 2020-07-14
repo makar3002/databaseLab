@@ -14,19 +14,23 @@ class DirectionTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'NAME' => array(),
-            'INSTITUTE_ID' => array(),
-            'institute.NAME' => array(
-                FieldAttributeType::FROM_JOIN_TABLE,
-                FieldAttributeType::WHERE_ONLY
+            'NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'INSTITUTE_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => InstituteTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'INSTITUTE_NAME' => 'NAME'
+                    )
+                ),
             )
         );
-    }
-
-    protected static function getJoinQuery()
-    {
-        return 'INNER JOIN institute ON institute.ID = direction.INSTITUTE_ID';
     }
 }

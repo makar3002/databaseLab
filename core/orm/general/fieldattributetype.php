@@ -1,5 +1,7 @@
 <?php
 namespace Core\Orm\General;
+use RuntimeException;
+
 class FieldAttributeType
 {
     const READ_ONLY = 'R_O';
@@ -7,22 +9,31 @@ class FieldAttributeType
     const SELECT_ONLY = 'S_O';
     const ARRAY_VALUE = 'A_V';
     const SELECT_AND_WHERE_ONLY = 'S_W_O';
-    const FROM_JOIN_TABLE = 'F_J_T';
     const REQUIRED = 'R';
+    const PRIMARY = 'P';
 
-    public static function isJoinTableField ($arFieldAttributes)
+    public static function canSortField($arFieldAttributes)
     {
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
         }
-        $isFromJoinTableField = is_int(array_search(self::FROM_JOIN_TABLE, $arFieldAttributes));
         $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
 
-        $isJoinTableField = $isFromJoinTableField && !$hasArrayValue;
-        return $isJoinTableField;
+        $canSortFilter = !$hasArrayValue;
+        return $canSortFilter;
     }
 
-    public static function canSelectField ($arFieldAttributes)
+    public static function hasArrayValueField($arFieldAttributes)
+    {
+        if (!self::checkFieldAttributes($arFieldAttributes)) {
+            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
+        }
+        $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
+
+        return $hasArrayValue;
+    }
+
+    public static function canSelectField($arFieldAttributes)
     {
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
@@ -34,7 +45,7 @@ class FieldAttributeType
         return $canSelectField;
     }
 
-    public static function canFilterField ($arFieldAttributes)
+    public static function canFilterField($arFieldAttributes)
     {
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
@@ -47,7 +58,7 @@ class FieldAttributeType
         return $canFilterField;
     }
 
-    public static function canUpdateField ($arFieldAttributes)
+    public static function canUpdateField($arFieldAttributes)
     {
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
@@ -61,7 +72,7 @@ class FieldAttributeType
         return $canUpdateField;
     }
 
-    public static function isRequiredField ($arFieldAttributes)
+    public static function isRequiredField($arFieldAttributes)
     {
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
@@ -71,7 +82,17 @@ class FieldAttributeType
         return $isRequired;
     }
 
-    public static function canAddField ($arFieldAttributes)
+    public static function isPrimaryField($arFieldAttributes)
+    {
+        if (!self::checkFieldAttributes($arFieldAttributes)) {
+            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
+        }
+        $isPrimary = is_int(array_search(self::PRIMARY, $arFieldAttributes));
+
+        return $isPrimary;
+    }
+
+    public static function canAddField($arFieldAttributes)
     {
         if (!self::checkFieldAttributes($arFieldAttributes)) {
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
@@ -83,7 +104,7 @@ class FieldAttributeType
         return $canAddField;
     }
 
-    private static function checkFieldAttributes ($arFieldAttributes)
+    private static function checkFieldAttributes($arFieldAttributes)
     {
         if (!is_array($arFieldAttributes)) {
             return false;

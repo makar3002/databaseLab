@@ -94,18 +94,33 @@ class UserTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'NAME' => array(),
-            'LAST_NAME' => array(),
-            'SECOND_NAME' => array(),
-            'EMAIL' => array(),
+            'NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'LAST_NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'SECOND_NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'EMAIL' => array(
+                'ATTRIBUTES' => array()
+            ),
             'PASSWORD' => array(
-                FieldAttributeType::SELECT_AND_WHERE_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::SELECT_AND_WHERE_ONLY
+                )
             ),
             'GROUP_IDS' => array(
-                FieldAttributeType::SELECT_ONLY,
-                FieldAttributeType::ARRAY_VALUE
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::SELECT_ONLY,
+                    FieldAttributeType::ARRAY_VALUE
+                )
             ),
         );
     }

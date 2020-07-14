@@ -19,7 +19,7 @@ class TeacherListComponent extends TableListComparable
         'INSTITUTE_ID' => array(
             'NAME' => 'Институт',
             'WIDTH' => 40,
-            'SORT_CODE' => 'institute.NAME'
+            'SORT_CODE' => 'INSTITUTE_NAME'
         ),
     );
 

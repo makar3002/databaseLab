@@ -10,10 +10,11 @@ class ScheduleElementTable extends TableManager
     public static function getScheduleByDirectionId($directionId)
     {
         $query = 'CALL GET_SCHEDULE_BY_DIRECTION_ID(' . $directionId. ');';
-        $connection = DB::getInstance();
-        $sdh = $connection->prepare($query);
-        $sdh->execute();
-        return $sdh->fetchAll(PDO::FETCH_ASSOC);
+
+        $db = DB::getInstance();
+        $db->prepare($query);
+        $db->execute();
+        return $db->fetchAll();
     }
 
     public static function getTableName()
@@ -25,38 +26,62 @@ class ScheduleElementTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'TYPE' => array(),
-            'SUBGROUP' => array(),
-            'KIND' => array(),
-            'DAY_OF_WEEK' => array(),
-            'NUMBER' => array(),
-            'GROUP_ID' => array(),
-            'direct_group.NAME' => array(
-                FieldAttributeType::FROM_JOIN_TABLE,
-                FieldAttributeType::WHERE_ONLY,
+            'TYPE' => array(
+                'ATTRIBUTES' => array()
             ),
-            'TEACHER_ID' => array(),
-            'teacher.NAME' => array(
-                FieldAttributeType::FROM_JOIN_TABLE,
-                FieldAttributeType::WHERE_ONLY,
+            'SUBGROUP' => array(
+                'ATTRIBUTES' => array()
             ),
-            'AUDITORIUM_ID' => array(),
-            'auditorium.NAME' => array(
-                FieldAttributeType::FROM_JOIN_TABLE,
-                FieldAttributeType::WHERE_ONLY,
+            'KIND' => array(
+                'ATTRIBUTES' => array()
             ),
-            'SUBJECT_ID' => array(),
-            'subject.NAME' => array(
-                FieldAttributeType::FROM_JOIN_TABLE,
-                FieldAttributeType::WHERE_ONLY,
+            'DAY_OF_WEEK' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'NUMBER' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'GROUP_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => GroupTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'GROUP_NAME' => 'NAME'
+                    )
+                ),
+            ),
+            'TEACHER_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => TeacherTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'TEACHER_NAME' => 'NAME'
+                    )
+                ),
+            ),
+            'AUDITORIUM_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => AuditoriumTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'AUDITORIUM_NAME' => 'NAME'
+                    )
+                ),
+            ),
+            'SUBJECT_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => SubjectTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'SUBJECT_NAME' => 'NAME'
+                    )
+                ),
             ),
         );
-    }
-
-    protected static function getJoinQuery()
-    {
-        return 'INNER JOIN direct_group ON direct_group.ID = schedule_element.GROUP_ID INNER JOIN teacher ON teacher.ID = schedule_element.TEACHER_ID INNER JOIN auditorium ON auditorium.ID = schedule_element.AUDITORIUM_ID  INNER JOIN subject ON subject.ID = schedule_element.SUBJECT_ID';
     }
 }

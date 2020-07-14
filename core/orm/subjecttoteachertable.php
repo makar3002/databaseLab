@@ -15,10 +15,29 @@ class SubjectToTeacherTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'SUBJECT_ID' => array(),
-            'TEACHER_ID' => array()
+            'SUBJECT_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => SubjectTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'GROUP_NAME' => 'NAME'
+                    )
+                ),
+            ),
+            'TEACHER_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => TeacherTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'ACTION_NAME' => 'NAME'
+                    )
+                ),
+            ),
         );
     }
 }

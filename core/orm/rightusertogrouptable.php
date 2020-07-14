@@ -14,10 +14,31 @@ class RightUserToGroupTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'GROUP_ID' => array(),
-            'USER_ID' => array(),
+            'GROUP_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => RightGroupTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'GROUP_NAME' => 'NAME'
+                    )
+                ),
+            ),
+            'USER_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => UserTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'USER_NAME' => 'NAME',
+                        'USER_LAST_NAME' => 'LAST_NAME',
+                        'USER_SECOND_NAME'
+                    )
+                ),
+            ),
         );
     }
 }

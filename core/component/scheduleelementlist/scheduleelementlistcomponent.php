@@ -18,7 +18,7 @@ class ScheduleElementListComponent extends TableListComparable
         'SUBJECT_ID' => array(
             'NAME' => 'Предмет',
             'WIDTH' => 10,
-            'SORT_CODE' => 'subject.NAME'
+            'SORT_CODE' => 'SUBJECT_NAME'
         ),
         'TYPE' => array(
             'NAME' => 'Числитель/знаменатель',
@@ -74,17 +74,17 @@ class ScheduleElementListComponent extends TableListComparable
         'TEACHER_ID' => array(
             'NAME' => 'Преподаватель',
             'WIDTH' => 10,
-            'SORT_CODE' => 'teacher.NAME'
+            'SORT_CODE' => 'TEACHER_NAME'
         ),
         'GROUP_ID' => array(
             'NAME' => 'Группа',
             'WIDTH' => 10,
-            'SORT_CODE' => 'direct_group.NAME'
+            'SORT_CODE' => 'GROUP_NAME'
         ),
         'AUDITORIUM_ID' => array(
             'NAME' => 'Аудитория',
             'WIDTH' => 10,
-            'SORT_CODE' => 'auditorium.NAME'
+            'SORT_CODE' => 'AUDITORIUM_NAME'
         ),
     );
 

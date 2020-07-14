@@ -20,7 +20,7 @@ class SubjectListComponent extends TableListComparable
         'INSTITUTE_ID' => array(
             'NAME' => 'Институт',
             'WIDTH' => 20,
-            'SORT_CODE' => 'institute.NAME'
+            'SORT_CODE' => 'INSTITUTE_NAME'
         ),
         'TEACHER_IDS' => array(
             'NAME' => 'Преподаватели',

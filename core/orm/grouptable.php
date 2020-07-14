@@ -14,20 +14,26 @@ class GroupTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'NAME' => array(),
-            'COUNT' => array(),
-            'DIRECTION_ID' => array(),
-            'direction.NAME' => array(
-                FieldAttributeType::FROM_JOIN_TABLE,
-                FieldAttributeType::WHERE_ONLY,
+            'NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'COUNT' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'DIRECTION_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => DirectionTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'DIRECTION_NAME' => 'NAME'
+                    )
+                ),
             )
         );
-    }
-
-    protected static function getJoinQuery()
-    {
-        return 'INNER JOIN direction ON direction.ID = direct_group.DIRECTION_ID';
     }
 }

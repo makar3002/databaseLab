@@ -94,12 +94,19 @@ class RightGroupTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'NAME' => array(),
+            'NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
             'ACTION_IDS' => array(
-                FieldAttributeType::SELECT_ONLY,
-                FieldAttributeType::ARRAY_VALUE
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::SELECT_ONLY,
+                    FieldAttributeType::ARRAY_VALUE
+                )
             )
         );
     }

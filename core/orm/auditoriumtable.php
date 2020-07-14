@@ -14,10 +14,17 @@ class AuditoriumTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'NAME' => array(),
-            'CAPACITY' => array(),
+            'NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'CAPACITY' => array(
+                'ATTRIBUTES' => array()
+            ),
         );
     }
 }

@@ -16,8 +16,24 @@ class RightActionToGroupTable extends TableManager
             'ID' => array(
                 FieldAttributeType::READ_ONLY
             ),
-            'GROUP_ID' => array(),
-            'ACTION_ID' => array()
+            'GROUP_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => RightGroupTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'GROUP_NAME' => 'NAME'
+                    )
+                ),
+            ),
+            'ACTION_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => RightActionTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'ACTION_NAME' => 'NAME'
+                    )
+                ),
+            ),
         );
     }
 }

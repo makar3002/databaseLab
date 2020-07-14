@@ -6,7 +6,7 @@ use PDOStatement;
 
 class DB {
     /**
-     * @var DB
+     * @var DB - объект класса
      */
     protected static $instance;
     /**
@@ -19,6 +19,9 @@ class DB {
     protected $pdoStatementInstance;
     
     protected function __construct () {
+    }
+
+    protected function __clone () {
     }
     
     public static function getInstance()

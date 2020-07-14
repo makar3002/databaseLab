@@ -4,10 +4,7 @@ class Validator {
     static public function checkEmailFormat($data)
     {
         $pattern = '/[a-zA-Z0-9][a-zA-Z0-9\._]*@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/';
-        if (preg_match($pattern, $data)) {
-            return true;
-        }
-        return false;
+        return preg_match($pattern, $data);
     }
 
     static public function checkDateFormat($data)
@@ -61,11 +58,7 @@ class Validator {
 
     public static function checkPasswordFormat($data)
     {
-        if (mb_strlen($data) > 5)
-        {
-            return true;
-        }
-        return false;
+        return mb_strlen($data) > 5;
     }
 }
 

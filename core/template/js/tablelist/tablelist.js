@@ -122,7 +122,7 @@ class TableList {
         this.multipleSelectIds = [];
         for (let key in response) {
             let input = $('#update-' + key);
-            if (null == input) {
+            if (!input.get(0)) {
                 continue;
             }
 

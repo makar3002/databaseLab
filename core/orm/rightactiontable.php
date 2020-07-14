@@ -14,10 +14,17 @@ class RightActionTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'CODE' => array(),
-            'NAME' => array(),
+            'CODE' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
         );
     }
 }

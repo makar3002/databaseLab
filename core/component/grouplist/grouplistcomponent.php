@@ -22,7 +22,8 @@ class GroupListComponent extends TableListComparable
         ),
         'DIRECTION_ID' => array(
             'NAME' => 'Направление',
-            'WIDTH' => 30
+            'WIDTH' => 30,
+            'SORT_CODE' => 'DIRECTION_NAME'
         ),
     );
 

@@ -96,23 +96,29 @@ class SubjectTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
             ),
-            'NAME' => array(),
-            'INSTITUTE_ID' => array(),
+            'NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'INSTITUTE_ID' => array(
+                'ATTRIBUTES' => array(),
+                'REFERENCE' => array(
+                    'TABLE_CLASS' => InstituteTable::class,
+                    'SELECT_NAME_MAP' => array(
+                        'INSTITUTE_NAME' => 'NAME'
+                    )
+                ),
+            ),
             'TEACHER_IDS' => array(
-                FieldAttributeType::SELECT_ONLY,
-                FieldAttributeType::ARRAY_VALUE
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::SELECT_ONLY,
+                    FieldAttributeType::ARRAY_VALUE
+                )
             ),
-            'institute.NAME' => array(
-                FieldAttributeType::FROM_JOIN_TABLE,
-                FieldAttributeType::WHERE_ONLY,
-            )
         );
-    }
-
-    protected static function getJoinQuery()
-    {
-        return 'INNER JOIN institute ON institute.ID = subject.INSTITUTE_ID';
     }
 }
