@@ -86,6 +86,11 @@ class DB {
         return $this->pdoStatementInstance->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getLastInsertId()
+    {
+        return $this->pdoInstance->lastInsertId();
+    }
+
     public function getError()
     {
         return $this->pdoStatementInstance->errorInfo();

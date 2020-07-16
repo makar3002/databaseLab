@@ -1,6 +1,7 @@
 <?php
 namespace Core\Orm\General;
 
+
 class TableManager
 {
     protected static $tableMap = array();
@@ -47,9 +48,8 @@ class TableManager
         if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
             throw new \RuntimeException($errorInfo[2]);
         }
-        $db->prepare('SELECT LAST_INSERT_ID();');
-        $db->execute();
-        return $db->fetch()['LAST_INSERT_ID()'];
+
+        return $db->getLastInsertId();
     }
 
     public static function getList($params)
@@ -238,6 +238,59 @@ class TableManager
         return static::getById($id);
     }
 
+    private static function checkFieldReference($fieldName, $fieldConfig)
+    {
+        if (empty($fieldConfig['REFERENCE'])) {
+            throw new \RuntimeException('У поля не задана информация о связи.');
+        }
+
+        $fieldReferenceInfo = $fieldConfig['REFERENCE'];
+        if (empty($fieldReferenceInfo['TABLE_CLASS'])) {
+            throw new \RuntimeException('У связанного с другой таблицей поля должны быть заданы ключи TABLE_CLASS.');
+        }
+
+        $tableName = static::getTableName();
+        if (!empty($checkErrorMessage = static::getCheckedFieldConfigValue($tableName, $fieldName))) {
+            throw new \RuntimeException($checkErrorMessage);
+        }
+
+        try {
+            if (
+                !empty($fieldConfig['ATTRIBUTES'])
+                && FieldAttributeType::hasArrayValueField($fieldConfig['ATTRIBUTES'])
+                && empty($fieldReferenceInfo['FIELD_NAME'])
+            ) {
+                throw new \RuntimeException('У связанного с другой таблицей поля должен быть задан ключ FIELD_NAME.');
+            }
+
+            if (!is_subclass_of($fieldReferenceInfo['TABLE_CLASS'], TableManager::class)) {
+                throw new \RuntimeException('Класс TABLE_CLASS должен быть наследником от TableManager.');
+            }
+        } catch (\Throwable $exception) {
+            static::setCheckedFieldConfigValue($tableName, $fieldName, $exception->getMessage());
+            throw $exception;
+        }
+
+        static::setCheckedFieldConfigValue($tableName, $fieldName, '');
+    }
+
+    private static function setCheckedFieldConfigValue($tableClass, $fieldName, $value) {
+        if (!isset(static::$checkedFieldConfigList[$tableClass])) {
+            static::$checkedFieldConfigList[$tableClass] = array();
+        }
+        static::$checkedFieldConfigList[$tableClass][$fieldName] = $value;
+    }
+
+    private static function getCheckedFieldConfigValue($tableClass, $fieldName) {
+        $isGoodFieldConfig =
+            isset(static::$checkedFieldConfigList[$tableClass])
+            && isset(static::$checkedFieldConfigList[$tableClass][$fieldName]);
+        if ($isGoodFieldConfig) {
+            return static::$checkedFieldConfigList[$tableClass][$fieldName];
+        }
+        return '';
+    }
+
     public static function delete($id)
     {
         $element = static::getById($id);
@@ -256,22 +309,17 @@ class TableManager
     {
         $joinQueryList = array();
         foreach ($tableMap as $fieldName => $fieldConfig) {
-            if (empty($fieldConfig['REFERENCE'])) {
+            try {
+                self::checkFieldReference($fieldName, $fieldConfig);
+            } catch (\Throwable $exception) {
+                continue;
+            }
+
+            if (FieldAttributeType::hasArrayValueField($fieldConfig['ATTRIBUTES'])) {
                 continue;
             }
 
             $fieldReferenceInfo = $fieldConfig['REFERENCE'];
-            if (
-                empty($fieldReferenceInfo['TABLE_CLASS'])
-                || !is_subclass_of($fieldReferenceInfo['TABLE_CLASS'], TableManager::class)
-            ) {
-                throw new \RuntimeException('У связанного с другой таблицей поля должны быть заданы ключи TABLE_CLASS и FIELD_NAME.');
-            }
-
-            if (!is_subclass_of($fieldReferenceInfo['TABLE_CLASS'], TableManager::class)) {
-                throw new \RuntimeException('Класс TABLE_CLASS должен быть наследником от TableManager.');
-            }
-
             $currentTableName = static::getTableName();
             $referenceClass = $fieldReferenceInfo['TABLE_CLASS'];
             if (isset($joinQueryList[$referenceClass])) {
@@ -303,17 +351,13 @@ class TableManager
         foreach ($tableMap as $fieldName => $fieldConfig) {
             $fieldAliasMap[$fieldName] = $tableName . '.' . $fieldName;
 
-            if (!isset($fieldConfig['REFERENCE'])) {
+            try {
+                self::checkFieldReference($fieldName, $fieldConfig);
+            } catch (\Throwable $exception) {
                 continue;
             }
 
             $fieldReferenceInfo = $fieldConfig['REFERENCE'];
-            if (
-                !is_array($fieldReferenceInfo['SELECT_NAME_MAP'])
-                || !is_subclass_of($fieldReferenceInfo['TABLE_CLASS'], TableManager::class)
-            ) {
-                continue;
-            }
 
             $referenceSelectNameMap = $fieldReferenceInfo['SELECT_NAME_MAP'];
             $tableClass = $fieldReferenceInfo['TABLE_CLASS'];
