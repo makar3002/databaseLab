@@ -2,386 +2,74 @@
 namespace Core\Orm\General;
 
 
-class TableManager
+abstract class TableManager
 {
+    private static $entityList = array();
     protected static $tableMap = array();
+
+    /**
+     * @return Entity
+     */
+    public static function getEntity()
+    {
+        $entityClass = static::getEntityClass();
+        if (isset(static::$entityList[$entityClass])) {
+            return static::$entityList[$entityClass];
+        }
+
+        $tableName = static::getTableName();
+        $tableMap = static::getTableMap();
+        static::$entityList[$entityClass] = new Entity($tableName, $tableMap);
+        return static::$entityList[$entityClass];
+    }
+
+    public static function getEntityClass()
+    {
+        $tableClass = get_called_class();
+        if (!is_subclass_of($tableClass, TableManager::class)) {
+            throw new \RuntimeException();
+        }
+        return $tableClass;
+    }
 
     public static function add($fields)
     {
-        $tableName = static::getTableName();
-        $tableMap = static::getTableMap();
-
-        $query = 'INSERT INTO ' . $tableName . ' ';
-
-        $fieldNameList = array();
-        $fieldValueList = array();
-
-        foreach ($tableMap as $fieldName => $fieldConfig) {
-            if (
-                !isset($fields[$fieldName])
-                && FieldAttributeType::isRequiredField($fieldConfig['ATTRIBUTES'])
-            ) {
-                throw new \RuntimeException('Поле ' . $fieldName . ' является обязательным в таблице ' . $tableName . '.');
-            }
-        }
-
-        foreach ($fields as $fieldName => $fieldValue) {
-            if (!array_key_exists($fieldName, $tableMap)) {
-                throw new \RuntimeException('В таблице ' . $tableName . ' нет поля ' . $fieldName . '.');
-            }
-
-            if (!FieldAttributeType::canAddField($tableMap[$fieldName]['ATTRIBUTES'])) {
-                throw new \RuntimeException('В таблице ' . $tableName . ' нельзя обновлять поле ' . $fieldName . '.');
-            }
-
-            $fieldNameList[] = $fieldName;
-            $fieldValueList[] = $fields[$fieldName];
-        }
-
-        $query .= '(' . implode(', ', $fieldNameList) . ') VALUES (\'' .
-            implode('\', \'', $fieldValueList) . '\');';
-
-        $db = DB::getInstance();
-        $db->prepare($query);
-        $db->execute();
-        $errorInfo = $db->getError();
-        if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
-            throw new \RuntimeException($errorInfo[2]);
-        }
-
-        return $db->getLastInsertId();
-    }
-
-    public static function getList($params)
-    {
-        $query = 'SELECT ';
-
-        $tableMap = static::getTableMap();
-        $aliasMap = static::getFieldAliasMap($tableMap);
-        $tableName = static::getTableName();
-
-        if (
-            !isset($params['select'])
-            || !is_array($params['select'])
-            || array_search('*', $params['select'])
-        ) {
-            $params['select'] = array_keys($aliasMap);
-        }
-
-        $selectQueryList = array();
-        foreach ($params['select'] as $key => $fieldName) {
-            if (
-                !array_key_exists($fieldName, $aliasMap)
-            ) {
-                throw new \RuntimeException('В таблице ' . $tableName . ' невозможно выбрать поле ' . $fieldName . '.');
-            }
-
-            if (
-                array_key_exists($fieldName, $tableMap)
-                && !FieldAttributeType::canSelectField($tableMap[$fieldName]['ATTRIBUTES'])
-            ) {
-                if (FieldAttributeType::hasArrayValueField($tableMap[$fieldName]['ATTRIBUTES'])) {
-                    continue;
-                }
-                throw new \RuntimeException('В таблице ' . $tableName . ' нельзя выбирать поле ' . $fieldName . '.');
-            }
-
-            $selectQueryList[] = $aliasMap[$fieldName] . ' AS ' . $fieldName;
-        }
-
-        $query .= implode(', ', $selectQueryList) . ' ';
-        $query .= 'FROM `' . $tableName . '` ';
-
-        $joinQuery = static::getJoinQuery($tableMap);
-        if (!empty($joinQuery)) {
-            $query .= $joinQuery . ' ';
-        }
-
-        if (isset($params['filter']) && !empty($params['filter'])) {
-            $filterQueryList = array();
-            foreach ($params['filter'] as $filterKey => $value) {
-                if (array_key_exists($filterKey, $aliasMap)) {
-                    $fieldName = $filterKey;
-                } else if (array_key_exists(substr($filterKey, 1), $aliasMap)) {
-                    $fieldName = substr($filterKey, 1);
-                } else {
-                    throw new \RuntimeException('Некорректный ключ фильтрации для таблицы ' . $tableName . ': ' . $filterKey . '.');
-                }
-
-                if (!FieldAttributeType::canFilterField($tableMap[$fieldName]['ATTRIBUTES'])) {
-                    throw new \RuntimeException('Таблицу ' . $tableName . ' нельзя фильтровать по полю ' . $fieldName . '.');
-                }
-
-                if ($filterKey[0] == '@' && is_array($value)) {
-                    $filterQueryList[] = $aliasMap[$fieldName] . ' IN (\'' . implode('\', \'', $value) . '\')';
-                } else {
-                    $filterQueryList[] = $aliasMap[$fieldName] . ' = \'' . $value . '\'';
-                }
-            }
-
-            if (!empty($filterQueryList)) {
-                $query .= 'WHERE ' . implode(' AND ', $filterQueryList) . ' ';
-            }
-        }
-
-        if (isset($params['search']) && !empty($params['search'])) {
-            $searchValue = $params['search'];
-            $searchQueryList = array();
-
-            foreach ($aliasMap as $fieldAlias => $fieldName) {
-                if (
-                    array_key_exists($fieldAlias, $tableMap)
-                    && !FieldAttributeType::canFilterField($tableMap[$fieldAlias]['ATTRIBUTES'])
-                ) {
-                    continue;
-                }
-                $searchQueryList[] = $fieldName . ' LIKE \'%' . $searchValue . '%\'';
-            }
-
-            if (!empty($searchQueryList)) {
-                $query .= 'WHERE ' . implode(' OR ', $searchQueryList) . ' ';
-            }
-        }
-
-        if (isset($params['order']) && !empty($params['order'])) {
-            $orderQueryList = array();
-            foreach ($params['order'] as $fieldName => $orderValue) {
-                if (
-                    !array_key_exists($fieldName, $aliasMap)
-                    || array_key_exists($fieldName, $tableMap)
-                    && !FieldAttributeType::canSortField($tableMap[$fieldName]['ATTRIBUTES'])
-                ) {
-                    throw new \RuntimeException('Таблицу ' . $tableName . ' нельзя сортировать по полю ' . $fieldName . '.');
-                }
-
-                if (
-                    !in_array($orderValue, array('ASC', 'DESC'))
-                ) {
-                    throw new \RuntimeException('Некорректное значение сортировки: ' . $orderValue . '.');
-                }
-                $orderQueryList[] = $aliasMap[$fieldName] . ' ' . $orderValue;
-            }
-
-            if (!empty($orderQueryList)) {
-                $query .= 'ORDER BY ' . implode(', ', $orderQueryList) . ' ';
-            }
-        }
-
-        if (isset($params['limit'])) {
-            $limitValue = intval($params['limit']);
-
-            if ($limitValue > 0) {
-                $query .= 'LIMIT ' . $limitValue;
-            }
-        }
-
-        $db = DB::getInstance();
-        $db->prepare($query);
-        $db->execute();
-        return $db->fetchAll();
-    }
-
-    public static function getById($id)
-    {
-        $element = static::getList(array(
-            'filter' => array('ID' => $id),
-            'order' => array('ID' => 'ASC')
-        ));
-        if (!empty($element)) {
-            return $element[0];
-        }
-        return null;
+        $entity = static::getEntity();
+        return $entity->add($fields);
     }
 
     public static function update($id, $fields)
     {
-        if (empty($fields)) {
-            return false;
-        }
-
-        $element = static::getById($id);
-        if (empty($element)) {
-            return false;
-        }
-
-        $tableName = static::getTableName();
-        $tableMap = static::getTableMap();
-
-        $query = 'UPDATE ' . $tableName . ' ';
-
-        $updateQueryList = array();
-        foreach ($fields as $fieldName => $fieldValue) {
-            if (!array_key_exists($fieldName, $tableMap)) {
-                throw new \RuntimeException('В таблице ' . $tableName . ' нет поле ' . $fieldName . '.');
-            }
-
-            if (!FieldAttributeType::canUpdateField($tableMap[$fieldName]['ATTRIBUTES'])) {
-                throw new \RuntimeException('В таблице ' . $tableName . ' нельзя обновлять поле ' . $fieldName . '.');
-            }
-
-            $updateQueryList[] = $fieldName . ' = \'' . $fieldValue . '\'';
-        }
-
-        if (empty($updateQueryList)) {
-            return false;
-        }
-
-        $query .= 'SET ' . implode(', ', $updateQueryList) . ' WHERE id = \'' . $id . '\'';
-
-        $db = DB::getInstance();
-        $db->prepare($query);
-        $db->execute();
-        $errorInfo = $db->getError();
-        if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
-            throw new \RuntimeException($errorInfo[2]);
-        }
-        return static::getById($id);
-    }
-
-    private static function checkFieldReference($fieldName, $fieldConfig)
-    {
-        if (empty($fieldConfig['REFERENCE'])) {
-            throw new \RuntimeException('У поля не задана информация о связи.');
-        }
-
-        $fieldReferenceInfo = $fieldConfig['REFERENCE'];
-        if (empty($fieldReferenceInfo['TABLE_CLASS'])) {
-            throw new \RuntimeException('У связанного с другой таблицей поля должны быть заданы ключи TABLE_CLASS.');
-        }
-
-        $tableName = static::getTableName();
-        if (!empty($checkErrorMessage = static::getCheckedFieldConfigValue($tableName, $fieldName))) {
-            throw new \RuntimeException($checkErrorMessage);
-        }
-
-        try {
-            if (
-                !empty($fieldConfig['ATTRIBUTES'])
-                && FieldAttributeType::hasArrayValueField($fieldConfig['ATTRIBUTES'])
-                && empty($fieldReferenceInfo['FIELD_NAME'])
-            ) {
-                throw new \RuntimeException('У связанного с другой таблицей поля должен быть задан ключ FIELD_NAME.');
-            }
-
-            if (!is_subclass_of($fieldReferenceInfo['TABLE_CLASS'], TableManager::class)) {
-                throw new \RuntimeException('Класс TABLE_CLASS должен быть наследником от TableManager.');
-            }
-        } catch (\Throwable $exception) {
-            static::setCheckedFieldConfigValue($tableName, $fieldName, $exception->getMessage());
-            throw $exception;
-        }
-
-        static::setCheckedFieldConfigValue($tableName, $fieldName, '');
-    }
-
-    private static function setCheckedFieldConfigValue($tableClass, $fieldName, $value) {
-        if (!isset(static::$checkedFieldConfigList[$tableClass])) {
-            static::$checkedFieldConfigList[$tableClass] = array();
-        }
-        static::$checkedFieldConfigList[$tableClass][$fieldName] = $value;
-    }
-
-    private static function getCheckedFieldConfigValue($tableClass, $fieldName) {
-        $isGoodFieldConfig =
-            isset(static::$checkedFieldConfigList[$tableClass])
-            && isset(static::$checkedFieldConfigList[$tableClass][$fieldName]);
-        if ($isGoodFieldConfig) {
-            return static::$checkedFieldConfigList[$tableClass][$fieldName];
-        }
-        return '';
+        $entity = static::getEntity();
+        return $entity->update($id, $fields);
     }
 
     public static function delete($id)
     {
-        $element = static::getById($id);
-        if (empty($element)) {
-            return false;
-        }
-
-        $query = 'DELETE FROM ' . static::getTableName() . ' WHERE ID = ' . $id . ';';
-
-        $db = DB::getInstance();
-        $db->prepare($query);
-        return $db->execute();
+        $entity = static::getEntity();
+        return $entity->deleteByPrimary($id);
     }
 
-    protected static function getJoinQuery($tableMap)
+    public static function getList($params)
     {
-        $joinQueryList = array();
-        foreach ($tableMap as $fieldName => $fieldConfig) {
-            try {
-                self::checkFieldReference($fieldName, $fieldConfig);
-            } catch (\Throwable $exception) {
-                continue;
-            }
-
-            if (FieldAttributeType::hasArrayValueField($fieldConfig['ATTRIBUTES'])) {
-                continue;
-            }
-
-            $fieldReferenceInfo = $fieldConfig['REFERENCE'];
-            $currentTableName = static::getTableName();
-            $referenceClass = $fieldReferenceInfo['TABLE_CLASS'];
-            if (isset($joinQueryList[$referenceClass])) {
-                continue;
-            }
-            $referencePrimaryFieldName = $referenceClass::getPrimaryFieldName($tableMap);
-            $referenceTableName = $referenceClass::getTableName();
-            $joinQueryList[$referenceClass] = 'INNER JOIN ' . $referenceTableName . ' ON ' . $referenceTableName . '.' . $referencePrimaryFieldName . ' = ' . $currentTableName . '.' . $fieldName;
-        }
-        $joinQuery = implode(' ', $joinQueryList);
-        return $joinQuery;
+        $entity = static::getEntity();
+        return $entity->getList($params);
     }
 
-    protected static function getPrimaryFieldName($tableMap)
+    public static function getById($params)
     {
-        foreach ($tableMap as $fieldName => $fieldConfig) {
-            if (FieldAttributeType::isPrimaryField($fieldConfig['ATTRIBUTES'])) {
-                return $fieldName;
-            }
-        }
-
-        throw new \RuntimeException('У таблицы не задан первичный ключ.');
+        $entity = static::getEntity();
+        return $entity->getByPrimary($params);
     }
 
-    protected static function getFieldAliasMap($tableMap)
+    public static function getPrimaryFieldName()
     {
-        $tableName = static::getTableName();
-        $fieldAliasMap = array();
-        foreach ($tableMap as $fieldName => $fieldConfig) {
-            $fieldAliasMap[$fieldName] = $tableName . '.' . $fieldName;
-
-            try {
-                self::checkFieldReference($fieldName, $fieldConfig);
-            } catch (\Throwable $exception) {
-                continue;
-            }
-
-            $fieldReferenceInfo = $fieldConfig['REFERENCE'];
-
-            $referenceSelectNameMap = $fieldReferenceInfo['SELECT_NAME_MAP'];
-            $tableClass = $fieldReferenceInfo['TABLE_CLASS'];
-            foreach ($referenceSelectNameMap as $aliasFieldName => $referenceFieldInfo) {
-                if (is_array($referenceFieldInfo)) {
-                    $fieldAliasMap = array_merge($fieldAliasMap, static::getFieldAliasMap($referenceFieldInfo));
-                } else if (is_string($referenceFieldInfo)) {
-                    $fieldAliasMap[$aliasFieldName] = $tableClass::getTableName() . '.' . $referenceFieldInfo;
-                }
-            }
-        }
-
-        return $fieldAliasMap;
+        $entity = static::getEntity();
+        return $entity->getPrimaryFieldName();
     }
 
-    public static function getTableName()
-    {
-        return '';
-    }
-
-    protected static function getTableMap()
-    {
-        return static::$tableMap;
-    }
+    public abstract static function getTableName();
+    public abstract static function getTableMap();
 }
 
 

@@ -90,7 +90,7 @@ class UserTable extends TableManager
         return 'user';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

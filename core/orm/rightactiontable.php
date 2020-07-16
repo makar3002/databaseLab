@@ -10,7 +10,7 @@ class RightActionTable extends TableManager
         return 'right_action';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

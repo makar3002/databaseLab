@@ -22,7 +22,7 @@ class ScheduleElementTable extends TableManager
         return 'schedule_element';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

@@ -10,7 +10,7 @@ class RightActionToGroupTable extends TableManager
         return 'right_action_to_group';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

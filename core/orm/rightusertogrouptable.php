@@ -10,7 +10,7 @@ class RightUserToGroupTable extends TableManager
         return 'right_user_to_group';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

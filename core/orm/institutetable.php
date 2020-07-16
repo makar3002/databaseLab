@@ -10,15 +10,18 @@ class InstituteTable extends TableManager
         return 'institute';
     }
 
-    protected static $tableMap = array(
-        'ID' => array(
-            'ATTRIBUTES' => array(
-                FieldAttributeType::PRIMARY,
-                FieldAttributeType::READ_ONLY
-            )
-        ),
-        'NAME' => array(
-            'ATTRIBUTES' => array()
-        ),
-    );
+    public static function getTableMap()
+    {
+        return array(
+            'ID' => array(
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                )
+            ),
+            'NAME' => array(
+                'ATTRIBUTES' => array()
+            ),
+        );
+    }
 }

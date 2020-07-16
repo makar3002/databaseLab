@@ -10,7 +10,7 @@ class AuditoriumTable extends TableManager
         return 'auditorium';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

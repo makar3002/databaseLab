@@ -11,7 +11,7 @@ class SubjectToTeacherTable extends TableManager
         return 'subject_to_teacher';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

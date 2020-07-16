@@ -90,7 +90,7 @@ class RightGroupTable extends TableManager
         return 'right_group';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

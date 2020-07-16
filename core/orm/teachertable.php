@@ -10,7 +10,7 @@ class TeacherTable extends TableManager
         return 'teacher';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

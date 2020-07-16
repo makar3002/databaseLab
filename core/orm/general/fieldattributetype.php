@@ -39,9 +39,8 @@ class FieldAttributeType
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
         }
         $isWhereOnly = is_int(array_search(self::WHERE_ONLY, $arFieldAttributes));
-        $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
 
-        $canSelectField = !$isWhereOnly && !$hasArrayValue;
+        $canSelectField = !$isWhereOnly;
         return $canSelectField;
     }
 
@@ -98,9 +97,8 @@ class FieldAttributeType
             throw new RuntimeException('Ошибка описания поля в классе таблицы.');
         }
         $isReadOnly = is_int(array_search(self::READ_ONLY, $arFieldAttributes));
-        $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
 
-        $canAddField = !$isReadOnly && !$hasArrayValue;
+        $canAddField = !$isReadOnly;
         return $canAddField;
     }
 

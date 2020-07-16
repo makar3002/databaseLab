@@ -92,7 +92,7 @@ class SubjectTable extends TableManager
         return 'subject';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

@@ -10,7 +10,7 @@ class DirectionTable extends TableManager
         return 'direction';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(

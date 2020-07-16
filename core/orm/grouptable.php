@@ -10,7 +10,7 @@ class GroupTable extends TableManager
         return 'direct_group';
     }
 
-    protected static function getTableMap()
+    public static function getTableMap()
     {
         return array(
             'ID' => array(
