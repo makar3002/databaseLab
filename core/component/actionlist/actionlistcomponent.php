@@ -1,7 +1,7 @@
 <?php
-namespace Core\Component\ActionList;
+namespace core\component\actionlist;
 
-use Core\Component\TableList\TableListComparable;
+use core\component\tableList\TableListComparable;
 
 class ActionListComponent extends TableListComparable
 {

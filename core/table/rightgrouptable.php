@@ -1,7 +1,8 @@
 <?php
-namespace Core\Orm;
-use Core\Orm\General\FieldAttributeType;
-use Core\Orm\General\TableManager;
+namespace core\table;
+
+use core\util\orm\FieldAttributeType;
+use core\util\orm\TableManager;
 
 class RightGroupTable extends TableManager
 {

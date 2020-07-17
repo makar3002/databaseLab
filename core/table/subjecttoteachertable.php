@@ -1,13 +1,15 @@
 <?php
-namespace Core\Orm;
-use Core\Orm\General\FieldAttributeType;
-use Core\Orm\General\TableManager;
 
-class RightActionToGroupTable extends TableManager
+namespace core\table;
+
+use core\util\orm\FieldAttributeType;
+use core\util\orm\TableManager;
+
+class SubjectToTeacherTable extends TableManager
 {
     public static function getTableName()
     {
-        return 'right_action_to_group';
+        return 'subject_to_teacher';
     }
 
     public static function getTableMap()
@@ -17,21 +19,21 @@ class RightActionToGroupTable extends TableManager
                 'ATTRIBUTES' => array(
                     FieldAttributeType::PRIMARY,
                     FieldAttributeType::READ_ONLY
-                ),
+                )
             ),
-            'GROUP_ID' => array(
+            'SUBJECT_ID' => array(
                 'ATTRIBUTES' => array(),
                 'REFERENCE' => array(
-                    'TABLE_CLASS' => RightGroupTable::class,
+                    'TABLE_CLASS' => SubjectTable::class,
                     'SELECT_NAME_MAP' => array(
                         'GROUP_NAME' => 'NAME'
                     )
                 ),
             ),
-            'ACTION_ID' => array(
+            'TEACHER_ID' => array(
                 'ATTRIBUTES' => array(),
                 'REFERENCE' => array(
-                    'TABLE_CLASS' => RightActionTable::class,
+                    'TABLE_CLASS' => TeacherTable::class,
                     'SELECT_NAME_MAP' => array(
                         'ACTION_NAME' => 'NAME'
                     )

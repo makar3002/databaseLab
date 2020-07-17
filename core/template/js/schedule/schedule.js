@@ -1,5 +1,5 @@
 class Schedule {
-    componentClass = 'Core\\Component\\Schedule\\ScheduleComponent';
+    componentClass = 'core\\Component\\schedule\\ScheduleComponent';
     directionId;
 
     initialize() {

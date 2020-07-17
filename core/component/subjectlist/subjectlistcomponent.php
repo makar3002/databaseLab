@@ -1,9 +1,9 @@
 <?php
-namespace Core\Component\SubjectList;
+namespace core\component\subjectlist;
 
-use Core\Component\TableList\TableListComparable;
-use Core\Orm\InstituteTable;
-use Core\Orm\TeacherTable;
+use core\component\tableList\TableListComparable;
+use core\table\InstituteTable;
+use core\table\TeacherTable;
 
 class SubjectListComponent extends TableListComparable
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Core\Orm\General;
+namespace core\util\orm;
 
 
 abstract class TableManager

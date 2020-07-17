@@ -1,7 +1,7 @@
 <?php
-namespace Core\Component\TableList;
+namespace core\component\tableList;
 
-use Core\Component\General\BaseComponent;
+use core\component\general\BaseComponent;
 
 abstract class TableListComparable extends BaseComponent
 {

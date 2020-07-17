@@ -1,5 +1,5 @@
 <?php
-namespace core\orm\general;
+namespace core\util\orm;
 
 class Entity
 {

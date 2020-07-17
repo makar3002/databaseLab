@@ -1,7 +1,7 @@
 <?php
-namespace Core\Component\InstituteList;
+namespace core\component\institutelist;
 
-use Core\Component\TableList\TableListComparable;
+use core\component\tableList\TableListComparable;
 
 class InstituteListComponent extends TableListComparable
 {

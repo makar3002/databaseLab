@@ -1,7 +1,7 @@
 <?php
-namespace Core\Component\nonauthorized;
+namespace core\component\nonauthorized;
 
-use Core\Component\General\BaseComponent;
+use core\component\general\BaseComponent;
 
 class NonAuthorizedComponent extends BaseComponent
 {

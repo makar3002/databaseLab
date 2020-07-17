@@ -1,5 +1,5 @@
 <?
-use Core\Component\Schedule\ScheduleComponent;
+use core\component\schedule\ScheduleComponent;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/template/header.php');?>
 <?

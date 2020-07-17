@@ -1,12 +1,8 @@
 <?php
-namespace Core\Component\SqlQuery;
-use Core\Component\General\BaseComponent;
-use Core\Orm\General\DB;
-use Core\Orm\UserTable;
-use Core\Util\Request;
-use Core\Util\User;
-use Core\Util\Validator;
+namespace core\component\sqlquery;
 
+use core\component\general\BaseComponent;
+use core\util\orm\DB;
 
 class  SqlQueryComponent extends BaseComponent
 {
@@ -17,10 +13,10 @@ class  SqlQueryComponent extends BaseComponent
 
     public function executeQueryAction()
     {
-        $pdo = DB::getInstance();
-        $sdh = $pdo->prepare($this->arParams['QUERY']);
-        $sdh->execute();
-        $result = $sdh->fetchAll(\PDO::FETCH_ASSOC);
+        $db = DB::getInstance();
+        $db->prepare($this->arParams['QUERY']);
+        $db->execute();
+        $result = $db->fetchAll();
         ob_start();
         var_dump($result);
         $this->arResult['QUERY_RESULT'] = ob_get_clean();

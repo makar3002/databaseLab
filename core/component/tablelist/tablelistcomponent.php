@@ -1,8 +1,8 @@
 <?php
-namespace Core\Component\TableList;
+namespace core\component\tableList;
 
-use Core\Component\General\BaseComponent;
-use Core\Orm\General\TableManager;
+use core\component\general\BaseComponent;
+use core\util\orm\TableManager;
 
 class TableListComponent extends BaseComponent
 {

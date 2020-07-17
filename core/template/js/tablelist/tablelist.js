@@ -28,7 +28,7 @@ class TableList {
     };
     multipleSelectIds = [];
     entityTableClass = null;
-    componentClass = 'Core\\Component\\TableList\\TableListComponent';
+    componentClass = 'core\\component\\tableList\\TableListComponent';
     sort = {};
     search = '';
 

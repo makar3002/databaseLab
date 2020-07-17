@@ -1,7 +1,6 @@
 <?
-use Core\Component\TableList\TableListComponent;
-use Core\Orm\AuditoriumTable;
-
+use core\component\tableList\TableListComponent;
+use core\table\AuditoriumTable;
 ?>
 
 <? /** @var array $arResult*/?>

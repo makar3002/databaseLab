@@ -1,13 +1,14 @@
 <?php
-namespace Core\Orm;
-use Core\Orm\General\FieldAttributeType;
-use Core\Orm\General\TableManager;
+namespace core\table;
 
-class DirectionTable extends TableManager
+use core\util\orm\FieldAttributeType;
+use core\util\orm\TableManager;
+
+class TeacherTable extends TableManager
 {
     public static function getTableName()
     {
-        return 'direction';
+        return 'teacher';
     }
 
     public static function getTableMap()

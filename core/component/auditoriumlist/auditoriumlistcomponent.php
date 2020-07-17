@@ -1,7 +1,7 @@
 <?php
-namespace Core\Component\AuditoriumList;
+namespace core\component\auditoriumlist;
 
-use Core\Component\TableList\TableListComparable;
+use core\component\tableList\TableListComparable;
 
 class AuditoriumListComponent extends TableListComparable
 {

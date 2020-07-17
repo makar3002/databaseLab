@@ -1,8 +1,4 @@
-<?
-use Core\Component\nonauthorized\NonAuthorizedComponent;
-use Core\Component\profile\ProfileComponent;
-use Core\Component\UserList\UserListComponent;
-?>
+<? /** @var array $arResult*/?>
 
 <?if (!isset($arParams['QUERY'])) :?>
     <div>

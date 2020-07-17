@@ -1,6 +1,8 @@
 <?
-use Core\Component\Authorization\AuthorizationComponent;
+use core\component\Authorization\AuthorizationComponent;
 ?>
+
+<? /** @var array $arResult*/?>
 
 <?if ($arResult['IS_AJAX_REQUEST']) :?>
     <?if ($arResult['IS_USER_AUTHORIZED']) :?>

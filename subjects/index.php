@@ -1,6 +1,5 @@
 <?
-
-use Core\Component\SubjectList\SubjectListComponent;
+use core\component\subjectlist\SubjectListComponent;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/template/header.php');?>
 <?

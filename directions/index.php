@@ -1,6 +1,5 @@
 <?
-
-use Core\Component\DirectionList\DirectionListComponent;
+use core\component\directionlist\DirectionListComponent;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/template/header.php');?>
 <?

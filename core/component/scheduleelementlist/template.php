@@ -1,6 +1,6 @@
 <?
-use Core\Component\TableList\TableListComponent;
-use Core\Orm\ScheduleElementTable;
+use core\component\tableList\TableListComponent;
+use core\table\ScheduleElementTable;
 ?>
 
 <? /** @var array $arResult*/?>

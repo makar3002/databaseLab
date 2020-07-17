@@ -1,11 +1,11 @@
 <?php
-namespace Core\Component\ScheduleElementList;
+namespace core\component\scheduleelementlist;
 
-use Core\Component\TableList\TableListComparable;
-use Core\Orm\AuditoriumTable;
-use Core\Orm\GroupTable;
-use Core\Orm\SubjectTable;
-use Core\Orm\TeacherTable;
+use core\component\tableList\TableListComparable;
+use core\table\AuditoriumTable;
+use core\table\GroupTable;
+use core\table\SubjectTable;
+use core\table\TeacherTable;
 
 class ScheduleElementListComponent extends TableListComparable
 {

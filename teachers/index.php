@@ -1,5 +1,5 @@
 <?
-use Core\Component\TeacherList\TeacherListComponent;
+use core\component\teacherlist\TeacherListComponent;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/template/header.php');?>
 <?

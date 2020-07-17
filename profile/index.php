@@ -1,7 +1,7 @@
-<? use Core\Component\profile\ProfileComponent;
+<?
+use core\component\profile\ProfileComponent;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/template/header.php');?>
-    <!--Content here-->
 <?
 $component = new ProfileComponent(array());
 $component->processComponent();

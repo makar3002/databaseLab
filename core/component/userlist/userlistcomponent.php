@@ -1,8 +1,8 @@
 <?php
-namespace Core\Component\UserList;
+namespace core\component\UserList;
 
-use Core\Component\TableList\TableListComparable;
-use Core\Orm\RightGroupTable;
+use core\component\tableList\TableListComparable;
+use core\table\RightGroupTable;
 
 class UserListComponent extends TableListComparable
 {

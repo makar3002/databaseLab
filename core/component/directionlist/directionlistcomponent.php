@@ -1,8 +1,8 @@
 <?php
-namespace Core\Component\DirectionList;
+namespace core\component\directionlist;
 
-use Core\Component\TableList\TableListComparable;
-use Core\Orm\InstituteTable;
+use core\component\tableList\TableListComparable;
+use core\table\InstituteTable;
 
 class DirectionListComponent extends TableListComparable
 {

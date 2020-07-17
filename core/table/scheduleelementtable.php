@@ -1,9 +1,9 @@
 <?php
-namespace Core\Orm;
-use Core\Orm\General\DB;
-use Core\Orm\General\FieldAttributeType;
-use Core\Orm\General\TableManager;
-use PDO;
+namespace core\table;
+
+use core\util\orm\DB;
+use core\util\orm\FieldAttributeType;
+use core\util\orm\TableManager;
 
 class ScheduleElementTable extends TableManager
 {

@@ -1,5 +1,5 @@
 class SqlQuery {
-    componentClass = 'Core\\Component\\SqlQuery\\SqlQueryComponent';
+    componentClass = 'core\\component\\sqlquery\\SqlQueryComponent';
     signButtonsMap = [
         {
             buttonName: 'executeQuery',

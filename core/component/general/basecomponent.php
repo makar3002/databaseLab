@@ -1,5 +1,5 @@
 <?php
-namespace Core\Component\General;
+namespace core\component\general;
 
 abstract class BaseComponent
 {

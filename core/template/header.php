@@ -1,5 +1,6 @@
 <?php
-use Core\Component\Authorization\AuthorizationComponent;
+use core\component\Authorization\AuthorizationComponent;
+
 require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
 ?>
 <!DOCTYPE html>
@@ -17,8 +18,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
     <script src="/core/template/js/util/validator.js"></script>
     <script src="/core/template/js/authorization/authorization.js"></script>
     <script src="/core/template/js/util/ajax.js"></script>
-    <script src="/core/template/js/profile.js"></script>
-    <script src="/core/template/js/sqlquery.js"></script>
+    <script src="/core/template/js/profile/profile.js"></script>
+    <script src="/core/template/js/sqlquery/sqlquery.js"></script>
     <script src="/core/template/js/tablelist/tablelist.js"></script>
     <script src="/core/template/js/schedule/schedule.js"></script>
 </head>

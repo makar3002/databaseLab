@@ -1,8 +1,8 @@
 <?php
-namespace Core\Component\TeacherList;
+namespace core\component\teacherlist;
 
-use Core\Component\TableList\TableListComparable;
-use Core\Orm\InstituteTable;
+use core\component\tableList\TableListComparable;
+use core\table\InstituteTable;
 
 class TeacherListComponent extends TableListComparable
 {

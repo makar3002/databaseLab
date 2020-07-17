@@ -1,6 +1,6 @@
 <?
-use Core\Component\TableList\TableListComponent;
-use Core\Orm\SubjectTable;
+use core\component\tableList\TableListComponent;
+use core\table\SubjectTable;
 ?>
 
 <? /** @var array $arResult*/?>

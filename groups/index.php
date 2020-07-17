@@ -1,6 +1,5 @@
 <?
-
-use Core\Component\GroupList\GroupListComponent;
+use core\component\grouplist\GroupListComponent;
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/core/template/header.php');?>
 <?

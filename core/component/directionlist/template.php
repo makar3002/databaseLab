@@ -1,7 +1,6 @@
 <?
-use Core\Component\TableList\TableListComponent;
-use Core\Orm\DirectionTable;
-
+use core\component\tableList\TableListComponent;
+use core\table\DirectionTable;
 ?>
 
 <? /** @var array $arResult*/?>

@@ -1,7 +1,6 @@
 <?
-use Core\Component\TableList\TableListComponent;
-use Core\Orm\TeacherTable;
-
+use core\component\tableList\TableListComponent;
+use core\table\TeacherTable;
 ?>
 
 <? /** @var array $arResult*/?>

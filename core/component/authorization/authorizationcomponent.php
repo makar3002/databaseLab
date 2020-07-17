@@ -1,12 +1,12 @@
 <?php
-namespace Core\Component\authorization;
-use Core\Component\General\BaseComponent;
-use Core\Orm\UserTable;
-use Core\Util\Request;
-use Core\Util\User;
-use Core\Util\Validator;
-use Exception;
+namespace core\component\authorization;
 
+use core\component\general\BaseComponent;
+use core\table\UserTable;
+use core\util\Request;
+use core\util\User;
+use core\util\Validator;
+use Exception;
 
 class AuthorizationComponent extends BaseComponent
 {

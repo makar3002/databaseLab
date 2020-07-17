@@ -1,13 +1,14 @@
 <?php
-namespace Core\Orm;
-use Core\Orm\General\FieldAttributeType;
-use Core\Orm\General\TableManager;
+namespace core\table;
 
-class TeacherTable extends TableManager
+use core\util\orm\FieldAttributeType;
+use core\util\orm\TableManager;
+
+class GroupTable extends TableManager
 {
     public static function getTableName()
     {
-        return 'teacher';
+        return 'direct_group';
     }
 
     public static function getTableMap()
@@ -22,12 +23,15 @@ class TeacherTable extends TableManager
             'NAME' => array(
                 'ATTRIBUTES' => array()
             ),
-            'INSTITUTE_ID' => array(
+            'COUNT' => array(
+                'ATTRIBUTES' => array()
+            ),
+            'DIRECTION_ID' => array(
                 'ATTRIBUTES' => array(),
                 'REFERENCE' => array(
-                    'TABLE_CLASS' => InstituteTable::class,
+                    'TABLE_CLASS' => DirectionTable::class,
                     'SELECT_NAME_MAP' => array(
-                        'INSTITUTE_NAME' => 'NAME'
+                        'DIRECTION_NAME' => 'NAME'
                     )
                 ),
             )

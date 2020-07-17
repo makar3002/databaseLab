@@ -1,5 +1,5 @@
 <?php
-namespace Core\Util;
+namespace core\util;
 
 class Request {
     public static function isAjaxRequest()

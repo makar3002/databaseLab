@@ -1,7 +1,7 @@
 <?php
-namespace Core\Orm\General;
+namespace core\util\orm;
+
 use PDO;
-use PDOException;
 use PDOStatement;
 
 class DB {

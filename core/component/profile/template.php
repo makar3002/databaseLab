@@ -1,9 +1,11 @@
 <?
-use Core\Component\nonauthorized\NonAuthorizedComponent;
-use Core\Component\profile\ProfileComponent;
-use Core\Component\SqlQuery\SqlQueryComponent;
-use Core\Component\UserList\UserListComponent;
+use core\component\nonauthorized\NonAuthorizedComponent;
+use core\component\profile\ProfileComponent;
+use core\component\sqlquery\SqlQueryComponent;
+use core\component\userlist\UserListComponent;
 ?>
+
+<? /** @var array $arResult*/?>
 
 <?if ($arResult['IS_AJAX_REQUEST']) :?>
     <?if ($arResult['IS_USER_AUTHORIZED']) :?>

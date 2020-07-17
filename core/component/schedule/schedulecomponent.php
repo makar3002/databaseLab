@@ -1,10 +1,10 @@
 <?php
-namespace Core\Component\Schedule;
+namespace core\component\schedule;
 
-use Core\Component\General\BaseComponent;
-use Core\Orm\DirectionTable;
-use Core\Orm\GroupTable;
-use Core\Orm\ScheduleElementTable;
+use core\component\general\BaseComponent;
+use core\table\DirectionTable;
+use core\table\GroupTable;
+use core\table\ScheduleElementTable;
 
 class ScheduleComponent extends BaseComponent
 {
