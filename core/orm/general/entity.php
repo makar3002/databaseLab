@@ -156,10 +156,10 @@ class Entity
 
         foreach ($fields as $fieldName => $fieldValue) {
             if (
-                isset($this->fieldConfigMap['CAN_ADD'][$fieldName])
-                && $this->fieldConfigMap['CAN_ADD'][$fieldName]
+                !isset($this->fieldConfigMap['CAN_ADD'][$fieldName])
+                || !$this->fieldConfigMap['CAN_ADD'][$fieldName]
             ) {
-                throw new \RuntimeException('В таблице ' . $this->tableName . ' нельзя обновлять поле ' . $fieldName . '.');
+                throw new \RuntimeException('В таблице ' . $this->tableName . ' нельзя определять поле ' . $fieldName . '.');
             }
 
             $fieldNameList[] = $fieldName;
@@ -200,8 +200,14 @@ class Entity
         foreach ($params['select'] as $fieldName) {
             if (
                 !isset($this->fieldConfigMap['CAN_SELECT'][$fieldName])
-                || !$this->fieldConfigMap['CAN_SELECT'][$fieldName])
-            {
+                || !$this->fieldConfigMap['CAN_SELECT'][$fieldName]
+            ) {
+                if (
+                    isset($this->fieldConfigMap['HAS_ARRAY_VALUE'][$fieldName])
+                    && $this->fieldConfigMap['HAS_ARRAY_VALUE'][$fieldName]
+                ) {
+                    continue;
+                }
                 throw new \RuntimeException('В таблице ' . $this->tableName . ' нельзя выбирать поле ' . $fieldName . '.');
             }
 
@@ -258,12 +264,12 @@ class Entity
             $searchQueryList = array();
             foreach ($this->aliasMap as $fieldName => $fieldAlias) {
                 if (
-                    isset($this->fieldConfigMap['CAN_FILTER'][$fieldName])
+                    !isset($this->fieldConfigMap['CAN_FILTER'][$fieldName])
                     || !$this->fieldConfigMap['CAN_FILTER'][$fieldName]
                 ) {
                     continue;
                 }
-                $searchQueryList[] = $fieldName . ' LIKE \'%' . $searchValue . '%\'';
+                $searchQueryList[] = $fieldAlias . ' LIKE \'%' . $searchValue . '%\'';
             }
 
             if (!empty($searchQueryList)) {
@@ -309,24 +315,6 @@ class Entity
             return $resultList;
         }
 
-        /*$idList = array_column($resultList, 'ID');
-        foreach ($arrayFieldNameList as $fieldName) {
-            $fieldConfig = $tableMap[$fieldName];
-            static::checkFieldReference($fieldName, $fieldConfig);
-            $fieldReference = $fieldConfig['REFERENCE'];
-            /** @var TableManager $referenceTableClass */
-        /*$referenceTableClass = $fieldReference['TABLE_CLASS'];
-        $fieldValueList = $referenceTableClass::getList(array(
-            'select' => array('SUBJECT_ID', 'TEACHER_ID'),
-            'filter' => array('@SUBJECT_ID' => $subjectIdList)
-        ));
-
-
-        $subjectList = array_map(
-            'self::mergeSubjectAndItsTeacherIds',
-            $subjectList
-        );
-    }*/
         return $resultList;
     }
 

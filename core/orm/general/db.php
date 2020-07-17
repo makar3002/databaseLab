@@ -28,24 +28,19 @@ class DB {
     {
         if (empty(self::$instance))
         {
+
+            //TODO: Вынести конфиг в отдельный класс, наследующийся от интерфейса конфига БД,
+            // и передавать его как объект при создании инстанса.
             $connectionConfig = array(
                 'HOST' => 'localhost',
                 'DATABASE_NAME' => 'schedule',
                 'USER' => 'root',
                 'PASSWORD' => '');
 
-            try
-            {
-                self::$instance = new DB();
-                self::$instance->init($connectionConfig);
-                self::$instance->query('SET NAMES utf8');
-                self::$instance->query('SET CHARACTER SET utf8');
-
-            }
-            catch (PDOException $e)
-            {
-                echo $e->getMessage();
-            }
+            self::$instance = new DB();
+            self::$instance->init($connectionConfig);
+            self::$instance->query('SET NAMES utf8');
+            self::$instance->query('SET CHARACTER SET utf8');
         }
 
         return self::$instance;

@@ -14,7 +14,10 @@ class RightActionToGroupTable extends TableManager
     {
         return array(
             'ID' => array(
-                FieldAttributeType::READ_ONLY
+                'ATTRIBUTES' => array(
+                    FieldAttributeType::PRIMARY,
+                    FieldAttributeType::READ_ONLY
+                ),
             ),
             'GROUP_ID' => array(
                 'ATTRIBUTES' => array(),

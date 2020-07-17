@@ -5,7 +5,6 @@ namespace Core\Orm\General;
 abstract class TableManager
 {
     private static $entityList = array();
-    protected static $tableMap = array();
 
     /**
      * @return Entity
