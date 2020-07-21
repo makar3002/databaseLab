@@ -1,5 +1,5 @@
 <?
-use core\component\Authorization\AuthorizationComponent;
+use core\component\authorization\AuthorizationComponent;
 ?>
 
 <? /** @var array $arResult*/?>

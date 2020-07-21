@@ -1,8 +1,10 @@
 <?php
-namespace core\util\orm;
+namespace core\lib\db;
+
 
 use PDO;
 use PDOStatement;
+
 
 class DB {
     /**
@@ -35,7 +37,8 @@ class DB {
                 'HOST' => 'localhost',
                 'DATABASE_NAME' => 'schedule',
                 'USER' => 'root',
-                'PASSWORD' => '');
+                'PASSWORD' => ''
+            );
 
             self::$instance = new DB();
             self::$instance->init($connectionConfig);
@@ -66,29 +69,14 @@ class DB {
     public function execute()
     {
         if (!isset($this->pdoStatementInstance)) {
-            throw new \RuntimeException('Не выполена подготовка запроса.');
+            throw new \Exception('Не выполена подготовка запроса.');
         }
-        return $this->pdoStatementInstance->execute();
-    }
-
-    public function fetch()
-    {
-        return $this->pdoStatementInstance->fetch();
-    }
-
-    public function fetchAll()
-    {
-        return $this->pdoStatementInstance->fetchAll(PDO::FETCH_ASSOC);
+        return new DBResult($this->pdoStatementInstance);
     }
 
     public function getLastInsertId()
     {
         return $this->pdoInstance->lastInsertId();
-    }
-
-    public function getError()
-    {
-        return $this->pdoStatementInstance->errorInfo();
     }
 }
 ?>

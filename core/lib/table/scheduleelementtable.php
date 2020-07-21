@@ -1,9 +1,11 @@
 <?php
-namespace core\table;
+namespace core\lib\table;
 
-use core\util\orm\DB;
-use core\util\orm\FieldAttributeType;
-use core\util\orm\TableManager;
+
+use core\lib\db\DB;
+use core\lib\orm\FieldAttributeType;
+use core\lib\orm\TableManager;
+
 
 class ScheduleElementTable extends TableManager
 {
@@ -13,8 +15,8 @@ class ScheduleElementTable extends TableManager
 
         $db = DB::getInstance();
         $db->prepare($query);
-        $db->execute();
-        return $db->fetchAll();
+        $result = $db->execute();
+        return $result->fetchAll();
     }
 
     public static function getTableName()

@@ -2,9 +2,9 @@
 namespace core\component\schedule;
 
 use core\component\general\BaseComponent;
-use core\table\DirectionTable;
-use core\table\GroupTable;
-use core\table\ScheduleElementTable;
+use core\lib\table\DirectionTable;
+use core\lib\table\GroupTable;
+use core\lib\table\ScheduleElementTable;
 
 class ScheduleComponent extends BaseComponent
 {

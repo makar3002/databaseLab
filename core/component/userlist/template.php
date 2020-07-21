@@ -1,6 +1,6 @@
 <?
 use core\component\tableList\TableListComponent;
-use core\table\UserTable;
+use core\lib\table\UserTable;
 ?>
 
 <? /** @var array $arResult*/?>

@@ -15,4 +15,14 @@ class Request {
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
+
+    public static function getPost()
+    {
+        return $_POST ?? array();
+    }
+
+    public static function getRequest()
+    {
+        return $_REQUEST ?? array();
+    }
 }

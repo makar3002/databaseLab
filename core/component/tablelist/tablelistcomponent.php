@@ -2,7 +2,7 @@
 namespace core\component\tableList;
 
 use core\component\general\BaseComponent;
-use core\util\orm\TableManager;
+use core\lib\orm\TableManager;
 
 class TableListComponent extends BaseComponent
 {

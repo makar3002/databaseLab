@@ -2,8 +2,8 @@
 namespace core\component\subjectlist;
 
 use core\component\tableList\TableListComparable;
-use core\table\InstituteTable;
-use core\table\TeacherTable;
+use core\lib\table\InstituteTable;
+use core\lib\table\TeacherTable;
 
 class SubjectListComponent extends TableListComparable
 {

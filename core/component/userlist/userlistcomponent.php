@@ -2,7 +2,7 @@
 namespace core\component\UserList;
 
 use core\component\tableList\TableListComparable;
-use core\table\RightGroupTable;
+use core\lib\table\RightGroupTable;
 
 class UserListComponent extends TableListComparable
 {

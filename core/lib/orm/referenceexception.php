@@ -1,5 +1,5 @@
 <?php
-namespace core\util\orm;
+namespace core\lib\orm;
 
 
 use Exception;

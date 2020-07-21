@@ -1,6 +1,6 @@
 <?
 use core\component\tableList\TableListComponent;
-use core\table\GroupTable;
+use core\lib\table\GroupTable;
 ?>
 
 <? /** @var array $arResult*/?>

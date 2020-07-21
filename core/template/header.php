@@ -1,5 +1,5 @@
 <?php
-use core\component\Authorization\AuthorizationComponent;
+use core\component\authorization\AuthorizationComponent;
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
 ?>
@@ -12,6 +12,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
     <link rel="stylesheet" href="/core/template/css/style.css">
     <link rel="stylesheet" href="/core/template/css/tablelist.css">
     <link rel="stylesheet" href="/core/template/css/schedule.css">
+    <link rel="stylesheet" href="/core/template/css/feedbackform.css">
     <script src="/core/template/js/jquery/jquery-3.4.1.min.js"></script>
     <script src="/core/template/js/util/popper.min.js"></script>
     <script src="/core/template/js/bootstrap/bootstrap.min.js"></script>

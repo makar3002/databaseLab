@@ -1,0 +1,8 @@
+#feedbackForm .input-block {
+    padding: 0.75rem;
+    background-color: rgba(241, 196, 15, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 3px #cccccc;
+    margin-bottom: 1rem;
+}
+

@@ -2,7 +2,7 @@
 namespace core\component\grouplist;
 
 use core\component\tableList\TableListComparable;
-use core\table\DirectionTable;
+use core\lib\table\DirectionTable;
 
 class GroupListComponent extends TableListComparable
 {

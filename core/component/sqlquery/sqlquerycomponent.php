@@ -2,7 +2,7 @@
 namespace core\component\sqlquery;
 
 use core\component\general\BaseComponent;
-use core\util\orm\DB;
+use core\lib\db\DB;
 
 class  SqlQueryComponent extends BaseComponent
 {
@@ -15,8 +15,8 @@ class  SqlQueryComponent extends BaseComponent
     {
         $db = DB::getInstance();
         $db->prepare($this->arParams['QUERY']);
-        $db->execute();
-        $result = $db->fetchAll();
+        $result = $db->execute();
+        $resultList = $result->fetchAll();
         ob_start();
         var_dump($result);
         $this->arResult['QUERY_RESULT'] = ob_get_clean();

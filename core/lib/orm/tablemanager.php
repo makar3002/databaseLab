@@ -1,6 +1,5 @@
 <?php
-namespace core\util\orm;
-
+namespace core\lib\orm;
 
 abstract class TableManager
 {
@@ -26,7 +25,7 @@ abstract class TableManager
     {
         $tableClass = get_called_class();
         if (!is_subclass_of($tableClass, TableManager::class)) {
-            throw new \RuntimeException();
+            throw new \Exception('Класс ' . $tableClass . ' не наследуется от класса ' . TableManager::class);
         }
         return $tableClass;
     }

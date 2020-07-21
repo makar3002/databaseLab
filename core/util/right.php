@@ -1,8 +1,10 @@
 <?php
 namespace core\util;
 
-use core\table\RightActionTable;
-use core\table\RightGroupTable;
+
+use core\lib\table\RightActionTable;
+use core\lib\table\RightGroupTable;
+
 
 class Right {
     private $rightGroupList;

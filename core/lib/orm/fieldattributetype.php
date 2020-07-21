@@ -1,6 +1,9 @@
 <?php
-namespace core\util\orm;
-use RuntimeException;
+namespace core\lib\orm;
+
+
+use Exception;
+
 
 class FieldAttributeType
 {
@@ -14,9 +17,7 @@ class FieldAttributeType
 
     public static function canSortField($arFieldAttributes)
     {
-        if (!self::checkFieldAttributes($arFieldAttributes)) {
-            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
-        }
+        self::checkFieldAttributes($arFieldAttributes);
         $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
 
         $canSortFilter = !$hasArrayValue;
@@ -25,9 +26,7 @@ class FieldAttributeType
 
     public static function hasArrayValueField($arFieldAttributes)
     {
-        if (!self::checkFieldAttributes($arFieldAttributes)) {
-            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
-        }
+        self::checkFieldAttributes($arFieldAttributes);
         $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
 
         return $hasArrayValue;
@@ -35,9 +34,7 @@ class FieldAttributeType
 
     public static function canSelectField($arFieldAttributes)
     {
-        if (!self::checkFieldAttributes($arFieldAttributes)) {
-            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
-        }
+        self::checkFieldAttributes($arFieldAttributes);
         $isWhereOnly = is_int(array_search(self::WHERE_ONLY, $arFieldAttributes));
 
         $canSelectField = !$isWhereOnly;
@@ -46,9 +43,7 @@ class FieldAttributeType
 
     public static function canFilterField($arFieldAttributes)
     {
-        if (!self::checkFieldAttributes($arFieldAttributes)) {
-            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
-        }
+        self::checkFieldAttributes($arFieldAttributes);
         $isSelectOnly = is_int(array_search(self::SELECT_ONLY, $arFieldAttributes));
         $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
         $isSelectAndUpdateOnly = is_int(array_search(self::SELECT_AND_WHERE_ONLY, $arFieldAttributes));
@@ -59,9 +54,7 @@ class FieldAttributeType
 
     public static function canUpdateField($arFieldAttributes)
     {
-        if (!self::checkFieldAttributes($arFieldAttributes)) {
-            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
-        }
+        self::checkFieldAttributes($arFieldAttributes);
         $isReadOnly = is_int(array_search(self::READ_ONLY, $arFieldAttributes));
         $hasArrayValue = is_int(array_search(self::ARRAY_VALUE, $arFieldAttributes));
         $isSelectOnly = is_int(array_search(self::SELECT_ONLY, $arFieldAttributes));
@@ -73,9 +66,7 @@ class FieldAttributeType
 
     public static function isRequiredField($arFieldAttributes)
     {
-        if (!self::checkFieldAttributes($arFieldAttributes)) {
-            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
-        }
+        self::checkFieldAttributes($arFieldAttributes);
         $isRequired = is_int(array_search(self::REQUIRED, $arFieldAttributes));
 
         return $isRequired;
@@ -83,9 +74,7 @@ class FieldAttributeType
 
     public static function isPrimaryField($arFieldAttributes)
     {
-        if (!self::checkFieldAttributes($arFieldAttributes)) {
-            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
-        }
+        self::checkFieldAttributes($arFieldAttributes);
         $isPrimary = is_int(array_search(self::PRIMARY, $arFieldAttributes));
 
         return $isPrimary;
@@ -93,9 +82,7 @@ class FieldAttributeType
 
     public static function canAddField($arFieldAttributes)
     {
-        if (!self::checkFieldAttributes($arFieldAttributes)) {
-            throw new RuntimeException('Ошибка описания поля в классе таблицы.');
-        }
+        self::checkFieldAttributes($arFieldAttributes);
         $isReadOnly = is_int(array_search(self::READ_ONLY, $arFieldAttributes));
 
         $canAddField = !$isReadOnly;
@@ -126,6 +113,8 @@ class FieldAttributeType
 
         $isSelectAndWhereAtTheSameTime = $isWhereOnly && $isSelectOnly;
 
-        return !$isSelectAndWhereAtTheSameTime;
+        if($isSelectAndWhereAtTheSameTime) {
+            throw new Exception('Ошибка описания поля в классе таблицы.');
+        }
     }
 }

@@ -2,10 +2,10 @@
 namespace core\component\scheduleelementlist;
 
 use core\component\tableList\TableListComparable;
-use core\table\AuditoriumTable;
-use core\table\GroupTable;
-use core\table\SubjectTable;
-use core\table\TeacherTable;
+use core\lib\table\AuditoriumTable;
+use core\lib\table\GroupTable;
+use core\lib\table\SubjectTable;
+use core\lib\table\TeacherTable;
 
 class ScheduleElementListComponent extends TableListComparable
 {

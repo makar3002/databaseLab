@@ -1,14 +1,16 @@
 <?php
-namespace core\table;
+namespace core\lib\table;
 
-use core\util\orm\FieldAttributeType;
-use core\util\orm\TableManager;
 
-class RightActionTable extends TableManager
+use core\lib\orm\FieldAttributeType;
+use core\lib\orm\TableManager;
+
+
+class InstituteTable extends TableManager
 {
     public static function getTableName()
     {
-        return 'right_action';
+        return 'institute';
     }
 
     public static function getTableMap()
@@ -19,9 +21,6 @@ class RightActionTable extends TableManager
                     FieldAttributeType::PRIMARY,
                     FieldAttributeType::READ_ONLY
                 )
-            ),
-            'CODE' => array(
-                'ATTRIBUTES' => array()
             ),
             'NAME' => array(
                 'ATTRIBUTES' => array()

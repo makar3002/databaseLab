@@ -1,6 +1,6 @@
 <?
 use core\component\tableList\TableListComponent;
-use core\table\RightActionTable;
+use core\lib\table\RightActionTable;
 ?>
 
 <? /** @var array $arResult*/?>

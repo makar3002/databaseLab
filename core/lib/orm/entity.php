@@ -1,5 +1,9 @@
 <?php
-namespace core\util\orm;
+namespace core\lib\orm;
+
+
+use core\lib\db\DB;
+
 
 class Entity
 {
@@ -150,7 +154,7 @@ class Entity
                 isset($fields[$fieldName])
                 && $isRequired
             ) {
-                throw new \RuntimeException('Поле ' . $fieldName . ' является обязательным в таблице ' . $this->tableName . '.');
+                throw new \Exception('Поле ' . $fieldName . ' является обязательным в таблице ' . $this->tableName . '.');
             }
         }
 
@@ -159,7 +163,7 @@ class Entity
                 !isset($this->fieldConfigMap['CAN_ADD'][$fieldName])
                 || !$this->fieldConfigMap['CAN_ADD'][$fieldName]
             ) {
-                throw new \RuntimeException('В таблице ' . $this->tableName . ' нельзя определять поле ' . $fieldName . '.');
+                throw new \Exception('В таблице ' . $this->tableName . ' нельзя определять поле ' . $fieldName . '.');
             }
 
             $fieldNameList[] = $fieldName;
@@ -171,10 +175,10 @@ class Entity
 
         $db = DB::getInstance();
         $db->prepare($query);
-        $db->execute();
+        $result = $db->execute();
 
         // Обработка кастомных ошибок MySQL, вызываемых в триггерах.
-        $errorInfo = $db->getError();
+        $errorInfo = $result->getError();
         if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
             throw new \RuntimeException($errorInfo[2]);
         }
@@ -208,7 +212,7 @@ class Entity
                 ) {
                     continue;
                 }
-                throw new \RuntimeException('В таблице ' . $this->tableName . ' нельзя выбирать поле ' . $fieldName . '.');
+                throw new \Exception('В таблице ' . $this->tableName . ' нельзя выбирать поле ' . $fieldName . '.');
             }
 
             $selectQueryList[] = $this->aliasMap[$fieldName] . ' AS ' . $fieldName;
@@ -237,14 +241,14 @@ class Entity
                 } elseif ($this->aliasMap[substr($filterKey, 1)]) {
                     $fieldName = substr($filterKey, 1);
                 } else {
-                    throw new \RuntimeException('Некорректный ключ фильтрации для таблицы ' . $this->tableName . ': ' . $filterKey . '.');
+                    throw new \Exception('Некорректный ключ фильтрации для таблицы ' . $this->tableName . ': ' . $filterKey . '.');
                 }
 
                 if (
                     !isset($this->fieldConfigMap['CAN_FILTER'][$fieldName])
                     || !$this->fieldConfigMap['CAN_FILTER'][$fieldName]
                 ) {
-                    throw new \RuntimeException('Таблицу ' . $this->tableName . ' нельзя фильтровать по полю ' . $fieldName . '.');
+                    throw new \Exception('Таблицу ' . $this->tableName . ' нельзя фильтровать по полю ' . $fieldName . '.');
                 }
 
                 if ($filterKey[0] == '@' && is_array($value)) {
@@ -284,11 +288,11 @@ class Entity
                     !isset($this->fieldConfigMap['CAN_SORT'][$fieldName])
                     || !$this->fieldConfigMap['CAN_SORT'][$fieldName]
                 ) {
-                    throw new \RuntimeException('Таблицу ' . $this->tableName . ' нельзя сортировать по полю ' . $fieldName . '.');
+                    throw new \Exception('Таблицу ' . $this->tableName . ' нельзя сортировать по полю ' . $fieldName . '.');
                 }
 
                 if (!in_array($orderValue, array('ASC', 'DESC'))) {
-                    throw new \RuntimeException('Некорректное значение сортировки: ' . $orderValue . '.');
+                    throw new \Exception('Некорректное значение сортировки: ' . $orderValue . '.');
                 }
                 $orderQueryList[] = $this->aliasMap[$fieldName] . ' ' . $orderValue;
             }
@@ -309,8 +313,8 @@ class Entity
 
         $db = DB::getInstance();
         $db->prepare($query);
-        $db->execute();
-        $resultList = $db->fetchAll();
+        $result = $db->execute();
+        $resultList = $result->fetchAll();
         if (empty($arrayFieldNameList)) {
             return $resultList;
         }
@@ -344,7 +348,7 @@ class Entity
                 !isset($this->fieldConfigMap['CAN_UPDATE'][$fieldName])
                 || !$this->fieldConfigMap['CAN_UPDATE'][$fieldName]
             ) {
-                throw new \RuntimeException('В таблице ' . $this->tableName . ' нельзя обновлять поле ' . $fieldName . '.');
+                throw new \Exception('В таблице ' . $this->tableName . ' нельзя обновлять поле ' . $fieldName . '.');
             }
 
             $updateQueryList[] = $fieldName . ' = \'' . $fieldValue . '\'';
@@ -360,10 +364,10 @@ class Entity
         $query = implode(' ', $queryList);
         $db = DB::getInstance();
         $db->prepare($query);
-        $db->execute();
+        $result = $db->execute();
 
         // Обработка кастомных ошибок MySQL, вызываемых в триггерах.
-        $errorInfo = $db->getError();
+        $errorInfo = $result->getError();
         if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
             throw new \RuntimeException($errorInfo[2]);
         }
@@ -468,7 +472,7 @@ class Entity
                 return $fieldName;
             }
         }
-        throw new \RuntimeException('У таблицы не задан первичный ключ.');
+        throw new \Exception('У таблицы не задан первичный ключ.');
     }
 
     protected function getAliasMap()
@@ -495,7 +499,7 @@ class Entity
                 } elseif (is_string($referenceFieldInfo)) {
                     $aliasMap[$aliasFieldName] = $tableClass::getTableName() . '.' . $referenceFieldInfo;
                 } else {
-                    throw new \RuntimeException();
+                    throw new \Exception('Неправильно задано описание поля.');
                 }
             }
         }

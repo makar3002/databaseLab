@@ -2,7 +2,7 @@
 namespace core\component\teacherlist;
 
 use core\component\tableList\TableListComparable;
-use core\table\InstituteTable;
+use core\lib\table\InstituteTable;
 
 class TeacherListComponent extends TableListComparable
 {

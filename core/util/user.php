@@ -1,7 +1,7 @@
 <?php
 namespace core\util;
 
-use core\table\UserTable;
+use core\lib\table\UserTable;
 
 class User {
     private $session;
