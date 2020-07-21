@@ -2,9 +2,8 @@
 namespace core\component\authorization;
 
 use core\component\general\BaseComponent;
-use core\lib\table\UserTable;
 use core\util\Request;
-use core\util\User;
+use core\lib\facade\User;
 use core\util\Validator;
 use Exception;
 
@@ -40,24 +39,12 @@ class AuthorizationComponent extends BaseComponent
 
     public function signUpAction()
     {
-        $userData = array();
         try {
             $userData = $this->checkAndGetUserData();
+            User::getInstance()->registerUserByData($userData);
         } catch (Exception $exception) {
             echo $exception->getMessage();
         }
-
-        $userList = UserTable::getList(array(
-            'filter' => array('=EMAIL' => $userData['email'])
-        ));
-
-        $userCount = count($userList);
-        if ($userCount != 0) {
-            echo "Пользователь с такой почтой уже зарегистрирован";
-        }
-
-        $password = password_hash($userData['password'],PASSWORD_DEFAULT);
-        UserTable::add(array('EMAIL' => $userData['email'], 'PASSWORD' => $password));
     }
 
     public function signOutAction()

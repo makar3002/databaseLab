@@ -4,7 +4,7 @@ namespace core\component\profile;
 use core\component\general\BaseComponent;
 use core\lib\table\UserTable;
 use core\util\Request;
-use core\util\User;
+use core\lib\facade\User;
 use core\util\Validator;
 
 class  ProfileComponent extends BaseComponent

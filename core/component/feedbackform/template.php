@@ -27,36 +27,38 @@ use core\component\nonauthorized\NonAuthorizedComponent;
                 <label for="email">Почта</label>
             </div>
 
-            <div class="input-block">
-                <p>Пол</p>
-                <div>
-                    <input id="sex0" type="radio" name="sex" class="custom-radio sign-in-form-control" placeholder="Пол" value="0" <?if (0 === $feedback['SEX']) echo 'checked';?>>
-                    <label for="sex0">Не знаю</label>
+                <div class="input-block mx-auto">
+                    <p>Пол</p>
+                    <div class="checkbox-block">
+                        <div>
+                            <input id="sex0" type="radio" name="sex" class="custom-radio sign-in-form-control" placeholder="Пол" value="0" <?if ($feedback['SEX'] === 0) echo 'checked';?>>
+                            <label for="sex0">Не знаю</label>
+                        </div>
+
+                        <div>
+                            <input id="sex1" type="radio" name="sex" class="custom-radio sign-in-form-control" placeholder="Пол" value="1" <?if ($feedback['SEX'] === 1) echo 'checked';?>>
+                            <label for="sex1">Мужской</label>
+                        </div>
+
+                        <div>
+                            <input id="sex2" type="radio" name="sex" class="custom-radio sign-in-form-control" placeholder="Пол" value="2" <?if ($feedback['SEX'] === 2) echo 'checked';?>>
+                            <label for="sex2">Женский</label>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <input id="sex1" type="radio" name="sex" class="custom-radio sign-in-form-control" placeholder="Пол" value="1" <?if (1 === $feedback['SEX']) echo 'checked';?>>
-                    <label for="sex1">Мужской</label>
+                <div class="input-block">
+                    <label for="needAnswer">Требуется ли ответ</label>
+                    <input id="needAnswer" type="checkbox" name="needAnswer" class="sign-in-form-control" placeholder="Требуется ли ответ" value="Y" <?if (isset($feedback['SEX']) && $feedback['SEX'] == 'Y') echo 'checked';?>>
                 </div>
 
-                <div>
-                    <input id="sex2" type="radio" name="sex" class="custom-radio sign-in-form-control" placeholder="Пол" value="2" <?if (2 === $feedback['SEX']) echo 'checked';?>>
-                    <label for="sex2">Женский</label>
+                <div class="form-label-group">
+                    <label for="message">Сообщение</label>
                 </div>
-            </div>
 
-            <div class="input-block">
-                <label for="needAnswer">Требуется ли ответ</label>
-                <input id="needAnswer" type="checkbox" name="needAnswer" class="sign-in-form-control" placeholder="Требуется ли ответ" value="<?=$feedback['SEX']?>">
-            </div>
-
-            <div class="form-label-group">
-                <label for="message">Сообщение</label>
-            </div>
-
-            <div class="form-label-group">
-                <textarea id="message" name="message" class="form-control" placeholder="Сообщение" required><?=$feedback['MESSAGE']?></textarea>
-            </div>
+                <div class="form-label-group">
+                    <textarea id="message" name="message" class="form-control" placeholder="Сообщение" required><?=$feedback['MESSAGE']?></textarea>
+                </div>
 
             <input type="submit" class="btn btn-primary sign-in-btn" value="Отправить">
         </form>

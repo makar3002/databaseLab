@@ -31,10 +31,10 @@ class FeedbackTable extends TableManager
             'NEED_ANSWER' => array(
                 'ATTRIBUTES' => array()
             ),
-            'AGE' => array(
+            'SEX' => array(
                 'ATTRIBUTES' => array()
             ),
-            'SEX' => array(
+            'MESSAGE' => array(
                 'ATTRIBUTES' => array()
             ),
         );

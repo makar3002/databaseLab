@@ -1,7 +1,8 @@
 <?php
-namespace core\util;
+namespace core\lib\facade;
 
 use core\lib\table\UserTable;
+use core\util\Right;
 
 class User {
     private $session;
@@ -28,6 +29,21 @@ class User {
         }
 
         return self::$instance;
+    }
+
+    public function registerUserByData($userData)
+    {
+        $userList = UserTable::getList(array(
+            'filter' => array('=EMAIL' => $userData['email'])
+        ));
+
+        $userCount = count($userList);
+        if ($userCount != 0) {
+            throw new \RuntimeException('Пользователь с такой почтой уже зарегистрирован');
+        }
+
+        $password = password_hash($userData['password'],PASSWORD_DEFAULT);
+        UserTable::add(array('EMAIL' => $userData['email'], 'PASSWORD' => $password));
     }
 
     public function authorizeUserByData($email, $password)

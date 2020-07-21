@@ -36,6 +36,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/core/util/loader.php');
             <a class="p-2 text-light" href="/auditoriums">Аудитории</a>
             <a class="p-2 text-light" href="/subjects">Предметы</a>
             <a class="p-2 text-light" href="/scheduleelements">Пары</a>
+            <a class="p-2 text-light" href="/feedback">Фидбэк</a>
         </nav>
         <div class="my-md-0 ml-md-auto d-flex align-items-center">
             <?

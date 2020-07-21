@@ -5,7 +5,7 @@ class Validator {
     static public function checkEmailFormat($data)
     {
         $pattern = '/[a-zA-Z0-9][a-zA-Z0-9\._]*@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/';
-        return is_int(preg_match($pattern, $data));
+        return preg_match($pattern, $data);
     }
 
     static public function checkDateFormat($data)
