@@ -1,5 +1,5 @@
 class TableList {
-    entityClass = null;
+    static instanceList = {};
     formInfoList = {
         'addForm': {
             formId: 'add-form',
@@ -32,10 +32,18 @@ class TableList {
     sort = {};
     search = '';
 
-    constructor(entityClass, entityTableClass, sortFieldName, sortType) {
-        this.entityClass = entityClass;
+    static getInstance(entityTableClass = null, sortFieldName = null, sortType = null) {
+        if (this.instanceList[entityTableClass] === undefined) {
+            this.instanceList[entityTableClass] = new TableList(entityTableClass, sortFieldName, sortType);
+        }
+
+        return this.instanceList[entityTableClass];
+    }
+
+    constructor(entityTableClass, sortFieldName, sortType) {
         this.entityTableClass = entityTableClass;
         this.sort[sortFieldName] = sortType;
+        this.initialize();
     }
 
     initialize() {
@@ -83,11 +91,9 @@ class TableList {
     {
         let elementData = {
             ID: event.target.dataset.elementId,
-            ENTITY_CLASS: this.entityClass,
-            ENTITY_TABLE_CLASS: this.entityTableClass,
         };
 
-        Ajax.post(elementData, 'getElementInfo', this.componentClass).then(
+        Ajax.post(elementData, 'getElementInfo', this.entityTableClass).then(
             this.openUpdatePopup.bind(this)
         );
     }
@@ -194,10 +200,7 @@ class TableList {
     submitForm(formInfo)
     {
         let form = $('#' + formInfo.formId);
-        let elementData = {
-            ENTITY_CLASS: this.entityClass,
-            ENTITY_TABLE_CLASS: this.entityTableClass,
-        };
+        let elementData = {};
 
         let data = form.serializeArray().reduce(
             function(obj, item) {
@@ -225,7 +228,7 @@ class TableList {
         }
         elementData['FIELDS'] = JSON.stringify(data);
 
-        Ajax.post(elementData, formInfo.formAction, this.componentClass).then(
+        Ajax.post(elementData, formInfo.formAction, this.entityTableClass).then(
             function (response) {
                 if (response !== '') {
                     alert(response);

@@ -28,7 +28,11 @@
 }
 
 .add-btn {
-    min-width: 300px;
+    min-width: 250px;
+}
+
+.refresh-btn {
+    min-width: 250px;
 }
 
 .action-div {

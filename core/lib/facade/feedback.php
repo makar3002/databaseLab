@@ -3,16 +3,15 @@ namespace core\lib\facade;
 
 use core\lib\table\FeedbackTable;
 
-class Feedback
+class Feedback extends TableInteraction
 {
     private $feedbackEntity;
-    public function __construct()
-    {
+    public function __construct() {
         $this->feedbackEntity = FeedbackTable::getEntity();
+        parent::__construct($this->feedbackEntity);
     }
 
-    public function sendFeedback($fieldValueList)
-    {
+    public function sendFeedback(array $fieldValueList): void {
         $this->feedbackEntity->add($fieldValueList);
     }
 }

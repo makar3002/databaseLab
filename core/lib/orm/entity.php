@@ -183,7 +183,7 @@ class Entity
             throw new \RuntimeException($errorInfo[2]);
         }
 
-        return $db->getLastInsertId();
+        return intval($db->getLastInsertId());
     }
 
     public function getList($params)
@@ -324,7 +324,6 @@ class Entity
 
     public function getByPrimary($fieldValue)
     {
-
         $element = $this->getList(array(
             'filter' => array($this->primaryFieldName => $fieldValue),
         ));
@@ -379,7 +378,12 @@ class Entity
         $query = 'DELETE FROM ' . $this->tableName . ' WHERE ' . $this->primaryFieldName . ' = ' . $primaryFieldValue . ';';
         $db = DB::getInstance();
         $db->prepare($query);
-        return $db->execute();
+        try {
+            $db->execute();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     private function checkFieldReference($fieldName, $fieldConfig)

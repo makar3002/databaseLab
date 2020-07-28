@@ -10,6 +10,7 @@
         <input type="text" id="search-input" class="form-control search-input m-1" placeholder="Поиск">
         <button class="btn btn-primary m-1" type="submit" id="submit-search-btn">Поиск</button>
     </div>
+    <button type="button" class="btn btn-primary refresh-btn p-2 mr-4" onclick="TableList.getInstance('<?=str_replace('\\', '\\\\', $arResult['ENTITY_TABLE_CLASS']);?>').refreshTable()">Обновить таблицу</button>
 </div>
 <div id="table-list">
 <?endif;?>
@@ -176,9 +177,10 @@
 </div>
 <script>
     $(document).ready(function () {
-        let tableList = new TableList(
-            "<?=str_replace('\\', '\\\\', $arResult['ENTITY_CLASS']);?>",
-            "<?=str_replace('\\', '\\\\', $arResult['ENTITY_TABLE_CLASS']);?>"
+        let tableList = TableList.getInstance(
+            "<?=str_replace('\\', '\\\\', $arResult['ENTITY_TABLE_CLASS']);?>",
+            "<?=array_key_first($arResult['TABLE_SORT'])?>",
+            "<?=array_pop($arResult['TABLE_SORT'])?>"
         );
         tableList.initialize();
     });
@@ -187,7 +189,7 @@
 <script>
     $(document).ready(function () {
         document.addEventListener('Authorization::Success', function () {
-            location.href = location.href;
+            location.reload();
         });
     });
 </script>
