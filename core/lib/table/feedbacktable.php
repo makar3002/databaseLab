@@ -37,6 +37,10 @@ class FeedbackTable extends TableManager
             'MESSAGE' => array(
                 'ATTRIBUTES' => array()
             ),
+            'DATE_CREATE' => array(
+                'ATTRIBUTES' => array(),
+                'DEFAULT' => (new \DateTime())->format('yy-m-d h:i:s')
+            )
         );
     }
 }

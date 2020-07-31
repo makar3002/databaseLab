@@ -1,13 +1,15 @@
 <?php
 namespace core\component\actionlist;
 
-use core\component\tableList\TableListComparable;
 
-class ActionListComponent extends TableListComparable
-{
+use core\component\tablelist\DefaultUseTableListComponent;
+use core\lib\facade\Action;
+use core\lib\facade\TableInteraction;
 
-    const DEFAULT_TABLE_NAME = 'Действия';
-    const HEADER_COLUMN_MAP = array(
+
+class ActionListComponent extends DefaultUseTableListComponent {
+    protected const DEFAULT_TABLE_NAME = 'Действия';
+    protected const HEADER_COLUMN_MAP = array(
         'ID' => array(
             'NAME' => 'ID',
             'WIDTH' => 20
@@ -22,23 +24,17 @@ class ActionListComponent extends TableListComparable
         ),
     );
 
-    public function processComponent()
+    protected function getTableInteractionFacadeInstance(): TableInteraction
     {
-        if (!isset($this->arResult['TABLE_ONLY'])) {
-            $this->arResult['TABLE_ONLY'] = false;
-        }
-        $this->prepareHeader();
-        $this->prepareData();
-        $this->renderComponent();
+        return new Action();
     }
 
-    protected function prepareHeader()
+    protected function getHeader(): array
     {
-        $this->arResult['TABLE_HEADER'] = self::HEADER_COLUMN_MAP;
+        return self::HEADER_COLUMN_MAP;
     }
 
-    protected function prepareData()
-    {
-        $this->arResult['TABLE_NAME'] = self::DEFAULT_TABLE_NAME;
+    protected function getTableName(): string {
+        return self::DEFAULT_TABLE_NAME;
     }
 }

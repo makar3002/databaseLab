@@ -14,7 +14,7 @@ class  ProfileComponent extends BaseComponent
         $userInstance = User::getInstance();
         $isUserAuthorized = $userInstance->isUserAuthorized();
         if ($isUserAuthorized) {
-            $user = UserTable::getById($userInstance->getId());
+            $user = $userInstance->getUserInfo();
             $this->arResult = array_merge($this->arResult, $user);
         }
         $userRights = $userInstance->getRights();
@@ -54,13 +54,10 @@ class  ProfileComponent extends BaseComponent
                 return;
             }
 
-            $password = password_hash($this->arParams['password'],PASSWORD_DEFAULT);
-            $arUpdateUser['PASSWORD'] = $password;
+            $arUpdateUser['PASSWORD'] = $arUpdateUser;
         }
 
-
-
-        $newUser = UserTable::update($userId, $arUpdateUser);
+        $newUser = $userInstance->updateUserInfo($userId, $arUpdateUser);
         if (!$newUser) {
             echo 'Пользователь с такой почтой уже зарегистрирован.';
         }
@@ -70,6 +67,4 @@ class  ProfileComponent extends BaseComponent
     {
         $this->processComponent();
     }
-
-
 }

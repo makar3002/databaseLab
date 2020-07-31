@@ -69,3 +69,10 @@ use core\component\nonauthorized\NonAuthorizedComponent;
     $component->processComponent()
     ?>
 <?endif;?>
+<script>
+    $(document).ready(function () {
+        document.addEventListener('Authorization::Success', function () {
+            location.reload();
+        });
+    });
+</script>

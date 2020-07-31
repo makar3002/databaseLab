@@ -27,10 +27,11 @@ abstract class TableInteraction {
     }
 
     public function getElementList($sort, $search): array {
-        return $this->entityServiceInstance->getRows(array(
+        $result = $this->entityServiceInstance->getRows(array(
             'order' => $sort,
             'search' => $search
         ));
+        return $result;
     }
 
     abstract protected function getEntity(): Entity;

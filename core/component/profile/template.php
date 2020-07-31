@@ -1,4 +1,6 @@
 <?
+
+use core\component\feedbacklist\FeedbackListComponent;
 use core\component\nonauthorized\NonAuthorizedComponent;
 use core\component\profile\ProfileComponent;
 use core\component\sqlquery\SqlQueryComponent;
@@ -43,6 +45,11 @@ use core\component\userlist\UserListComponent;
                 <button class="btn btn-primary sign-in-btn" id="profile-save-btn" type="button">Сохранить</button>
             </form>
         </div>
+        <hr>
+        <?
+        $component = new FeedbackListComponent(array());
+        $component->processComponent();
+        ?>
         <?if ($arResult['CAN_MANIPULATE_USERS']) :?>
             <hr>
             <?

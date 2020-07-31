@@ -1,7 +1,7 @@
 <?php
 namespace core\component\scheduleelementlist;
 
-use core\component\tableList\TableListComparable;
+use core\component\tablelist\TableListComparable;
 use core\lib\table\AuditoriumTable;
 use core\lib\table\GroupTable;
 use core\lib\table\SubjectTable;

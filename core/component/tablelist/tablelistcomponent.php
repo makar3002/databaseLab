@@ -1,5 +1,5 @@
 <?php
-namespace core\component\tableList;
+namespace core\component\tablelist;
 
 use core\component\general\BaseComponent;
 use core\lib\orm\TableManager;

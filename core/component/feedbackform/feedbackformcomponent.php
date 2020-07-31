@@ -19,19 +19,17 @@ class FeedbackFormComponent extends BaseComponent
         'SEX' => 'sex'
     );
 
-    protected $feedbackInstance;
-    protected $userInstance;
+    protected Feedback $feedbackInstance;
+    protected User $userInstance;
 
-    public function __construct($arParams)
-    {
+    public function __construct($arParams) {
         parent::__construct($arParams);
 
         $this->feedbackInstance = new Feedback();
         $this->userInstance = User::getInstance();
     }
 
-    public function processComponent()
-    {
+    public function processComponent(): void {
         $request = Request::getRequest();
         $this->arResult['IS_USER_AUTHORIZED'] = $this->userInstance->isUserAuthorized();
         $feedback = $this->getFeedbackFromRequest();
@@ -46,7 +44,7 @@ class FeedbackFormComponent extends BaseComponent
                 $this->arResult['RESULT_MESSAGE'] = 'Форма успешно отправлена.';
             } catch (\Exception $e) {
                 $this->arResult['FEEDBACK'] = $this->getFeedbackFromRequest();
-                $this->arResult['RESULT_MESSAGE'] = $e->getMessage();
+                $this->arResult['RESULT_MESSAGE'] = $e;
             }
         } elseif ($request['action'] === 'clean') {
             $this->arResult['FEEDBACK'] = $this->getEmptyFeedback();
@@ -57,8 +55,7 @@ class FeedbackFormComponent extends BaseComponent
         $this->renderComponent();
     }
 
-    protected function validateFeedback($fieldValueList)
-    {
+    protected function validateFeedback($fieldValueList): void {
         foreach (self::FORM_FIELD_NAME_ALIAS_MAP as $fieldName => $fieldAlias) {
             if (!isset($fieldValueList[$fieldName])) {
                 throw new \Exception('Поле ' . $fieldName . ' не заполнено.');
@@ -70,8 +67,7 @@ class FeedbackFormComponent extends BaseComponent
         }
     }
 
-    protected function getFeedbackFromRequest()
-    {
+    protected function getFeedbackFromRequest(): array {
         $request = Request::getPost();
         $feedback = array();
         foreach (self::FORM_FIELD_NAME_ALIAS_MAP as $formFieldName => $formFieldAlias) {
@@ -86,8 +82,7 @@ class FeedbackFormComponent extends BaseComponent
         return $feedback;
     }
 
-    protected function prepareFeedback($feedback)
-    {
+    protected function prepareFeedback($feedback): array {
         if (empty($feedback['NEED_ANSWER'])) {
             $feedback['NEED_ANSWER'] = 'N';
         }
@@ -95,8 +90,7 @@ class FeedbackFormComponent extends BaseComponent
         return $feedback;
     }
 
-    protected function getEmptyFeedback()
-    {
+    protected function getEmptyFeedback(): array {
         $emptyFeedback = array();
         foreach (self::FORM_FIELD_NAME_ALIAS_MAP as $fieldName => $fieldAlias) {
             $emptyFeedback[$fieldName] = '';

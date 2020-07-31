@@ -1,17 +1,17 @@
 <?php
 namespace core\lib\facade;
 
+use core\lib\orm\Entity;
 use core\lib\table\FeedbackTable;
 
-class Feedback extends TableInteraction
-{
-    private $feedbackEntity;
-    public function __construct() {
-        $this->feedbackEntity = FeedbackTable::getEntity();
-        parent::__construct($this->feedbackEntity);
+class Feedback extends TableInteraction {
+    public function sendFeedback(array $fieldValueList): void {
+        $fieldValueList['DATE_CREATE'] = null;
+        $feedbackEntity = $this->getEntity();
+        $feedbackEntity->add($fieldValueList);
     }
 
-    public function sendFeedback(array $fieldValueList): void {
-        $this->feedbackEntity->add($fieldValueList);
+    protected function getEntity(): Entity {
+        return FeedbackTable::getEntity();
     }
 }

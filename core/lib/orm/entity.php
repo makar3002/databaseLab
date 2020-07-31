@@ -152,6 +152,7 @@ class Entity
         foreach ($this->fieldConfigMap['IS_REQUIRED'] as $fieldName => $isRequired) {
             if (
                 isset($fields[$fieldName])
+                && !isset($this->tableMap[$fieldName]['DEFAULT'])
                 && $isRequired
             ) {
                 throw new \Exception('Поле ' . $fieldName . ' является обязательным в таблице ' . $this->tableName . '.');
@@ -167,7 +168,7 @@ class Entity
             }
 
             $fieldNameList[] = $fieldName;
-            $fieldValueList[] = $fields[$fieldName];
+            $fieldValueList[] = $fields[$fieldName] ?? $this->tableMap[$fieldName]['DEFAULT'];
         }
 
         $query .= '(' . implode(', ', $fieldNameList) . ') VALUES (\'' .
@@ -179,7 +180,7 @@ class Entity
 
         // Обработка кастомных ошибок MySQL, вызываемых в триггерах.
         $errorInfo = $result->getError();
-        if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
+        if ($errorInfo[0] == '00000' && !empty($errorInfo[2])) {
             throw new \RuntimeException($errorInfo[2]);
         }
 
@@ -263,7 +264,7 @@ class Entity
             }
         }
 
-        if (isset($params['search']) && is_string($params['search'])) {
+        if (isset($params['search']) && is_string($params['search']) && !empty($params['search'])) {
             $searchValue = $params['search'];
             $searchQueryList = array();
             foreach ($this->aliasMap as $fieldName => $fieldAlias) {
@@ -367,7 +368,7 @@ class Entity
 
         // Обработка кастомных ошибок MySQL, вызываемых в триггерах.
         $errorInfo = $result->getError();
-        if ($errorInfo[0] != '00000' && !empty($errorInfo[2])) {
+        if ($errorInfo[0] == '00000' && !empty($errorInfo[2])) {
             throw new \RuntimeException($errorInfo[2]);
         }
         return $this->getByPrimary($primaryFieldValue);

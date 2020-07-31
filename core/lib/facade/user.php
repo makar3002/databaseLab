@@ -15,7 +15,6 @@ class User {
         $this->session = &$_SESSION;
         if (isset($this->session['USER_ID'])) {
             $this->user = UserTable::getList(array(
-                'select' => array('ID', 'GROUP_IDS'),
                 'filter' => array('ID' => $this->session['USER_ID'])
             ))[0];
             $this->right = new Right($this->user['GROUP_IDS']);
@@ -29,6 +28,25 @@ class User {
         }
 
         return self::$instance;
+    }
+
+    public function getUserInfo()
+    {
+        if(isset($this->user)) {
+            return $this->user;
+        } else {
+            return array();
+        }
+    }
+
+    public function updateUserInfo($userId, $fields)
+    {
+        if(isset($fields['PASSWORD'])) {
+            $password = password_hash($fields['password'],PASSWORD_DEFAULT);
+            $fields['PASSWORD'] = $password;
+        }
+
+        return UserTable::update($userId, $fields);
     }
 
     public function registerUserByData($userData)

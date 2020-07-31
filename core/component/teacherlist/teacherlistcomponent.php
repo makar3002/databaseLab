@@ -1,7 +1,7 @@
 <?php
 namespace core\component\teacherlist;
 
-use core\component\tableList\TableListComparable;
+use core\component\tablelist\TableListComparable;
 use core\lib\table\InstituteTable;
 
 class TeacherListComponent extends TableListComparable

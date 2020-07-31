@@ -1,7 +1,7 @@
 <?php
 namespace core\component\subjectlist;
 
-use core\component\tableList\TableListComparable;
+use core\component\tablelist\TableListComparable;
 use core\lib\table\InstituteTable;
 use core\lib\table\TeacherTable;
 

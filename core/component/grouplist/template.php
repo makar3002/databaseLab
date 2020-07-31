@@ -1,5 +1,5 @@
 <?
-use core\component\tableList\TableListComponent;
+use core\component\tablelist\TableListComponent;
 use core\lib\table\GroupTable;
 ?>
 

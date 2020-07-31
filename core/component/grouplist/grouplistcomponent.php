@@ -1,7 +1,7 @@
 <?php
 namespace core\component\grouplist;
 
-use core\component\tableList\TableListComparable;
+use core\component\tablelist\TableListComparable;
 use core\lib\table\DirectionTable;
 
 class GroupListComponent extends TableListComparable
