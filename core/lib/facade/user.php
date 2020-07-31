@@ -42,7 +42,7 @@ class User {
     public function updateUserInfo($userId, $fields)
     {
         if(isset($fields['PASSWORD'])) {
-            $password = password_hash($fields['password'],PASSWORD_DEFAULT);
+            $password = password_hash($fields['PASSWORD'],PASSWORD_DEFAULT);
             $fields['PASSWORD'] = $password;
         }
 

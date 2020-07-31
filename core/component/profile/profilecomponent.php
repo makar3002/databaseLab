@@ -54,7 +54,7 @@ class  ProfileComponent extends BaseComponent
                 return;
             }
 
-            $arUpdateUser['PASSWORD'] = $arUpdateUser;
+            $arUpdateUser['PASSWORD'] = $this->arParams['password'];
         }
 
         $newUser = $userInstance->updateUserInfo($userId, $arUpdateUser);
