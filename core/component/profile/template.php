@@ -45,11 +45,13 @@ use core\component\userlist\UserListComponent;
                 <button class="btn btn-primary sign-in-btn" id="profile-save-btn" type="button">Сохранить</button>
             </form>
         </div>
-        <hr>
-        <?
-        $component = new FeedbackListComponent(array());
-        $component->processComponent();
-        ?>
+        <?if ($arResult['CAN_MANIPULATE_USERS']) :?>
+            <hr>
+            <?
+            $component = new FeedbackListComponent(array());
+            $component->processComponent();
+            ?>
+        <?endif;?>
         <?if ($arResult['CAN_MANIPULATE_USERS']) :?>
             <hr>
             <?
