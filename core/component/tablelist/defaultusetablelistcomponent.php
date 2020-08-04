@@ -3,7 +3,7 @@ namespace core\component\tablelist;
 
 
 use core\component\general\BaseComponent;
-use core\lib\presentation\FeedbackListInteractor;
+use core\lib\presentation\TableInteractorCompatible;
 
 
 abstract class DefaultUseTableListComponent extends BaseComponent implements TableListCompatible {
@@ -11,7 +11,7 @@ abstract class DefaultUseTableListComponent extends BaseComponent implements Tab
         'ID' => 'ASC'
     );
 
-    protected FeedbackListInteractor $interactInstance;
+    protected TableInteractorCompatible $interactInstance;
     protected array $sort;
     protected string $search;
 
@@ -20,7 +20,7 @@ abstract class DefaultUseTableListComponent extends BaseComponent implements Tab
         $this->interactInstance = $this->getListInteractorInstance();
     }
 
-    abstract protected function getListInteractorInstance(): FeedbackListInteractor;
+    abstract protected function getListInteractorInstance(): TableInteractorCompatible;
     abstract protected function getHeader(): array;
     abstract protected function getTableName(): string;
 
