@@ -52,13 +52,6 @@ use core\component\userlist\UserListComponent;
             $component->processComponent();
             ?>
         <?endif;?>
-        <?if ($arResult['CAN_MANIPULATE_USERS']) :?>
-            <hr>
-            <?
-            $component = new UserListComponent(array());
-            $component->processComponent();
-            ?>
-        <?endif;?>
         <?if ($arResult['CAN_USER_EXECUTE_SQL_QUERY']) :?>
             <hr>
             <?
