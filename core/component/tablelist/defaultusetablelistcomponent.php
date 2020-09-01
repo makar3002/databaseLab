@@ -3,7 +3,7 @@ namespace core\component\tablelist;
 
 
 use core\component\general\BaseComponent;
-use core\lib\facade\TableInteraction;
+use core\lib\presentation\TableInteractorCompatible;
 
 
 abstract class DefaultUseTableListComponent extends BaseComponent implements TableListCompatible {
@@ -11,16 +11,16 @@ abstract class DefaultUseTableListComponent extends BaseComponent implements Tab
         'ID' => 'ASC'
     );
 
-    protected TableInteraction $interactionFacade;
+    protected TableInteractorCompatible $interactInstance;
     protected array $sort;
     protected string $search;
 
     public function __construct($arParams) {
         parent::__construct($arParams);
-        $this->interactionFacade = $this->getTableInteractionFacadeInstance();
+        $this->interactInstance = $this->getListInteractorInstance();
     }
 
-    abstract protected function getTableInteractionFacadeInstance(): TableInteraction;
+    abstract protected function getListInteractorInstance(): TableInteractorCompatible;
     abstract protected function getHeader(): array;
     abstract protected function getTableName(): string;
 
@@ -34,7 +34,7 @@ abstract class DefaultUseTableListComponent extends BaseComponent implements Tab
     }
 
     public function getElementInfoAction(): array {
-        $element = $this->interactionFacade->getElementInfoByPrimary($this->arParams['ID']);
+        $element = $this->interactInstance->getElementInfo($this->arParams['ID']);
         return $element;
     }
 
@@ -47,7 +47,7 @@ abstract class DefaultUseTableListComponent extends BaseComponent implements Tab
         $fields = json_decode($this->arParams['FIELDS'], true);
 
         try {
-            $this->interactionFacade->updateElement($this->arParams['ID'], $fields);
+            $this->interactInstance->updateElement($this->arParams['ID'], $fields);
         } catch (\RuntimeException $e) {
             echo $e->getMessage();
         }
@@ -65,14 +65,14 @@ abstract class DefaultUseTableListComponent extends BaseComponent implements Tab
         }
 
         try {
-            $this->interactionFacade->addElement($fields, $multipleFields);
+            $this->interactInstance->addElement($fields, $multipleFields);
         } catch (\RuntimeException $e) {
             echo $e->getMessage();
         }
     }
 
     public function deleteElementAction(): void {
-        $isElementDeleted = $this->interactionFacade->deleteElement($this->arParams['ID']);
+        $isElementDeleted = $this->interactInstance->deleteElement($this->arParams['ID']);
         if (!$isElementDeleted) {
             echo 'Невозможно удалить элемент';
         }
@@ -88,7 +88,7 @@ abstract class DefaultUseTableListComponent extends BaseComponent implements Tab
     }
 
     protected function getRows($sort, $search): array {
-        $elementList = $this->interactionFacade->getElementList($sort, $search);
+        $elementList = $this->interactInstance->getElementList($sort, $search);
 
         $elementIdList = array_column($elementList, 'ID');
         return array_combine($elementIdList, $elementList);

@@ -3,12 +3,11 @@ namespace core\component\feedbacklist;
 
 
 use core\component\tablelist\DefaultUseTableListComponent;
-use core\lib\facade\Feedback;
-use core\lib\facade\TableInteraction;
+use core\lib\presentation\FeedbackListInteractor;
+use core\lib\presentation\TableInteractorCompatible;
 
 
-class FeedbackListComponent extends DefaultUseTableListComponent
-{
+class FeedbackListComponent extends DefaultUseTableListComponent {
     protected const DEFAULT_TABLE_NAME = 'Данные обратной связи';
     protected const HEADER_COLUMN_MAP = array(
         'ID' => array(
@@ -53,8 +52,8 @@ class FeedbackListComponent extends DefaultUseTableListComponent
         'DATE_CREATE' => 'DESC'
     );
 
-    protected function getTableInteractionFacadeInstance(): TableInteraction {
-        return new Feedback();
+    protected function getListInteractorInstance(): TableInteractorCompatible {
+        return new FeedbackListInteractor();
     }
 
     protected function getHeader(): array {
