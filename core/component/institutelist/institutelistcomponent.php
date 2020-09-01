@@ -3,7 +3,8 @@ namespace core\component\institutelist;
 
 use core\component\tablelist\DefaultUseTableListComponent;
 use core\lib\facade\Institute;
-use core\lib\facade\TableInteraction;
+use core\lib\presentation\InstituteListInteractor;
+use core\lib\presentation\TableInteractorCompatible;
 
 class InstituteListComponent extends DefaultUseTableListComponent
 {
@@ -22,15 +23,16 @@ class InstituteListComponent extends DefaultUseTableListComponent
         'ID' => 'ASC'
     );
 
-    protected function getTableInteractionFacadeInstance(): TableInteraction {
-        return new Institute();
-    }
-
     protected function getHeader(): array {
         return self::HEADER_COLUMN_MAP;
     }
 
     protected function getTableName(): string {
         return self::DEFAULT_TABLE_NAME;
+    }
+
+    protected function getListInteractorInstance(): TableInteractorCompatible
+    {
+        return new InstituteListInteractor();
     }
 }

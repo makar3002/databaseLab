@@ -17,9 +17,10 @@ class FeedbackListInteractor implements TableInteractorCompatible {
     }
 
     public function getElementInfo($primary): array {
-        return $this->feedbackFacadeInstance->findFeedbacks(array(
+        $feedbackList = $this->feedbackFacadeInstance->findFeedbacks(array(
             'filter' => array('ID' => $primary)
         ));
+        return empty($feedbackList) ? array() : $feedbackList[0];
     }
 
     public function updateElement($primary, $fieldValueList): void {
