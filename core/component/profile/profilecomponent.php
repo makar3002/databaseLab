@@ -7,7 +7,7 @@ use core\util\Request;
 use core\lib\facade\User;
 use core\util\Validator;
 
-class  ProfileComponent extends BaseComponent
+class  ProfileComponent extends BaseComponent implements ProfileAjaxControllable
 {
     public function processComponent()
     {

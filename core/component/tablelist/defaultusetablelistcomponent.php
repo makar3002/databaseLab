@@ -6,7 +6,7 @@ use core\component\general\BaseComponent;
 use core\lib\presentation\TableInteractorCompatible;
 
 
-abstract class DefaultUseTableListComponent extends BaseComponent implements TableListCompatible {
+abstract class DefaultUseTableListComponent extends BaseComponent implements TableListAjaxController {
     protected const DEFAULT_SORT = array(
         'ID' => 'ASC'
     );

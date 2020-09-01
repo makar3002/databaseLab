@@ -134,7 +134,7 @@
                         <div class="form-group">
                             <label for="<?=$fieldName?>" class="col-form-label"><?=$headerElement['NAME']?></label>
                             <? if (isset($headerElement['VALUES'])) : ?>
-                            <select class="form-control" name="<?=$fieldName?>" id="update-<?=$fieldName?>" <?if ($headerElement['IS_MULTIPLE']) echo 'multiple'?>>
+                            <select class="form-control" name="<?=$fieldName?>" id="update-<?=$fieldName?>" <?if (isset($headerElement['IS_MULTIPLE'])) echo 'multiple'?>>
                                 <?foreach ($headerElement['VALUES'] as $value => $description) :?>
                                     <option value="<?=$value?>"><?=$description?></option>
                                 <?endforeach;?>

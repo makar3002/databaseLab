@@ -1,7 +1,11 @@
 <?php
 namespace core\component\tablelist;
 
-interface TableListCompatible {
+
+use core\lib\ajax\AjaxControllable;
+
+
+interface TableListAjaxController extends AjaxControllable {
     public function addElementAction(): void;
     public function getElementInfoAction(): array;
     public function getTableOnlyAction(): void;

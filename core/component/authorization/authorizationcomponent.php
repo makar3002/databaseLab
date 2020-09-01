@@ -7,7 +7,7 @@ use core\lib\facade\User;
 use core\util\Validator;
 use Exception;
 
-class AuthorizationComponent extends BaseComponent
+class AuthorizationComponent extends BaseComponent implements AuthorizationAjaxControllable
 {
     public function processComponent()
     {

@@ -1,5 +1,5 @@
 class Ajax {
-    static url = '/core/ajax/ajaxcontroller.php';
+    static url = '/ajax.php';
     static actionFieldName = 'action';
     static ajaxRequestFieldName = 'AJAX_REQUEST';
     static componentClassFieldName = 'componentClass';
