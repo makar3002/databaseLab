@@ -36,12 +36,16 @@ foreach ($componentInterfaces as $interfaceName => $reflectionInterface) {
         continue;
     }
 
+    if (!is_subclass_of($interfaceName, AjaxControllable::class)) {
+        continue;
+    }
+
     $hasControllerMethod = true;
     break;
 }
 
 if (!$hasControllerMethod) {
-    echo 'Указанный класс может выполнить указанное действие.';
+    echo 'Указанный класс не может выполнить указанное действие.';
     $result = ob_get_clean();
     echo json_encode($result);
     return;
