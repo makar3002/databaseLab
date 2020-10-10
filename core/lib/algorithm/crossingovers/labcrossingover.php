@@ -26,7 +26,7 @@ class LabCrossingOver extends BaseCrossingOver {
         return $this->reproduceChromosomes($chromosomeList, $mostUnfitChromosomeCount);
     }
 
-    private function reproduceChromosomes(array $mostFitChromosomeList, $neededCount): array {
+    protected function reproduceChromosomes(array $mostFitChromosomeList, $neededCount): array {
         $newChromosomeList = array();
         for ($i = 0; $i < $neededCount; $i++) {
              $coupleChromosomeKeyList = array_rand($mostFitChromosomeList, 2);
@@ -39,7 +39,7 @@ class LabCrossingOver extends BaseCrossingOver {
         return array_merge($mostFitChromosomeList, $newChromosomeList);
     }
 
-    private function reproduceChromosome(IChromosome $chromosome1, IChromosome $chromosome2) {
+    private function reproduceChromosome(IChromosome $chromosome1, IChromosome $chromosome2): IChromosome {
         return $chromosome1->sex($chromosome2);
     }
 
@@ -53,7 +53,7 @@ class LabCrossingOver extends BaseCrossingOver {
         return true;
     }
 
-    private function getMostFitChromosomeCount($absoluteChromosomeCount) {
+    private function getMostFitChromosomeCount($absoluteChromosomeCount): int {
         return intval($absoluteChromosomeCount / 2);
     }
 }

@@ -12,20 +12,20 @@ class LabFitness extends BaseFitness {
         return $value;
     }
 
-    public function function1(int $x, int $y, int $z, int $t): int {
-        return $x + $y - $z - $t;
+    public function function1(int $x, int $y, int $z, int $t) {
+        return ($x - 40) * ($x + $y - $z - $t);
     }
 
-    public function function2(int $x, int $y, int $z, int $t): int {
-        return $x * $x + $y * $y + $z * $z + $t * $t - 4;
+    public function function2(int $x, int $y, int $z, int $t) {
+        return ($y - 50) * ($x * $x + $y * $y + $z * $z + $t * $t - 4);
     }
 
-    public function function3(int $x, int $y, int $z, int $t): int {
-        return $x * $y * $z * $t - 1;
+    public function function3(int $x, int $y, int $z, int $t) {
+        return ($z - 60) * ($x * $y * $z * $t - 1);
     }
 
-    public function function4(int $x, int $y, int $z, int $t): int {
-        return $x + $y + $z + $t - 4;
+    public function function4(int $x, int $y, int $z, int $t) {
+        return ($t - 70) * ($x + $y + $z + $t - 4);
     }
 
     public function getSize(): int {

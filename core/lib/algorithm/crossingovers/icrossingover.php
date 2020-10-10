@@ -2,5 +2,5 @@
 namespace core\lib\algorithm\crossingovers;
 
 interface ICrossingOver {
-    public function crossOver(array $mostFitChromosomeList): array;
+    public function crossOver(array $chromosomeList): array;
 }

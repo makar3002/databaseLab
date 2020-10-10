@@ -38,6 +38,14 @@ class LabPopulation extends BasePopulation {
         }
     }
 
+    public function dump() {
+        /** @var IChromosome $chromosome */
+        foreach ($this->chromosomeList as $chromosome) {
+            $chromosome->dump();
+            echo '<hr>';
+        }
+    }
+
     public function getMinChromosome() {
         $this->applyCrossOver();
         return $this->chromosomeList[0];

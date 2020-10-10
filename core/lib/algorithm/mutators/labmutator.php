@@ -26,7 +26,7 @@ class LabMutator extends BaseMutator {
         foreach ($mutatedGenKeyList as $genKey) {
             /** @var IGen $mutatatedGen */
             $mutatatedGen = &$genList[$genKey];
-            $mutatatedGen->applyMutation(rand(1, -1) * $this->mutationParameter);
+            $mutatatedGen->applyMutation(rand(1, -1) * rand($this->mutationParameter, 1));
         }
     }
 }

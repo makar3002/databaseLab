@@ -4,6 +4,7 @@ namespace core\lib\algorithm;
 
 use core\lib\algorithm\chromosomes\IChromosomeFabric;
 use core\lib\algorithm\chromosomes\LabChromosomeFabric;
+use core\lib\algorithm\crossingovers\FitnessProportionalCrossingOver;
 use core\lib\algorithm\crossingovers\ICrossingOver;
 use core\lib\algorithm\crossingovers\LabCrossingOver;
 use core\lib\algorithm\fitnesses\IFitness;
@@ -15,6 +16,7 @@ use core\lib\algorithm\populations\LabPopulation;
 
 
 class GeneticAlgorithm {
+
     private IPopulation $population;
     private IMutator $mutator;
     private IFitness $fitness;
@@ -29,19 +31,19 @@ class GeneticAlgorithm {
         $mutatorBulder = new LabMutatorBuilder();
         $this->mutator =
                 $mutatorBulder
-                        ->setMutationSize(100)
-                        ->setMutationParameter(2)
+                        ->setMutationSize(20)
+                        ->setMutationParameter(15)
                         ->build();
 
-        $this->crossingOver = new LabCrossingOver();
+        $this->crossingOver = new FitnessProportionalCrossingOver();
 
         $this->chromosomeFabric = new LabChromosomeFabric($this->fitness, $this->mutator);
 
-        $this->population = new LabPopulation($this->fitness, $this->mutator, $this->crossingOver, $this->chromosomeFabric, 2000);
+        $this->population = new LabPopulation($this->fitness, $this->mutator, $this->crossingOver, $this->chromosomeFabric, 200);
     }
 
     public function calculate() {
-        for ($i = 0; $i < 200; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             $this->population->applyCrossOver();
             $this->population->applyMutation();
             $minChromosome = $this->population->getMinChromosome();
@@ -52,10 +54,11 @@ class GeneticAlgorithm {
             }
         }
 
-        $minChromosome = $this->population->getMinChromosome();
-        echo '<hr>';
-        $minChromosome->dump();
-        echo '<hr>';
+        $this->population->dump();
+//        $minChromosome = $this->population->getMinChromosome();
+//        echo '<hr>';
+//        $minChromosome->dump();
+//        echo '<hr>';
 
         echo 'Найденный минимум: ' . $minChromosome->calculateFitness();
     }

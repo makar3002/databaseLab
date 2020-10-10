@@ -2,7 +2,7 @@
 namespace core\lib\algorithm\gens;
 
 class LabGen extends BaseGen {
-    private const MAX_VALUE = 10000;
+    private const MAX_VALUE = 100;
     private const MIN_VALUE = 1;
 
     public function __construct() {
