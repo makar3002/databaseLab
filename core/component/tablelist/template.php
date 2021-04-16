@@ -66,7 +66,13 @@
                                     $value = $element[$fieldName];
                                 }
                             } else {
-                                $value = $headerElement['VALUES'][$element[$fieldName]];
+                                if (isset($headerElement['VALUES'][$element[$fieldName]])) {
+                                    $value = $headerElement['VALUES'][$element[$fieldName]];
+                                } elseif (isset($headerElement['DEFAULT_VALUE'])) {
+                                    $value = $headerElement['DEFAULT_VALUE'];
+                                } else {
+                                    $value = $element[$fieldName];
+                                }
                             }
                             echo $value;
                         } else {

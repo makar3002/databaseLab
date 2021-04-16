@@ -37,7 +37,7 @@ class DB {
                 'HOST' => 'localhost',
                 'DATABASE_NAME' => 'schedule',
                 'USER' => 'root',
-                'PASSWORD' => ''
+                'PASSWORD' => 'gfhjkm3000'
             );
 
             self::$instance = new DB();

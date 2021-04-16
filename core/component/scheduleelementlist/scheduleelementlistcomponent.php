@@ -1,13 +1,17 @@
 <?php
 namespace core\component\scheduleelementlist;
 
-use core\component\tablelist\TableListComparable;
+
+use core\component\tablelist\DefaultUseTableListComponent;
+use core\lib\presentation\ScheduleElementListInteractor;
 use core\lib\table\AuditoriumTable;
 use core\lib\table\GroupTable;
 use core\lib\table\SubjectTable;
 use core\lib\table\TeacherTable;
+use core\lib\presentation\TableInteractorCompatible;
 
-class ScheduleElementListComponent extends TableListComparable
+
+class ScheduleElementListComponent extends DefaultUseTableListComponent
 {
     const DEFAULT_TABLE_NAME = 'Пары';
     const HEADER_COLUMN_MAP = array(
@@ -27,7 +31,8 @@ class ScheduleElementListComponent extends TableListComparable
                 '0' => 'Еженедельная',
                 '1' => 'Числитель',
                 '2' => 'Знаменатель'
-            )
+            ),
+            'DEFAULT_VALUE' => 'Еженедельная'
         ),
         'SUBGROUP' => array(
             'NAME' => 'Подгруппа',
@@ -36,7 +41,8 @@ class ScheduleElementListComponent extends TableListComparable
                 '0' => 'Обе',
                 '1' => 'Первая',
                 '2' => 'Вторая',
-            )
+            ),
+            'DEFAULT_VALUE' => 'Обе'
         ),
         'KIND' => array(
             'NAME' => 'Тип предмета',
@@ -88,58 +94,52 @@ class ScheduleElementListComponent extends TableListComparable
         ),
     );
 
-    public function processComponent()
-    {
-        if (!isset($this->arResult['TABLE_ONLY'])) {
-            $this->arResult['TABLE_ONLY'] = false;
-        }
-        $this->prepareHeader();
-        $this->prepareData();
-        $this->renderComponent();
-    }
-
-    protected function prepareHeader()
-    {
-        $this->arResult['TABLE_HEADER'] = self::HEADER_COLUMN_MAP;
+    protected function getHeader(): array {
+        $header = self::HEADER_COLUMN_MAP;
         $subjectList = SubjectTable::getList(array(
-            'order' => array('NAME' => 'ASC')
+                'order' => array('NAME' => 'ASC')
         ));
 
-        $this->arResult['TABLE_HEADER']['SUBJECT_ID']['VALUES'] = array();
+        $header['SUBJECT_ID']['VALUES'] = array();
         foreach ($subjectList as $value) {
-            $this->arResult['TABLE_HEADER']['SUBJECT_ID']['VALUES'][$value['ID']] = $value['NAME'];
+            $header['SUBJECT_ID']['VALUES'][$value['ID']] = $value['NAME'];
         }
 
         $teacherList = TeacherTable::getList(array(
-            'order' => array('NAME' => 'ASC')
+                'order' => array('NAME' => 'ASC')
         ));
 
-        $this->arResult['TABLE_HEADER']['TEACHER_ID']['VALUES'] = array();
+        $header['TEACHER_ID']['VALUES'] = array();
         foreach ($teacherList as $value) {
-            $this->arResult['TABLE_HEADER']['TEACHER_ID']['VALUES'][$value['ID']] = $value['NAME'];
+            $header['TEACHER_ID']['VALUES'][$value['ID']] = $value['NAME'];
         }
 
         $groupList = GroupTable::getList(array(
-            'order' => array('NAME' => 'ASC')
+                'order' => array('NAME' => 'ASC')
         ));
 
-        $this->arResult['TABLE_HEADER']['GROUP_ID']['VALUES'] = array();
+        $header['GROUP_ID']['VALUES'] = array();
         foreach ($groupList as $value) {
-            $this->arResult['TABLE_HEADER']['GROUP_ID']['VALUES'][$value['ID']] = $value['NAME'];
+            $header['GROUP_ID']['VALUES'][$value['ID']] = $value['NAME'];
         }
 
         $auditoriumList = AuditoriumTable::getList(array(
-            'order' => array('NAME' => 'ASC')
+                'order' => array('NAME' => 'ASC')
         ));
 
-        $this->arResult['TABLE_HEADER']['AUDITORIUM_ID']['VALUES'] = array();
+        $header['AUDITORIUM_ID']['VALUES'] = array();
         foreach ($auditoriumList as $value) {
-            $this->arResult['TABLE_HEADER']['AUDITORIUM_ID']['VALUES'][$value['ID']] = $value['NAME'];
+            $header['AUDITORIUM_ID']['VALUES'][$value['ID']] = $value['NAME'];
         }
+
+        return $header;
     }
 
-    protected function prepareData()
-    {
-        $this->arResult['TABLE_NAME'] = self::DEFAULT_TABLE_NAME;
+    protected function getTableName(): string {
+        return self::DEFAULT_TABLE_NAME;
+    }
+
+    protected function getListInteractorInstance(): TableInteractorCompatible {
+        return new ScheduleElementListInteractor();
     }
 }

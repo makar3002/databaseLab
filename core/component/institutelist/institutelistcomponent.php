@@ -1,10 +1,11 @@
 <?php
 namespace core\component\institutelist;
 
+
 use core\component\tablelist\DefaultUseTableListComponent;
-use core\lib\facade\Institute;
 use core\lib\presentation\InstituteListInteractor;
 use core\lib\presentation\TableInteractorCompatible;
+
 
 class InstituteListComponent extends DefaultUseTableListComponent
 {
@@ -31,8 +32,7 @@ class InstituteListComponent extends DefaultUseTableListComponent
         return self::DEFAULT_TABLE_NAME;
     }
 
-    protected function getListInteractorInstance(): TableInteractorCompatible
-    {
+    protected function getListInteractorInstance(): TableInteractorCompatible {
         return new InstituteListInteractor();
     }
 }

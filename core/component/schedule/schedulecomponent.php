@@ -1,12 +1,14 @@
 <?php
 namespace core\component\schedule;
 
+
 use core\component\general\BaseComponent;
 use core\lib\table\DirectionTable;
 use core\lib\table\GroupTable;
 use core\lib\table\ScheduleElementTable;
 
-class ScheduleComponent extends BaseComponent
+
+class ScheduleComponent extends BaseComponent implements ScheduleAjaxControllable
 {
     private const DEFAULT_LEFT_DAYS_OF_WEEK_HEADER_MAP = array(
         '1' => 'Понедельник',

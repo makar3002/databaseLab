@@ -1,9 +1,13 @@
 <?php
 namespace core\component\auditoriumlist;
 
-use core\component\tablelist\TableListComparable;
 
-class AuditoriumListComponent extends TableListComparable
+use core\component\tablelist\DefaultUseTableListComponent;
+use core\lib\presentation\AuditoriumListInteractor;
+use core\lib\presentation\TableInteractorCompatible;
+
+
+class AuditoriumListComponent extends DefaultUseTableListComponent
 {
     const DEFAULT_TABLE_NAME = 'Аудитории';
     const HEADER_COLUMN_MAP = array(
@@ -21,23 +25,16 @@ class AuditoriumListComponent extends TableListComparable
         ),
     );
 
-    public function processComponent()
-    {
-        if (!isset($this->arResult['TABLE_ONLY'])) {
-            $this->arResult['TABLE_ONLY'] = false;
-        }
-        $this->prepareHeader();
-        $this->prepareData();
-        $this->renderComponent();
+    protected function getHeader(): array {
+        $header = self::HEADER_COLUMN_MAP;
+        return $header;
     }
 
-    protected function prepareHeader()
-    {
-        $this->arResult['TABLE_HEADER'] = self::HEADER_COLUMN_MAP;
+    protected function getTableName(): string {
+        return self::DEFAULT_TABLE_NAME;
     }
 
-    protected function prepareData()
-    {
-        $this->arResult['TABLE_NAME'] = self::DEFAULT_TABLE_NAME;
+    protected function getListInteractorInstance(): TableInteractorCompatible {
+        return new AuditoriumListInteractor();
     }
 }

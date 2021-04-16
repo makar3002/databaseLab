@@ -66,8 +66,9 @@ class SubjectTable extends TableManager
                 'select' => array('ID'),
                 'filter' => array('SUBJECT_ID' => $id)
             ));
-            foreach ($currentTeachers as $subjectToTeacherId) {
-                SubjectToTeacherTable::delete($subjectToTeacherId);
+
+            foreach ($currentTeachers as $subjectToTeacher) {
+                SubjectToTeacherTable::delete($subjectToTeacher['ID']);
             }
         }
     }
